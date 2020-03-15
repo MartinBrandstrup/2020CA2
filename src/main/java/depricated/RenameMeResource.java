@@ -2,7 +2,6 @@ package depricated;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import depricated.RenameMe;
 import utils.EMF_Creator;
 import depricated.FacadeExample;
 import javax.persistence.EntityManagerFactory;
