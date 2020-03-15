@@ -10,6 +10,10 @@ import javax.persistence.Id;
 import javax.persistence.ManyToMany;
 import javax.persistence.NamedQuery;
 
+/**
+ * 
+ * @author Brandstrup
+ */
 @Entity
 @NamedQuery(name = "Hobby.deleteAllRows", query = "DELETE from Hobby")
 public class Hobby implements Serializable

@@ -11,6 +11,10 @@ import javax.persistence.Id;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
 
+/**
+ * 
+ * @author Brandstrup
+ */
 @Entity
 @NamedQuery(name = "CityInfo.deleteAllRows", query = "DELETE from CityInfo")
 public class CityInfo implements Serializable

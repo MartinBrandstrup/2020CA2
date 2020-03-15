@@ -8,6 +8,10 @@ import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 import javax.persistence.NamedQuery;
 
+/**
+ * 
+ * @author Brandstrup
+ */
 @Entity
 @NamedQuery(name = "Phone.deleteAllRows", query = "DELETE from Phone")
 public class Phone implements Serializable
