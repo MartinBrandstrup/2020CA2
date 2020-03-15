@@ -5,14 +5,14 @@ import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
 
-public class PersonFacade
+public class CityInfoFacade
 {
 
-    private static PersonFacade instance;
+    private static CityInfoFacade instance;
     private static EntityManagerFactory emf;
 
     //Private Constructor to ensure Singleton
-    private PersonFacade()
+    private CityInfoFacade()
     {
     }
 
@@ -21,12 +21,12 @@ public class PersonFacade
      * @param _emf
      * @return an instance of this facade class.
      */
-    public static PersonFacade getPersonFacade(EntityManagerFactory _emf)
+    public static CityInfoFacade getCityInfoFacade(EntityManagerFactory _emf)
     {
         if (instance == null)
         {
             emf = _emf;
-            instance = new PersonFacade();
+            instance = new CityInfoFacade();
         }
         return instance;
     }
@@ -36,13 +36,13 @@ public class PersonFacade
         return emf.createEntityManager();
     }
 
-    public long getPersonCount()
+    public long getCityInfoCount()
     {
         EntityManager em = emf.createEntityManager();
         try
         {
-            long personCount = (long) em.createQuery("SELECT COUNT(p) FROM Peron p").getSingleResult();
-            return personCount;
+            long cityInfoCount = (long) em.createQuery("SELECT COUNT(c) FROM CityInfo c").getSingleResult();
+            return cityInfoCount;
         }
         finally
         {
