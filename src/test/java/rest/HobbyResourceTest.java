@@ -24,7 +24,7 @@ import utils.EMF_Creator.DbSelector;
 import utils.EMF_Creator.Strategy;
 
 //Uncomment the line below, to temporarily disable this test
-//@Disabled
+@Disabled
 public class HobbyResourceTest
 {
 
@@ -71,8 +71,8 @@ public class HobbyResourceTest
     public void setUp()
     {
         EntityManager em = emf.createEntityManager();
-        h1 = new Hobby("name", "description");
-        h2 = new Hobby("name", "description");
+//        h1 = new Hobby("name", "description");
+//        h2 = new Hobby("name", "description");
         try
         {
             em.getTransaction().begin();
