@@ -24,7 +24,7 @@ public class PersonFacade {
      * @param _emf
      * @return an instance of this facade class.
      */
-    public static PersonFacade getFacadeExample(EntityManagerFactory _emf) {
+    public static PersonFacade getPersonFacade(EntityManagerFactory _emf) {
         if (instance == null) {
             emf = _emf;
             instance = new PersonFacade();
@@ -36,11 +36,10 @@ public class PersonFacade {
         return emf.createEntityManager();
     }
     
-    //TODO Remove/Change this before use
-    public long getRenameMeCount(){
+    public long getPersonCount(){
         EntityManager em = emf.createEntityManager();
         try{
-            long renameMeCount = (long)em.createQuery("SELECT COUNT(r) FROM RenameMe r").getSingleResult();
+            long renameMeCount = (long)em.createQuery("SELECT COUNT(p) FROM Peron p").getSingleResult();
             return renameMeCount;
         }finally{  
             em.close();
