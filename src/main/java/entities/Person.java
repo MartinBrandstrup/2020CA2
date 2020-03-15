@@ -2,8 +2,10 @@ package entities;
 
 import java.io.Serializable;
 import java.util.HashSet;
+import java.util.Objects;
 import java.util.Set;
 import javax.persistence.CascadeType;
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -15,7 +17,7 @@ import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
 
 /**
- * 
+ *
  * @author Brandstrup
  */
 @Entity
@@ -27,7 +29,12 @@ public class Person implements Serializable
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
-    private String firstName, lastName, email;
+    private String firstName, lastName;
+
+    @Column(nullable = false, unique = true)
+    private String email;
+    @ManyToOne
+    private Address address;
 
     @OneToMany(mappedBy = "person", cascade =
     {
@@ -35,12 +42,38 @@ public class Person implements Serializable
     })
     private Set<Phone> phones = new HashSet();
 
-    @ManyToOne
-    private Address address;
-
     @ManyToMany
     @JoinTable(name = "PERSON_HOBBY")
     private Set<Hobby> hobbies = new HashSet();
+
+    @Override
+    public int hashCode()
+    {
+        return Objects.hash(this.email);
+    }
+
+    @Override
+    public boolean equals(Object obj)
+    {
+        if (this == obj)
+        {
+            return true;
+        }
+        if (obj == null)
+        {
+            return false;
+        }
+        if (getClass() != obj.getClass())
+        {
+            return false;
+        }
+        final Person other = (Person) obj;
+        if (!Objects.equals(this.email, other.email))
+        {
+            return false;
+        }
+        return true;
+    }
 
     public Person()
     {
@@ -95,16 +128,6 @@ public class Person implements Serializable
         this.email = email;
     }
 
-    public Set<Phone> getPhones()
-    {
-        return phones;
-    }
-
-    public void setPhones(Set<Phone> phones)
-    {
-        this.phones = phones;
-    }
-
     public Address getAddress()
     {
         return address;
@@ -115,14 +138,46 @@ public class Person implements Serializable
         this.address = address;
     }
 
+    public Set<Phone> getPhones()
+    {
+        return phones;
+    }
+
+    public void addPhone(Phone phone)
+    {
+        this.phones.add(phone);
+        phone.setPerson(this);
+    }
+
+    public void removePhone(Phone phone)
+    {
+        this.phones.remove(phone);
+        phone.setPerson(null);
+    }
+
     public Set<Hobby> getHobbies()
     {
         return hobbies;
     }
 
-    public void setHobbies(Set<Hobby> hobbies)
+    public void addHobby(Hobby hobby)
     {
-        this.hobbies = hobbies;
+        this.hobbies.add(hobby);
+        hobby.getPersons().add(this);
     }
-    
+
+    public void removeHobby(Hobby hobby)
+    {
+        this.hobbies.remove(hobby);
+        hobby.getPersons().remove(this);
+    }
+
+    @Override
+    public String toString()
+    {
+        return "Person{" + "id=" + id + ", firstName=" + firstName
+                + ", lastName=" + lastName + ", email=" + email + ", address="
+                + address + ", phones=" + phones + ", hobbies=" + hobbies + '}';
+    }
+
 }

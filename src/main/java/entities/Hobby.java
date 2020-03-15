@@ -2,7 +2,9 @@ package entities;
 
 import java.io.Serializable;
 import java.util.HashSet;
+import java.util.Objects;
 import java.util.Set;
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -11,7 +13,7 @@ import javax.persistence.ManyToMany;
 import javax.persistence.NamedQuery;
 
 /**
- * 
+ *
  * @author Brandstrup
  */
 @Entity
@@ -23,10 +25,43 @@ public class Hobby implements Serializable
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
-    private String name, description;
+
+    @Column(nullable = false, unique = true)
+    private String name;
+
+    private String description;
 
     @ManyToMany(mappedBy = "hobbies")
     private Set<Person> persons = new HashSet();
+
+    @Override
+    public int hashCode()
+    {
+        return Objects.hash(this.name);
+    }
+
+    @Override
+    public boolean equals(Object obj)
+    {
+        if (this == obj)
+        {
+            return true;
+        }
+        if (obj == null)
+        {
+            return false;
+        }
+        if (getClass() != obj.getClass())
+        {
+            return false;
+        }
+        final Hobby other = (Hobby) obj;
+        if (!Objects.equals(this.name, other.name))
+        {
+            return false;
+        }
+        return true;
+    }
 
     public Hobby()
     {
@@ -74,9 +109,11 @@ public class Hobby implements Serializable
         return persons;
     }
 
-    public void setPersons(Set<Person> persons)
+    @Override
+    public String toString()
     {
-        this.persons = persons;
+        return "Hobby{" + "id=" + id + ", name=" + name + ", description="
+                + description + ", persons=" + persons + '}';
     }
 
 }
