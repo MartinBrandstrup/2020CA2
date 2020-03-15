@@ -64,9 +64,15 @@ public class Phone implements Serializable
     {
     }
 
-    public Phone(int id, long number, String description, Person person)
+    /**
+     * 
+     * @param number The telephone number for this object. Is mapped as unique 
+     * in the database.
+     * @param description An optional description.
+     * @param person The Person Entity Object this Phone relates to (ManyToOne).
+     */
+    public Phone(long number, String description, Person person)
     {
-        this.id = id;
         this.number = number;
         this.description = description;
         this.person = person;

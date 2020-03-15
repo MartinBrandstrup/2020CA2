@@ -74,9 +74,17 @@ public class Address implements Serializable
     {
     }
 
-    public Address(int id, String Street, String AdditionalInfo, CityInfo cityInfo)
+    /**
+     * When initializing this object, remember to populate with Person Entities
+     * according to the OneToMany relation (HashSet) using the addPerson method.
+     * 
+     * @param Street The street name for this address. Is mapped as unique in
+     * the database.
+     * @param AdditionalInfo Optional information about this address.
+     * @param cityInfo The CityInfo Entity Object this Address relates to.
+     */
+    public Address(String Street, String AdditionalInfo, CityInfo cityInfo)
     {
-        this.id = id;
         this.Street = Street;
         this.AdditionalInfo = AdditionalInfo;
         this.cityInfo = cityInfo;

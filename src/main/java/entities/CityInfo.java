@@ -70,9 +70,16 @@ public class CityInfo implements Serializable
     {
     }
 
-    public CityInfo(int id, int zipCode, String city)
+    /**
+     * When initializing this object, remember to populate with Address Entities
+     * according to the OneToMany relation (HashSet) using the addAddress method.
+     * 
+     * @param zipCode The zip code for this city. Is mapped a unique in the 
+     * database.
+     * @param city The name of the city for this object.
+     */
+    public CityInfo(int zipCode, String city)
     {
-        this.id = id;
         this.zipCode = zipCode;
         this.city = city;
     }
