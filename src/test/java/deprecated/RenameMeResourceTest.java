@@ -1,6 +1,6 @@
-package rest;
+package deprecated;
 
-import entities.RenameMe;
+import depricated.RenameMe;
 import utils.EMF_Creator;
 import io.restassured.RestAssured;
 import static io.restassured.RestAssured.given;
@@ -19,6 +19,7 @@ import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
+import rest.ApplicationConfig;
 import utils.EMF_Creator.DbSelector;
 import utils.EMF_Creator.Strategy;
 

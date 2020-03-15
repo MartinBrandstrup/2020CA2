@@ -1,4 +1,4 @@
-package entities;
+package depricated;
 
 import java.io.Serializable;
 import javax.persistence.Entity;

@@ -1,7 +1,8 @@
-package facades;
+package deprecated;
 
 import utils.EMF_Creator;
-import entities.RenameMe;
+import depricated.RenameMe;
+import depricated.FacadeExample;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import org.junit.jupiter.api.AfterAll;

@@ -1,6 +1,6 @@
-package facades;
+package depricated;
 
-import entities.RenameMe;
+import depricated.RenameMe;
 import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
