@@ -80,13 +80,13 @@ public class Person implements Serializable
     }
 
     /**
-     * When initializing this object, remember to populate with Phone Entities 
-     * and Hobby Entities according to the OneToMany (Phone) and ManyToMany 
+     * When initializing this object, remember to populate with Phone Entities
+     * and Hobby Entities according to the OneToMany (Phone) and ManyToMany
      * (Hobby) relations (HashSets) using the addPhone and addHobby methods.
-     * 
+     *
      * @param firstName The first name of this person.
      * @param lastName The last name of this person.
-     * @param email The email of this person. Is mapped as unique in the 
+     * @param email The email of this person. Is mapped as unique in the
      * database.
      */
     public Person(String firstName, String lastName, String email)
@@ -183,9 +183,8 @@ public class Person implements Serializable
     @Override
     public String toString()
     {
-        return "Person{" + "id=" + id + ", firstName=" + firstName
-                + ", lastName=" + lastName + ", email=" + email + ", address="
-                + address + ", phones=" + phones + ", hobbies=" + hobbies + '}';
+        return "Person{" + "firstName=" + firstName + ", lastName=" 
+                + lastName + ", email=" + email + ", address=" + address + '}';
     }
 
 }
