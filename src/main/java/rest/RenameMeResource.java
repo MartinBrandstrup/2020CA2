@@ -2,10 +2,13 @@ package rest;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+<<<<<<< HEAD
 <<<<<<< HEAD:src/main/java/depricated/RenameMeResource.java
 =======
 import entities.RenameMe;
 >>>>>>> christian_dev2:src/main/java/rest/RenameMeResource.java
+=======
+>>>>>>> master
 import utils.EMF_Creator;
 import facades.FacadeExample;
 import javax.persistence.EntityManagerFactory;
