@@ -25,9 +25,13 @@ public class HobbyDTO
         this.id = hobby.getId();
         this.name = hobby.getName();
         this.description = hobby.getDescription();
-        for (Person person : hobby.getPersons())
+
+        if (!(hobby.getPersons().isEmpty() || hobby.getPersons() == null))
         {
-            this.persons.add(person.toString());
+            for (Person person : hobby.getPersons())
+            {
+                this.persons.add(person.toString());
+            }
         }
     }
 
@@ -64,10 +68,8 @@ public class HobbyDTO
     @Override
     public String toString()
     {
-        return "HobbyDTO{" + "id=" + id + ", name=" + name + ", description=" 
+        return "HobbyDTO{" + "id=" + id + ", name=" + name + ", description="
                 + description + ", persons=" + persons + '}';
     }
-    
-    
 
 }
