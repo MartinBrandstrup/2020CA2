@@ -106,7 +106,7 @@ public class PersonFacade implements IPersonFacade
     }
 
     @Override
-    public Person deletePerson(Person person)
+    public Person deletePerson(PersonDTO person)
     {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }

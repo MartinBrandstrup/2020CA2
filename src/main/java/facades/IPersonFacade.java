@@ -38,7 +38,7 @@ public interface IPersonFacade
 
     public Person persistPerson(Person person);
 
-    public Person deletePerson(Person person);
+    public Person deletePerson(PersonDTO person);
 
     public Person deletePersonById(int id);
 
