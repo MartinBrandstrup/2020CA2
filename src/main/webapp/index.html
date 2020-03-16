@@ -1,10 +1,137 @@
 <!DOCTYPE html>
 <html>
     <head>
-        <title>Start Page</title>
-        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-    </head>
-    <body>
-        <h1>Change or remove this page</h1>
-    </body>
+    <style>
+#workflow {
+  font-family: "Trebuchet MS", Arial, Helvetica, sans-serif;
+  border-collapse: collapse;
+  width: 100%;
+  
+}
+
+#workflow td, #workflow th {
+  border: 1px solid black;
+  padding: 8px;
+  front-size: 10px;
+	
+  
+  }
+#workflow tr:nth-child(even){background-color: #f2f2f2;}
+
+#workflow tr:hover {background-color: #ddd;}
+
+  
+  #workflow th {
+  background-color: #4CAF50;
+  border: 1px solid black;
+  color: white;
+  text-align: center;
+  font-size: 15px;}
+ 
+
+/*headline*/
+h1 {
+  color: Black;
+  text-align: center;
+}
+/* new paragaf*/
+h2 {
+	text-align:left;
+}
+/*elaborating text*/
+h3 {
+text-align:left;
+text-indent: 25px;
+}
+
+/*Main test*/
+p {
+  font-family: Times New Roman;
+  font-size: 15px;
+  width: 900px;
+  text-indent: 75px;
+  text-align: justify;
+ } 
+ a:link, a:visited {
+  background-color: green;
+  color: white;
+  padding: 10px 10px;
+  text-align: left;
+  text-decoration: none;
+  display: inline-block;
+}
+  
+</style>
+</head>
+<body>
+
+<h2>API documentation </h2>
+ 
+
+<table id="workflow">
+  <tr>
+    <th>Method </th>
+    <th>URL</th>
+    <th>Request body</th>
+    <th>Response(JSON)</th>
+    <th>Error</th>
+  </tr>
+   
+	<tr>
+    <td>GET</td>
+    <td> /api/person </td>
+    <td> </td>
+    <td>[person, person,...](1) </td>
+    <td> </td>
+  
+  </tr>
+   <tr>
+    <td>GET</td>
+    <td> /api/person/id{1} <br> <br> id: A person by Id </td>
+    <td> </td>
+    <td> person (1) </td>
+    <td> (e1) </td>
+    
+  </tr>
+
+  <tr>
+    <td>POST</td>
+    <td> /api/person </td>
+    <td> person (1) without id </td>
+   	<td> </td>
+   	<td> (e2) </td>
+  </tr>
+
+  <tr>
+    <td>PUT</td>
+    <td> /api/person/delete/{id} </td>
+    <td> id </td>
+   	<td> [person , person...] (1 was deleted)</td>
+   	<td> (e1) </td>
+  </tr>
+  
+</table>
+
+
+<h3>Request Body and Response Formats
+(1) User format (don’t provide ID, for POST <br>
+ {<br>
+    "id": Number,<br>
+    "name": String,<br>
+    "street": String,<br>
+    "city": String,<br>
+    "zip": String;<br>
+    "phones": String or set;<br>
+    "hobbies": String or set;<br>
+  } <br>
+  <br>
+Errors<br>
+(e) All errors are reported using this format (with the HTTP-status code matching the number)<br>
+{ status : statusCode, "msg": "Explains the problem" }<br>
+ 
+(e1) :{ status : 404, "msg": "No content found for this request" }<br>
+(e2) :{ status : 400, "msg": "Field ‘xxx’ is required" } (for example, no name provided)<br>
+</h3>
+
+</body>
 </html>
