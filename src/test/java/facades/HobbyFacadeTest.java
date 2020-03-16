@@ -1,12 +1,17 @@
 package facades;
 
+import dtos.HobbyDTO;
 import entities.Hobby;
+import java.util.Collections;
+import java.util.List;
 import utils.EMF_Creator;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.AfterEach;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Disabled;
@@ -21,6 +26,9 @@ public class HobbyFacadeTest
 
     private static EntityManagerFactory emf;
     private static HobbyFacade facade;
+
+    private final int numberOfEntries = 5;
+    private List<Hobby> hobbyList;
 
     public HobbyFacadeTest()
     {
@@ -62,20 +70,26 @@ public class HobbyFacadeTest
     @BeforeEach
     public void setUp()
     {
-        EntityManager em = emf.createEntityManager();
-        try
-        {
-            em.getTransaction().begin();
-            em.createNamedQuery("Hobby.deleteAllRows").executeUpdate();
-//            em.persist(new Hobby("name", "description"));
-//            em.persist(new Hobby("name", "description"));
 
-            em.getTransaction().commit();
-        }
-        finally
-        {
-            em.close();
-        }
+        hobbyList = facade.populateDatabaseWithHobbies(numberOfEntries);
+
+//        hobbyList = Collections.sort(hobbyList, c);
+
+
+//        EntityManager em = emf.createEntityManager();
+//        try
+//        {
+//            em.getTransaction().begin();
+//            em.createNamedQuery("Hobby.deleteAllRows").executeUpdate();
+////            em.persist(new Hobby("name", "description"));
+////            em.persist(new Hobby("name", "description"));
+//
+//            em.getTransaction().commit();
+//        }
+//        finally
+//        {
+//            em.close();
+//        }
     }
 
     @AfterEach
@@ -87,7 +101,47 @@ public class HobbyFacadeTest
     @Test
     public void hobbyCountTest()
     {
-        assertEquals(2, facade.getHobbyCount(), "Expects two rows in the database");
+        assertEquals(numberOfEntries, facade.getHobbyCount(),
+                "Expects " + numberOfEntries + " rows in the database");
     }
 
+    @Test
+    public void getAllHobbiesTest()
+    {
+        //populating database twice in order to get access to the objects I am
+        //persisting to the database
+        List<HobbyDTO> databaseList = facade.getAllHobbies();
+
+        assertFalse(databaseList == null);
+        assertFalse(databaseList.isEmpty());
+        assertEquals(numberOfEntries, databaseList.size(),
+                "Expects " + numberOfEntries + " rows in the database");
+
+        assertTrue(databaseList.size() == hobbyList.size()
+                && databaseList.get(numberOfEntries - 1).getId()
+                == hobbyList.get(numberOfEntries - 1).getId());
+
+    }
+
+    @Test
+    public void persistHobbyTest()
+    {
+        Hobby testHobby = facade.persistHobby(new Hobby("testHobby", "testHobby"));
+        assertEquals(numberOfEntries + 1, facade.getAllHobbies().size(), "Expects " + numberOfEntries + 1 + " rows in the database");
+        assertEquals(numberOfEntries, testHobby.getId());
+    }
+
+    @Test
+    public void getHobbyByIDTest()
+    {
+        assertEquals(hobbyList.get(hobbyList.size() -1).getId(), 
+                facade.getHobbyById(hobbyList.size()).getId());
+    }
+
+    @Test
+    public void getHobbyDTOByIDTest()
+    {
+        assertEquals(hobbyList.get(hobbyList.size() -1).getId(), 
+                facade.getHobbyDTOById(hobbyList.size()).getId());
+    }
 }
