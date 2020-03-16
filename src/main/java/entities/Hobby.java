@@ -67,9 +67,9 @@ public class Hobby implements Serializable
 
     /**
      * Due to the ManyToMany relation between the Hobby and Person Entities,
-     * Hobby is unable to populate its own persons field; this must be done 
-     * by the related Person Entity Object.
-     * 
+     * Hobby is unable to populate its own persons field; this must be done by
+     * the related Person Entity Object.
+     *
      * @param name The name of this hobby. Is mapped as unique in the database.
      * @param description An optional description about this hobby.
      */
@@ -117,8 +117,7 @@ public class Hobby implements Serializable
     @Override
     public String toString()
     {
-        return "Hobby{" + "id=" + id + ", name=" + name + ", description="
-                + description + ", persons=" + persons + '}';
+        return "Hobby{" + "name=" + name + ", description=" + description + '}';
     }
 
 }

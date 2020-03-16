@@ -40,7 +40,6 @@ public class HobbyFacade
         return emf.createEntityManager();
     }
 
-    
     /*
     This facade contains the following methods in order:
     getHobbyCount()
@@ -51,8 +50,7 @@ public class HobbyFacade
     deleteHobby(Hobby hobby)
     deleteHobbyById(int id)
     populateDatabaseWithHobbies(int numberOfEntries)
-    */
-    
+     */
     /**
      * Counts the amount of Hobby entries existing in the database.
      *
@@ -197,10 +195,12 @@ public class HobbyFacade
 
     /**
      * Attempts to delete the provided Hobby object's entry from the database.
+     * Returns the deleted Hobby object; null if the operation fails.
      *
      * @param hobby The Hobby object to delete.
+     * @return the deleted Hobby object.
      */
-    public void deleteHobby(Hobby hobby)
+    public Hobby deleteHobby(HobbyDTO hobby)
     {
         EntityManager em = getEntityManager();
         try
@@ -210,11 +210,13 @@ public class HobbyFacade
             em.getTransaction().begin();
             em.remove(h);
             em.getTransaction().commit();
+            return h;
         }
         catch (Exception ex)
         {
             System.out.println("Operation deleteHobby failed.");
             ex.printStackTrace();
+            return null;
         }
         finally
         {
@@ -224,11 +226,12 @@ public class HobbyFacade
 
     /**
      * Attempts to delete the Hobby of the provided id object's entry from the
-     * database.
+     * database. Returns the deleted Hobby object; null if the operation fails.
      *
      * @param id The id of the Hobby object to delete.
+     * @return the deleted Hobby object.
      */
-    public void deleteHobbyById(int id)
+    public Hobby deleteHobbyById(int id)
     {
         EntityManager em = getEntityManager();
         try
@@ -238,11 +241,13 @@ public class HobbyFacade
             em.getTransaction().begin();
             em.remove(h);
             em.getTransaction().commit();
+            return h;
         }
         catch (Exception ex)
         {
             System.out.println("Operation deleteHobbyById failed.");
             ex.printStackTrace();
+            return null;
         }
         finally
         {
@@ -254,6 +259,8 @@ public class HobbyFacade
      * Populates the database with a set of dummy entries for testing. Returns a
      * list of these entries as Java objects after they have been managed; null
      * if the operation fails. WARNING: wipes the database of existing entries!
+     * Part of this method is synchronized to avoid race conditions and thus
+     * match the object ids with their position in the returned List.
      *
      * @param numberOfEntries The number of entries to populate database with.
      * @return a List<Hobby> containing the created objects after they have been
@@ -267,14 +274,16 @@ public class HobbyFacade
             em.getTransaction().begin();
             em.createNamedQuery("Hobby.deleteAllRows").executeUpdate();
             List<Hobby> hobbyList = new ArrayList<>();
-
-            for (int i = 0; i < numberOfEntries; i++)
+            synchronized (this)
             {
-                String name = "name" + i;
-                String description = "description" + i;
-                Hobby h = new Hobby(name, description);
-                hobbyList.add(h);
-                em.persist(h);
+                for (int i = 0; i < numberOfEntries; i++)
+                {
+                    String name = "name" + i;
+                    String description = "description" + i;
+                    Hobby h = new Hobby(name, description);
+                    hobbyList.add(h);
+                    em.persist(h);
+                }
             }
             em.getTransaction().commit();
             return hobbyList;
