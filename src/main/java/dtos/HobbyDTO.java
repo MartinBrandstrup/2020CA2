@@ -18,17 +18,20 @@ public class HobbyDTO
 
     private int id;
     private String name, description;
-    private List<Person> persons;
-    //Kan denne være en liste? Skal det være en String istedet?
+    private List<String> persons;
 
     public HobbyDTO(Hobby hobby)
     {
         this.id = hobby.getId();
         this.name = hobby.getName();
         this.description = hobby.getDescription();
-        for (Person person : hobby.getPersons())
+
+        if (!(hobby.getPersons().isEmpty() || hobby.getPersons() == null))
         {
-            this.persons.add(person);
+            for (Person person : hobby.getPersons())
+            {
+                this.persons.add(person.toString());
+            }
         }
     }
 
@@ -57,7 +60,7 @@ public class HobbyDTO
         this.description = description;
     }
 
-    public List<Person> getPersons()
+    public List<String> getPersons()
     {
         return persons;
     }
@@ -65,10 +68,8 @@ public class HobbyDTO
     @Override
     public String toString()
     {
-        return "HobbyDTO{" + "id=" + id + ", name=" + name + ", description=" 
+        return "HobbyDTO{" + "id=" + id + ", name=" + name + ", description="
                 + description + ", persons=" + persons + '}';
     }
-    
-    
 
 }
