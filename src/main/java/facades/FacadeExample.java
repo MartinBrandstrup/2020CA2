@@ -1,13 +1,12 @@
 package facades;
 
-<<<<<<< HEAD:src/main/java/facades/FacadeExample.java
-import entities.RenameMe;
-=======
->>>>>>> master:src/main/java/depricated/FacadeExample.java
 import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
+
+import javax.persistence.EntityManager;
+import javax.persistence.EntityManagerFactory;
 
 /**
  *
