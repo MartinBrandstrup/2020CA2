@@ -88,15 +88,12 @@ public class Person implements Serializable
      * @param lastName The last name of this person.
      * @param email The email of this person. Is mapped as unique in the 
      * database.
-     * @param address The Address Entity Object this Person relates to 
-     * (ManyToOne).
      */
-    public Person(String firstName, String lastName, String email, Address address)
+    public Person(String firstName, String lastName, String email)
     {
         this.firstName = firstName;
         this.lastName = lastName;
         this.email = email;
-        this.address = address;
     }
 
     public int getId()
