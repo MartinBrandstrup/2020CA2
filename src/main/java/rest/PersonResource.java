@@ -1,15 +1,22 @@
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
+=======
+>>>>>>> master
 /*
  * To change this license header, choose License Headers in Project Properties.
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
+<<<<<<< HEAD
 >>>>>>> christian_dev2
+=======
+>>>>>>> master
 package rest;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+<<<<<<< HEAD
 <<<<<<< HEAD
 import utils.EMF_Creator;
 import facades.PersonFacade;
@@ -60,8 +67,9 @@ public class PersonResource
 
 }
 =======
+=======
+>>>>>>> master
 import dtos.PersonDTO;
-import entities.RenameMe;
 import utils.EMF_Creator;
 import facades.FacadeExample;
 import javax.persistence.EntityManagerFactory;
@@ -166,4 +174,7 @@ public class PersonResource {
  * @author Christian
  */
 
+<<<<<<< HEAD
 >>>>>>> christian_dev2
+=======
+>>>>>>> master
