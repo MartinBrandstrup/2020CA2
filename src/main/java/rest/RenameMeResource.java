@@ -1,10 +1,10 @@
-package depricated;
+package rest;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import depricated.RenameMe;
+import entities.RenameMe;
 import utils.EMF_Creator;
-import depricated.FacadeExample;
+import facades.FacadeExample;
 import javax.persistence.EntityManagerFactory;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;

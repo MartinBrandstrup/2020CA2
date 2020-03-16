@@ -7,25 +7,30 @@ package rest;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import depricated.FacadeExample;
 import dtos.PersonDTO;
+import entities.RenameMe;
+import utils.EMF_Creator;
+import facades.FacadeExample;
 import javax.persistence.EntityManagerFactory;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
+import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
-import utils.EMF_Creator;
 
 /**
- *
+ * 
  * @author Christian
  */
+
+//Todo Remove or change relevant parts before ACTUAL use
 @Path("person")
 public class PersonResource {
-     private static final EntityManagerFactory EMF = EMF_Creator.createEntityManagerFactory(
+
+    private static final EntityManagerFactory EMF = EMF_Creator.createEntityManagerFactory(
                 "pu",
                 "jdbc:mysql://localhost:3307/startcode",
                 "dev",
@@ -85,6 +90,7 @@ public class PersonResource {
            newPerson.setId(123);
         return GSON.toJson(newPerson);    
     }
+}
     
 //    @PUT
 //    @Path("delete/{id}")
@@ -102,4 +108,8 @@ public class PersonResource {
 //           - add more API
 //           - Change addPerson and getPersonById from scrum one stat
 
-}
+/**
+ *
+ * @author Christian
+ */
+
