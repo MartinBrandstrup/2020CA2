@@ -1,7 +1,15 @@
 <!DOCTYPE html>
+<!--
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+-->
 <html>
     <head>
-    <style>
+        <title>TODO supply a title</title>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+   <style>
 #workflow {
   font-family: "Trebuchet MS", Arial, Helvetica, sans-serif;
   border-collapse: collapse;
@@ -28,7 +36,6 @@
   text-align: center;
   font-size: 15px;}
  
-
 /*headline*/
 h1 {
   color: Black;
@@ -113,25 +120,8 @@ p {
 </table>
 
 
-<h3>Request Body and Response Formats
-(1) User format (don’t provide ID, for POST <br>
- {<br>
-    "id": Number,<br>
-    "name": String,<br>
-    "street": String,<br>
-    "city": String,<br>
-    "zip": String;<br>
-    "phones": String or set;<br>
-    "hobbies": String or set;<br>
-  } <br>
-  <br>
-Errors<br>
-(e) All errors are reported using this format (with the HTTP-status code matching the number)<br>
-{ status : statusCode, "msg": "Explains the problem" }<br>
- 
-(e1) :{ status : 404, "msg": "No content found for this request" }<br>
-(e2) :{ status : 400, "msg": "Field ‘xxx’ is required" } (for example, no name provided)<br>
-</h3>
-
+<p><b><a href="default.asp" 
+target="https://clausfindinge.com/2020CA1/api">Return to 
+index</a></b></p>
 </body>
 </html>
