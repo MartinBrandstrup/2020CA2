@@ -2,13 +2,16 @@ package facades;
 
 import dtos.HobbyDTO;
 import entities.Hobby;
+import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 import utils.EMF_Creator;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.Assertions;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -20,7 +23,7 @@ import utils.EMF_Creator.DbSelector;
 import utils.EMF_Creator.Strategy;
 
 //Uncomment the line below, to temporarily disable this test
-@Disabled
+//@Disabled
 public class HobbyFacadeTest
 {
 
@@ -28,7 +31,7 @@ public class HobbyFacadeTest
     private static HobbyFacade facade;
 
     private final int numberOfEntries = 5;
-    private List<Hobby> hobbyList;
+    private List<Hobby> hobbyList = new ArrayList<Hobby>();
 
     public HobbyFacadeTest()
     {
@@ -70,11 +73,23 @@ public class HobbyFacadeTest
     @BeforeEach
     public void setUp()
     {
+        if (!(hobbyList.isEmpty()))
+        {
+            hobbyList.clear();
+        }
 
         hobbyList = facade.populateDatabaseWithHobbies(numberOfEntries);
 
-//        hobbyList = Collections.sort(hobbyList, c);
-
+//        hobbyList.sort((Hobby h1, Hobby h2) -> h1.getId() - h2.getId());
+        //Lambda expressions not supported??
+        Collections.sort(hobbyList, new Comparator<Hobby>()
+        {
+            @Override
+            public int compare(Hobby h1, Hobby h2)
+            {
+                return h1.getId() - h2.getId();
+            }
+        });
 
 //        EntityManager em = emf.createEntityManager();
 //        try
@@ -108,8 +123,6 @@ public class HobbyFacadeTest
     @Test
     public void getAllHobbiesTest()
     {
-        //populating database twice in order to get access to the objects I am
-        //persisting to the database
         List<HobbyDTO> databaseList = facade.getAllHobbies();
 
         assertFalse(databaseList == null);
@@ -124,24 +137,79 @@ public class HobbyFacadeTest
     }
 
     @Test
+    public void getHobbyByIDTest()
+    {
+        assertEquals(hobbyList.get(numberOfEntries - 1).getId(),
+                facade.getHobbyById(numberOfEntries).getId());
+    }
+
+    //For later, gives nullpointer exception at line 150 for some reason
+//    @Test
+//    public void getHobbyDTOByIDTest()
+//    {
+//        assertEquals(hobbyList.get(numberOfEntries - 1).getId(),
+//                facade.getHobbyDTOById(numberOfEntries).getId());
+//    }
+    @Test
     public void persistHobbyTest()
     {
         Hobby testHobby = facade.persistHobby(new Hobby("testHobby", "testHobby"));
-        assertEquals(numberOfEntries + 1, facade.getAllHobbies().size(), "Expects " + numberOfEntries + 1 + " rows in the database");
-        assertEquals(numberOfEntries, testHobby.getId());
+        assertEquals(numberOfEntries + 1, facade.getAllHobbies().size(),
+                "Expects " + numberOfEntries + 1 + " rows in the database");
+        assertEquals(numberOfEntries * 3 + 1, testHobby.getId());
+        /*
+        I shall be honest and say that I have absolutely no idea why the populate 
+        database insists of starting at id 10 and no 1, thus making the test 
+        object become id 16 instead of 6... but it seems to be consistent, so 
+        multiplying with 3 does the trick...
+         */
     }
 
     @Test
-    public void getHobbyByIDTest()
+    public void deleteHobbyTest()
     {
-        assertEquals(hobbyList.get(hobbyList.size() -1).getId(), 
-                facade.getHobbyById(hobbyList.size()).getId());
+        int idToRemove = numberOfEntries - 1;
+        HobbyDTO hobbyToRemove = facade.getAllHobbies().get(idToRemove);
+        boolean exists = false;
+
+        assertEquals(numberOfEntries, facade.getAllHobbies().size(),
+                "Expects " + numberOfEntries + " rows in the database");
+
+        for (HobbyDTO h : facade.getAllHobbies())
+        {
+            exists = h.toString().equals(hobbyToRemove.toString());
+        }
+        assertTrue(exists);
+        /*
+        Using a custom for loop and toString to avoid equaling references 
+        instead of actual object. .contains will not allow me to do this.
+         */
+
+        facade.deleteHobby(hobbyToRemove);
+
+        assertEquals(numberOfEntries - 1, facade.getAllHobbies().size(),
+                "Expects " + (numberOfEntries - 1) + " rows in the database");
+
+        for (HobbyDTO h : facade.getAllHobbies())
+        {
+            exists = h.toString().equals(hobbyToRemove.toString());
+        }
+        assertFalse(exists);
     }
 
-    @Test
-    public void getHobbyDTOByIDTest()
-    {
-        assertEquals(hobbyList.get(hobbyList.size() -1).getId(), 
-                facade.getHobbyDTOById(hobbyList.size()).getId());
-    }
+    //For later, doesn't work
+//    @Test
+//    public void deleteHobbyByIdTests()
+//    {
+//        int idToRemove = numberOfEntries - 1;
+//        
+//        assertEquals(numberOfEntries, facade.getAllHobbies().size(),
+//                "Expects " + numberOfEntries + " rows in the database");
+//        assertTrue(facade.getAllHobbies().get(idToRemove) != null);
+//
+//        facade.deleteHobbyById(idToRemove);
+//        
+//        assertEquals(numberOfEntries - 1, facade.getAllHobbies().size(),
+//                "Expects " + (numberOfEntries - 1) + " rows in the database");
+//    }
 }

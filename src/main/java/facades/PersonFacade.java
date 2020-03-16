@@ -1,6 +1,7 @@
 package facades;
 
 import dtos.PersonDTO;
+import entities.Address;
 import entities.CityInfo;
 import entities.Hobby;
 import entities.Person;
@@ -105,7 +106,7 @@ public class PersonFacade implements IPersonFacade
     }
 
     @Override
-    public Person deletePerson(Person person)
+    public Person deletePerson(PersonDTO person)
     {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
@@ -118,6 +119,24 @@ public class PersonFacade implements IPersonFacade
 
     @Override
     public Person editPerson(Person person)
+    {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public PersonDTO addHobbiesToPerson(Person person, List<Hobby> list)
+    {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public PersonDTO addPhonesToPerson(Person person, List<Phone> list)
+    {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public PersonDTO addAddressToPerson(Person person, Address adrs)
     {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }

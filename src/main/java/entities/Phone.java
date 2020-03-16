@@ -65,17 +65,15 @@ public class Phone implements Serializable
     }
 
     /**
-     * 
-     * @param number The telephone number for this object. Is mapped as unique 
+     *
+     * @param number The telephone number for this object. Is mapped as unique
      * in the database.
      * @param description An optional description.
-     * @param person The Person Entity Object this Phone relates to (ManyToOne).
      */
-    public Phone(long number, String description, Person person)
+    public Phone(long number, String description)
     {
         this.number = number;
         this.description = description;
-        this.person = person;
     }
 
     public int getId()
@@ -121,8 +119,8 @@ public class Phone implements Serializable
     @Override
     public String toString()
     {
-        return "Phone{" + "id=" + id + ", number=" + number
-                + ", description=" + description + ", person=" + person + '}';
+        return "Phone{" + "number=" + number + ", description="
+                + description + ", person=" + person + '}';
     }
 
 }

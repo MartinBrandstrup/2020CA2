@@ -200,7 +200,7 @@ public class HobbyFacade
      * @param hobby The Hobby object to delete.
      * @return the deleted Hobby object.
      */
-    public Hobby deleteHobby(Hobby hobby)
+    public Hobby deleteHobby(HobbyDTO hobby)
     {
         EntityManager em = getEntityManager();
         try

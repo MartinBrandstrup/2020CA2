@@ -6,6 +6,7 @@
 package facades;
 
 import dtos.PersonDTO;
+import entities.Address;
 import entities.CityInfo;
 import entities.Hobby;
 import entities.Person;
@@ -37,10 +38,16 @@ public interface IPersonFacade
 
     public Person persistPerson(Person person);
 
-    public Person deletePerson(Person person);
+    public Person deletePerson(PersonDTO person);
 
     public Person deletePersonById(int id);
 
     public Person editPerson(Person person);
+
+    public PersonDTO addHobbiesToPerson(Person person, List<Hobby> hobbies);
+
+    public PersonDTO addPhonesToPerson(Person person, List<Phone> hobbies);
+
+    public PersonDTO addAddressToPerson(Person person, Address address);
 
 }
