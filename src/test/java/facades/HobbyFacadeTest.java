@@ -122,16 +122,19 @@ public class HobbyFacadeTest
     @Test
     public void getHobbyByIDTest()
     {
+        List<HobbyDTO> databaseContent = facade.getAllHobbies();
+        int databaseIdOffset = databaseContent.get(databaseContent.size() - 1).getId();
         assertEquals(hobbyList.get(numberOfEntries - 1).getId(),
-                facade.getHobbyById(numberOfEntries).getId());
+                facade.getHobbyById(databaseIdOffset).getId());
     }
 
-    //For later, gives nullpointer exception at line 150 for some reason
     @Test
     public void getHobbyDTOByIDTest()
     {
-//        assertEquals(hobbyList.get(numberOfEntries - 1).getId(),
-//                facade.getHobbyDTOById(numberOfEntries).getId());
+        List<HobbyDTO> databaseContent = facade.getAllHobbies();
+        int databaseIdOffset = databaseContent.get(databaseContent.size() - 1).getId();
+        assertEquals(hobbyList.get(numberOfEntries - 1).getId(),
+                facade.getHobbyDTOById(databaseIdOffset).getId());
     }
 
     @Test
