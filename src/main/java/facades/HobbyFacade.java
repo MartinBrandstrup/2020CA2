@@ -288,6 +288,13 @@ public class HobbyFacade
             em.getTransaction().commit();
             return hobbyList;
         }
+        catch (IllegalStateException ex)
+        {
+            System.out.println("Operation populateDatabaseWithHobbies "
+                    + "encountered an error with the EntityManager");
+            ex.printStackTrace();
+            return null;
+        }
         catch (Exception ex)
         {
             System.out.println("Operation populateDatabaseWithHobbies failed.");
