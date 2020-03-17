@@ -5,100 +5,149 @@
  */
 package dtos;
 
+import entities.Hobby;
+import entities.Person;
+import entities.Phone;
+import java.util.List;
+
 /**
  *
- * @author Christian
+ * @author Christian & Brandstrup
  */
-public class PersonDTO {
-     private int id;
-  private String name;
-  private String street;
-  private String city;
-  private String zip;
-  private String phones;
-//  private Set<String> phones2 = new HashSet(); // Disscuse with grp 
-  private String hobbies; // may be better as list
+public class PersonDTO
+{
 
-    public PersonDTO(int id, String name, String street, String city, String zip, String phones, String hobbies) {
-        this.id = id;
-        this.name = name;
-        this.street = street;
-        this.city = city;
-        this.zip = zip;
-        this.phones = phones;
-        this.hobbies = hobbies;
+    private int id;
+    private String firstName;
+    private String lastName;
+    private String street;
+    private String city;
+    private String zip;
+    private List<String> phones;
+    private List<String> hobbies;
+
+    public PersonDTO(Person person)
+    {
+        this.id = person.getId();
+        this.firstName = person.getFirstName();
+        this.street = person.getAddress().getStreet();
+        this.city = person.getAddress().getCityInfo().getCity();
+        this.zip = String.valueOf(person.getAddress().getCityInfo().getZipCode());
+
+        if (person.getHobbies() != null)
+        {
+            for (Hobby hobby : person.getHobbies())
+            {
+                this.hobbies.add(hobby.toString());
+            }
+        }
+
+        if (person.getPhones() != null)
+        {
+            for (Phone phone : person.getPhones())
+            {
+                this.phones.add(phone.toString());
+            }
+        }
     }
 
-  // Constructor for adding person
-    public PersonDTO(String name, String street, String city, String zip, String phones, String hobbies) {
-        this.name = name;
-        this.street = street;
-        this.city = city;
-        this.zip = zip;
-        this.phones = phones;
-        this.hobbies = hobbies;
-    }
-
-    public int getId() {
+    /*
+    Martin: ikke sikker på vi behøver de her; har lavet om i parameterlisten, så
+    de dur ikke lige pt, derfor har jeg udkommenteret dem. Hvis det viser sig, at
+    vi får brug for dem senere, må vi lige kigge på det igen
+     */
+//    public PersonDTO(int id, String firstName, String street, String city, String zip, String phones, String hobbies)
+//    {
+//        this.id = id;
+//        this.firstName = firstName;
+//        this.street = street;
+//        this.city = city;
+//        this.zip = zip;
+//        this.phones = phones;
+//        this.hobbies = hobbies;
+//    }
+//
+//    // Constructor for adding person
+//    public PersonDTO(String firstName, String street, String city, String zip, String phones, String hobbies)
+//    {
+//        this.firstName = firstName;
+//        this.street = street;
+//        this.city = city;
+//        this.zip = zip;
+//        this.phones = phones;
+//        this.hobbies = hobbies;
+//    }
+    public int getId()
+    {
         return id;
     }
 
-    public void setId(int id) {
-        this.id = id;
+    public String getFirstName()
+    {
+        return firstName;
     }
 
-    public String getName() {
-        return name;
+    public void setFirstName(String firstName)
+    {
+        this.firstName = firstName;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public String getLastName()
+    {
+        return lastName;
     }
-    
 
-    public String getStreet() {
+    public void setLastName(String lastName)
+    {
+        this.lastName = lastName;
+    }
+
+    public String getStreet()
+    {
         return street;
     }
 
-    public void setStreet(String street) {
+    public void setStreet(String street)
+    {
         this.street = street;
     }
 
-    public String getCity() {
+    public String getCity()
+    {
         return city;
     }
 
-    public void setCity(String city) {
+    public void setCity(String city)
+    {
         this.city = city;
     }
 
-    public String getZip() {
+    public String getZip()
+    {
         return zip;
     }
 
-    public void setZip(String zip) {
+    public void setZip(String zip)
+    {
         this.zip = zip;
     }
 
-    public String getPhones() {
+    public List<String> getPhones()
+    {
         return phones;
     }
 
-    public void setPhones(String phones) {
-        this.phones = phones;
-    }
-
-    public String getHobbies() {
+    public List<String> getHobbies()
+    {
         return hobbies;
     }
 
-    public void setHobbies(String hobbies) {
-        this.hobbies = hobbies;
-    }
-
     @Override
-    public String toString() {
-        return "PersonDTO{" + "id=" + id + ", name=" + name + ", street=" + street + ", city=" + city + ", zip=" + zip + ", phones=" + phones + ", hobbies=" + hobbies + '}';
+    public String toString()
+    {
+        return "PersonDTO{" + "id=" + id + ", name=" + firstName + ", street="
+                + street + ", city=" + city + ", zip=" + zip + ", phones="
+                + phones + ", hobbies=" + hobbies + '}';
     }
 
 }
