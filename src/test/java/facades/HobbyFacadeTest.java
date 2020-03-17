@@ -7,11 +7,9 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 import utils.EMF_Creator;
-import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.Assertions;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -31,7 +29,7 @@ public class HobbyFacadeTest
     private static HobbyFacade facade;
 
     private final int numberOfEntries = 8;
-    private List<Hobby> hobbyList = new ArrayList<Hobby>();
+    private List<Hobby> hobbyList = new ArrayList<>();
 
     public HobbyFacadeTest()
     {
@@ -90,21 +88,6 @@ public class HobbyFacadeTest
                 return h1.getId() - h2.getId();
             }
         });
-
-//        EntityManager em = emf.createEntityManager();
-//        try
-//        {
-//            em.getTransaction().begin();
-//            em.createNamedQuery("Hobby.deleteAllRows").executeUpdate();
-////            em.persist(new Hobby("name", "description"));
-////            em.persist(new Hobby("name", "description"));
-//
-//            em.getTransaction().commit();
-//        }
-//        finally
-//        {
-//            em.close();
-//        }
     }
 
     @AfterEach
@@ -144,13 +127,13 @@ public class HobbyFacadeTest
     }
 
     //For later, gives nullpointer exception at line 150 for some reason
-//    @Test
-//    public void getHobbyDTOByIDTest()
-//    {
+    @Test
+    public void getHobbyDTOByIDTest()
+    {
 //        assertEquals(hobbyList.get(numberOfEntries - 1).getId(),
 //                facade.getHobbyDTOById(numberOfEntries).getId());
-//    }
-    
+    }
+
     @Test
     public void persistHobbyTest()
     {
@@ -216,5 +199,11 @@ public class HobbyFacadeTest
         In hindsight this would probably have been sufficient for the previous 
         delete test as well. Oh well, at least I practiced my loops.
          */
+    }
+
+    @Test
+    public void editHobbyTest()
+    {
+
     }
 }
