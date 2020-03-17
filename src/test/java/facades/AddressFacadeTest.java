@@ -1,12 +1,19 @@
 package facades;
 
+import dtos.AddressDTO;
+import dtos.PersonDTO;
 import entities.Address;
+import entities.CityInfo;
+import entities.Person;
+import entities.Phone;
+import java.util.List;
 import utils.EMF_Creator;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.AfterEach;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Disabled;
@@ -16,20 +23,29 @@ import utils.EMF_Creator.DbSelector;
 import utils.EMF_Creator.Strategy;
 
 //Uncomment the line below, to temporarily disable this test
-@Disabled
-public class AddressFacadeTest
-{
+//@Disabled
+public class AddressFacadeTest {
 
     private static EntityManagerFactory emf;
     private static AddressFacade facade;
 
-    public AddressFacadeTest()
-    {
+//    CityInfo city1 = new CityInfo(1111, "FirstCity");
+//    CityInfo city2 = new CityInfo(1111, "ScondCity");
+    private String street1 = "firstStreet";
+    private String street2 = "secondStreet";
+    private String street3 = "NewStreet";
+    private String AdditionalInfo1 = "Its the first street";
+    private String AdditionalInfo2 = "Its not the first street tho";
+    private String AdditionalInfo3 = "It made it";
+    Address adr1 = new Address(street1, AdditionalInfo1);
+    Address adr2 = new Address(street2, AdditionalInfo2);
+    Address adr3 = new Address(street3, AdditionalInfo3);
+
+    public AddressFacadeTest() {
     }
 
     //@BeforeAll
-    public static void setUpClass()
-    {
+    public static void setUpClass() {
         emf = EMF_Creator.createEntityManagerFactory(
                 "pu",
                 "jdbc:mysql://localhost:3307/2020CA2_test",
@@ -46,49 +62,113 @@ public class AddressFacadeTest
         See below for how to use these files. This is our RECOMENDED strategy
      */
     @BeforeAll
-    public static void setUpClassV2()
-    {
+    public static void setUpClassV2() {
         emf = EMF_Creator.createEntityManagerFactory(DbSelector.TEST, Strategy.DROP_AND_CREATE);
         facade = AddressFacade.getAddressFacade(emf);
     }
 
     @AfterAll
-    public static void tearDownClass()
-    {
+    public static void tearDownClass() {
 //        Clean up database after test is done or use a persistence unit with drop-and-create to start up clean on every test
     }
 
     // Setup the DataBase in a known state BEFORE EACH TEST
     //TODO -- Make sure to change the script below to use YOUR OWN entity class
     @BeforeEach
-    public void setUp()
-    {
+    public void setUp() {
         EntityManager em = emf.createEntityManager();
-        try
-        {
+        try {
             em.getTransaction().begin();
             em.createNamedQuery("Address.deleteAllRows").executeUpdate();
-//            em.persist(new Address("street", "additionalInfo", cityInfo));
-//            em.persist(new Address("street", "additionalInfo", cityInfo));
+            em.persist(adr1);
+            em.persist(adr2);
 
             em.getTransaction().commit();
-        }
-        finally
-        {
+        } finally {
             em.close();
         }
     }
 
     @AfterEach
-    public void tearDown()
-    {
+    public void tearDown() {
 //        Remove any data after each test was run
     }
 
     @Test
-    public void addressCountTest()
-    {
+    public void addressCountTest() {
         assertEquals(2, facade.getAddressCount(), "Expects two rows in the database");
     }
 
+    @Test
+    public void getAllAddress() {
+        System.out.println("getAllAddress");
+        List<AddressDTO> adrDTO = facade.getAllAddress();
+        System.out.println("Expects: 2 " + adrDTO.size());
+        assertEquals(2, adrDTO.size(), "Expects two rows in the database");
+    }
+//
+//    @Test
+//    public void getAllAddressByPerson(Person arg0) {
+//        assertEquals(2, facade.getAddressCount(), "Expects two rows in the database");
+//    }
+//
+//    @Test
+//    public void getAllAddressByCity(CityInfo arg0) {
+//        assertEquals(2, facade.getAddressCount(), "Expects two rows in the database");
+//    }
+//
+    @Test
+    public void getAddressById() {
+        System.out.println("GetAddressById");
+        AddressFacade adrF = facade;
+        int AdressID = adrF.persistAddress(adr3).getId();
+        System.out.println(AdressID);
+        Address res = facade.getAddressById(AdressID);
+        assertEquals(adr3, res, "Expects adr3");
+
+    }
+
+//    @Test
+//    public void getAddressDTOById(int arg0) {
+//        assertEquals(2, facade.getAddressCount(), "Expects two rows in the database");
+//    }
+//
+//    @Test
+//    public void getAddressDTOByPhone(Phone arg0) {
+//        assertEquals(2, facade.getAddressCount(), "Expects two rows in the database");
+//    }
+//
+    @Test
+    public void persistAddress() {
+        System.out.println("Persist Adress");
+        AddressFacade adrF = facade;
+        int AdressID = adrF.persistAddress(adr3).getId();
+        System.out.println(AdressID);
+        assertNotNull(AdressID);
+    }
+//
+//    @Test
+//    public void deleteAddress(AddressDTO arg0) {
+//        assertEquals(2, facade.getAddressCount(), "Expects two rows in the database");
+//    }
+//
+//    @Test
+//    public void deleteAddressById(int arg0) {
+//        assertEquals(2, facade.getAddressCount(), "Expects two rows in the database");
+//    }
+//
+//    @Test
+//    public void editAddress(Address arg0) {
+//        assertEquals(2, facade.getAddressCount(), "Expects two rows in the database");
+//    }
+//
+
+    // needs PersistAdrss + getaddressbyID
+//    @Test
+//    public void addAddressToPerson() {
+//        facade.persistAddress(adr3);
+//       Address expt = new Address(street3, AdditionalInfo3);
+//       Address res = facade.getAddressById(adr3.getId());
+//        assertEquals(expt,res, "Looking for adr3");
+//    }
 }
