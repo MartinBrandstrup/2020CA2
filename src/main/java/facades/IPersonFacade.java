@@ -49,5 +49,11 @@ public interface IPersonFacade
     public PersonDTO addPhonesToPerson(Person person, List<Phone> hobbies);
 
     public PersonDTO addAddressToPerson(Person person, Address address);
+    
+    public PersonDTO removeHobbyFromPerson(Person person, Hobby hobby);
+
+    public PersonDTO removePhoneFromPerson(Person person, Phone phone);
+
+    public PersonDTO removeAddressFromPerson(Person person, Address address);
 
 }

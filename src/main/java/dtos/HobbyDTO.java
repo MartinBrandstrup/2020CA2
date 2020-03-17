@@ -26,7 +26,7 @@ public class HobbyDTO
         this.name = hobby.getName();
         this.description = hobby.getDescription();
 
-        if (!(hobby.getPersons().isEmpty() || hobby.getPersons() == null))
+        if (hobby.getPersons() != null)
         {
             for (Person person : hobby.getPersons())
             {
