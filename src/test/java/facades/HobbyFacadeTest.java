@@ -7,11 +7,9 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 import utils.EMF_Creator;
-import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.Assertions;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -30,8 +28,8 @@ public class HobbyFacadeTest
     private static EntityManagerFactory emf;
     private static HobbyFacade facade;
 
-    private final int numberOfEntries = 5;
-    private List<Hobby> hobbyList = new ArrayList<Hobby>();
+    private final int numberOfEntries = 8;
+    private List<Hobby> hobbyList = new ArrayList<>();
 
     public HobbyFacadeTest()
     {
@@ -90,21 +88,6 @@ public class HobbyFacadeTest
                 return h1.getId() - h2.getId();
             }
         });
-
-//        EntityManager em = emf.createEntityManager();
-//        try
-//        {
-//            em.getTransaction().begin();
-//            em.createNamedQuery("Hobby.deleteAllRows").executeUpdate();
-////            em.persist(new Hobby("name", "description"));
-////            em.persist(new Hobby("name", "description"));
-//
-//            em.getTransaction().commit();
-//        }
-//        finally
-//        {
-//            em.close();
-//        }
     }
 
     @AfterEach
@@ -139,30 +122,36 @@ public class HobbyFacadeTest
     @Test
     public void getHobbyByIDTest()
     {
+        List<HobbyDTO> databaseContent = facade.getAllHobbies();
+        int databaseIdOffset = databaseContent.get(databaseContent.size() - 1).getId();
         assertEquals(hobbyList.get(numberOfEntries - 1).getId(),
-                facade.getHobbyById(numberOfEntries).getId());
+                facade.getHobbyById(databaseIdOffset).getId());
     }
 
-    //For later, gives nullpointer exception at line 150 for some reason
-//    @Test
-//    public void getHobbyDTOByIDTest()
-//    {
-//        assertEquals(hobbyList.get(numberOfEntries - 1).getId(),
-//                facade.getHobbyDTOById(numberOfEntries).getId());
-//    }
+    @Test
+    public void getHobbyDTOByIDTest()
+    {
+        List<HobbyDTO> databaseContent = facade.getAllHobbies();
+        int databaseIdOffset = databaseContent.get(databaseContent.size() - 1).getId();
+        assertEquals(hobbyList.get(numberOfEntries - 1).getId(),
+                facade.getHobbyDTOById(databaseIdOffset).getId());
+    }
+
     @Test
     public void persistHobbyTest()
     {
+        List<HobbyDTO> databaseContent = facade.getAllHobbies();
+        int databaseIdOffset = databaseContent.get(databaseContent.size() - 1).getId();
+        /*
+        This step to obtain the latest id in the database is required as the 
+        database seems to be remembering the earlier test's testdata's ids when 
+        assigning a procedurally generated id to new test data.
+         */
+
         Hobby testHobby = facade.persistHobby(new Hobby("testHobby", "testHobby"));
         assertEquals(numberOfEntries + 1, facade.getAllHobbies().size(),
                 "Expects " + numberOfEntries + 1 + " rows in the database");
-        assertEquals(numberOfEntries * 3 + 1, testHobby.getId());
-        /*
-        I shall be honest and say that I have absolutely no idea why the populate 
-        database insists of starting at id 10 and no 1, thus making the test 
-        object become id 16 instead of 6... but it seems to be consistent, so 
-        multiplying with 3 does the trick...
-         */
+        assertEquals(databaseIdOffset + 1, testHobby.getId());
     }
 
     @Test
@@ -197,19 +186,27 @@ public class HobbyFacadeTest
         assertFalse(exists);
     }
 
-    //For later, doesn't work
-//    @Test
-//    public void deleteHobbyByIdTests()
-//    {
-//        int idToRemove = numberOfEntries - 1;
-//        
-//        assertEquals(numberOfEntries, facade.getAllHobbies().size(),
-//                "Expects " + numberOfEntries + " rows in the database");
-//        assertTrue(facade.getAllHobbies().get(idToRemove) != null);
-//
-//        facade.deleteHobbyById(idToRemove);
-//        
-//        assertEquals(numberOfEntries - 1, facade.getAllHobbies().size(),
-//                "Expects " + (numberOfEntries - 1) + " rows in the database");
-//    }
+    @Test
+    public void deleteHobbyByIdTests()
+    {
+        int idToRemove = facade.getAllHobbies().get(0).getId();
+
+        assertEquals(numberOfEntries, facade.getAllHobbies().size(),
+                "Expects " + numberOfEntries + " rows in the database");
+
+        facade.deleteHobbyById(idToRemove);
+
+        assertEquals(numberOfEntries - 1, facade.getAllHobbies().size(),
+                "Expects " + (numberOfEntries - 1) + " rows in the database");
+        /*
+        In hindsight this would probably have been sufficient for the previous 
+        delete test as well. Oh well, at least I practiced my loops.
+         */
+    }
+
+    @Test
+    public void editHobbyTest()
+    {
+
+    }
 }

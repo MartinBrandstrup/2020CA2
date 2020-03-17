@@ -42,6 +42,7 @@ public class PersonFacade implements IPersonFacade
         return emf.createEntityManager();
     }
 
+    @Override
     public long getPersonCount()
     {
         EntityManager em = emf.createEntityManager();
@@ -102,7 +103,24 @@ public class PersonFacade implements IPersonFacade
     @Override
     public Person persistPerson(Person person)
     {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        EntityManager em = getEntityManager();
+        try
+        {
+            em.getTransaction().begin();
+            em.persist(person);
+            em.getTransaction().commit();
+            return person;
+        }
+        catch (Exception ex)
+        {
+            System.out.println("Operation persistPerson failed.");
+            ex.printStackTrace();
+            return null;
+        }
+        finally
+        {
+            em.close();
+        }
     }
 
     @Override
@@ -126,7 +144,32 @@ public class PersonFacade implements IPersonFacade
     @Override
     public PersonDTO addHobbiesToPerson(Person person, List<Hobby> list)
     {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        EntityManager em = getEntityManager();
+        try
+        {
+            person = em.find(Person.class, person.getId()); //Getting managed
+            
+            for (Hobby hobby : list)
+            {
+                if(!(person.getHobbies().contains(hobby)))
+                    person.addHobby(hobby);
+            }
+            
+            em.getTransaction().begin();
+            em.merge(person);
+            em.getTransaction().commit();
+            return new PersonDTO(person);
+        }
+        catch (Exception ex)
+        {
+            System.out.println("Operation persistPerson failed.");
+            ex.printStackTrace();
+            return null;
+        }
+        finally
+        {
+            em.close();
+        }
     }
 
     @Override
@@ -137,6 +180,24 @@ public class PersonFacade implements IPersonFacade
 
     @Override
     public PersonDTO addAddressToPerson(Person person, Address adrs)
+    {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public PersonDTO removeHobbyFromPerson(Person person, Hobby hobby)
+    {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public PersonDTO removePhoneFromPerson(Person person, Phone phone)
+    {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public PersonDTO removeAddressFromPerson(Person person, Address adrs)
     {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }

@@ -47,8 +47,9 @@ public class HobbyFacade
     getHobbyById(int id)
     getHobbyDTOById(int id)
     persistHobby(Hobby hobby)
-    deleteHobby(Hobby hobby)
+    deleteHobby(HobbyDTO hobby)
     deleteHobbyById(int id)
+    editHobby(HobbyDTO hobby);
     populateDatabaseWithHobbies(int numberOfEntries)
      */
     /**
@@ -256,6 +257,42 @@ public class HobbyFacade
     }
 
     /**
+     * Attempts to edit an existing entry in the database to match a given Hobby
+     * object. Returns the changed object; null if the operation fails.
+     *
+     * @param oldHobbyId The id of the old hobby to be changed.
+     * @param newHobby The object containing the information to change to.
+     * @return the changed object with the new values.
+     */
+    public Hobby editHobby(int oldHobbyId, Hobby newHobby)
+    {
+        EntityManager em = getEntityManager();
+        try
+        {
+            Hobby h = em.find(Hobby.class, oldHobbyId);
+
+            h.setDescription(newHobby.getDescription());
+            h.setName(newHobby.getName());
+            //List<Person> can only be changed from the Person side
+
+            em.getTransaction().begin();
+            em.merge(h);
+            em.getTransaction().commit();
+            return h;
+        }
+        catch (Exception ex)
+        {
+            System.out.println("Operation editHobby failed.");
+            ex.printStackTrace();
+            return null;
+        }
+        finally
+        {
+            em.close();
+        }
+    }
+
+    /**
      * Populates the database with a set of dummy entries for testing. Returns a
      * list of these entries as Java objects after they have been managed; null
      * if the operation fails. WARNING: wipes the database of existing entries!
@@ -287,6 +324,13 @@ public class HobbyFacade
             }
             em.getTransaction().commit();
             return hobbyList;
+        }
+        catch (IllegalStateException ex)
+        {
+            System.out.println("Operation populateDatabaseWithHobbies "
+                    + "encountered an error with the EntityManager");
+            ex.printStackTrace();
+            return null;
         }
         catch (Exception ex)
         {
