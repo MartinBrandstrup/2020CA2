@@ -22,7 +22,7 @@ import javax.ws.rs.core.MediaType;
 
 /**
  * 
- * @author Christian
+ * @author Christian & Brandstrup
  */
 
 //Todo Remove or change relevant parts before ACTUAL use
@@ -62,7 +62,7 @@ public class PersonResource {
 //    public String getPerson(@PathParam("id") int id){
 //    
 //    return GSON.toJson(new PersonDTO(1,"Bob", "Lyngbyvej 34", "Lyngby", "2800", "333,456", "Beer, Programning"));
-//    } 
+//    }
 // 
 //    @POST
 //    @Consumes(MediaType.APPLICATION_JSON)
