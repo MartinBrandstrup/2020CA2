@@ -56,39 +56,39 @@ public class PersonResource {
         return "{\"count\":"+count+"}";  //Done manually so no need for a DTO
     }
    
-    @GET
-    @Path("{id}")
-    @Produces(MediaType.APPLICATION_JSON)
-    public String getPerson(@PathParam("id") int id){
-    
-    return GSON.toJson(new PersonDTO(1,"Bob", "Lyngbyvej 34", "Lyngby", "2800", "333,456", "Beer, Programning"));
-    } 
- 
-    @POST
-    @Consumes(MediaType.APPLICATION_JSON)
-    @Produces(MediaType.APPLICATION_JSON)
-    public String addPerson(String p){
-        PersonDTO newPerson = GSON.fromJson(p, PersonDTO.class);
-        if 
-                (
-                // in gruppe agree on requried 
-                newPerson.getName() == null || 
-                newPerson.getStreet() == null ||
-                newPerson.getCity() == null ||
-                newPerson.getZip() == null ||
-                newPerson.getPhones() == null ||
-                newPerson.getHobbies() == null)
-                {
-                    //throw lackOfDataException // 
-                } else{
-        //next line just for first scrum meeting => no dataBase data og facade
-        newPerson.setId(123);
-        return GSON.toJson(newPerson);    
-        }
-        // removed next two lines when exceptions hads been initiated
-           newPerson.setId(123);
-        return GSON.toJson(newPerson);    
-    }
+//    @GET
+//    @Path("{id}")
+//    @Produces(MediaType.APPLICATION_JSON)
+//    public String getPerson(@PathParam("id") int id){
+//    
+//    return GSON.toJson(new PersonDTO(1,"Bob", "Lyngbyvej 34", "Lyngby", "2800", "333,456", "Beer, Programning"));
+//    } 
+// 
+//    @POST
+//    @Consumes(MediaType.APPLICATION_JSON)
+//    @Produces(MediaType.APPLICATION_JSON)
+//    public String addPerson(String p){
+//        PersonDTO newPerson = GSON.fromJson(p, PersonDTO.class);
+//        if 
+//                (
+//                // in gruppe agree on requried 
+//                newPerson.getFirstName() == null || 
+//                newPerson.getStreet() == null ||
+//                newPerson.getCity() == null ||
+//                newPerson.getZip() == null ||
+//                newPerson.getPhones() == null ||
+//                newPerson.getHobbies() == null)
+//                {
+//                    //throw lackOfDataException // 
+//                } else{
+//        //next line just for first scrum meeting => no dataBase data og facade
+//        newPerson.setId(123);
+//        return GSON.toJson(newPerson);    
+//        }
+//        // removed next two lines when exceptions hads been initiated
+//           newPerson.setId(123);
+//        return GSON.toJson(newPerson);    
+//    }
 }
     
 //    @PUT
