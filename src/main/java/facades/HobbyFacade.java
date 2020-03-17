@@ -47,8 +47,9 @@ public class HobbyFacade
     getHobbyById(int id)
     getHobbyDTOById(int id)
     persistHobby(Hobby hobby)
-    deleteHobby(Hobby hobby)
+    deleteHobby(HobbyDTO hobby)
     deleteHobbyById(int id)
+    editHobby(HobbyDTO hobby);
     populateDatabaseWithHobbies(int numberOfEntries)
      */
     /**
@@ -246,6 +247,42 @@ public class HobbyFacade
         catch (Exception ex)
         {
             System.out.println("Operation deleteHobbyById failed.");
+            ex.printStackTrace();
+            return null;
+        }
+        finally
+        {
+            em.close();
+        }
+    }
+
+    /**
+     * Attempts to edit an existing entry in the database to match a given Hobby
+     * object. Returns the changed object; null if the operation fails.
+     *
+     * @param oldHobbyId The id of the old hobby to be changed.
+     * @param newHobby The object containing the information to change to.
+     * @return the changed object with the new values.
+     */
+    public Hobby editHobby(int oldHobbyId, Hobby newHobby)
+    {
+        EntityManager em = getEntityManager();
+        try
+        {
+            Hobby h = em.find(Hobby.class, oldHobbyId);
+
+            h.setDescription(newHobby.getDescription());
+            h.setName(newHobby.getName());
+            //List<Person> can only be changed from the Person side
+
+            em.getTransaction().begin();
+            em.merge(h);
+            em.getTransaction().commit();
+            return h;
+        }
+        catch (Exception ex)
+        {
+            System.out.println("Operation editHobby failed.");
             ex.printStackTrace();
             return null;
         }
