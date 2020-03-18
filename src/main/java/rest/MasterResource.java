@@ -57,10 +57,10 @@ public class MasterResource
     @POST
     @Path("/populate")
     @Produces(MediaType.APPLICATION_JSON)
-    public void populate()
+    public String populate()
     {
-        FACADE.populateDatabaseWithTestData();
-//        return GSON.toJson(res);
+        String res = FACADE.populateDatabaseWithTestData();
+        return GSON.toJson(res);
     }
 
 }

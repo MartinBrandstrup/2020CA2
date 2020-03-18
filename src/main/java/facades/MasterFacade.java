@@ -69,9 +69,9 @@ public class MasterFacade
         try
         {
             em.getTransaction().begin();
-            em.createNamedQuery("Address.deleteAllRows").executeUpdate();
-            em.createNamedQuery("Hobby.deleteAllRows").executeUpdate();
-            em.createNamedQuery("Person.deleteAllRows").executeUpdate();
+//            em.createNamedQuery("Address.deleteAllRows").executeUpdate();
+//            em.createNamedQuery("Hobby.deleteAllRows").executeUpdate();
+//            em.createNamedQuery("Person.deleteAllRows").executeUpdate();
 
             this.martin = personFacade.persistPerson(martin);
             this.flemming = personFacade.persistPerson(flemming);
@@ -106,9 +106,9 @@ public class MasterFacade
     {
         Address address = addressFacade.getAddressById(addressId);
         
-        //Temp for testing
-        personId = martin.getId();
-        address = vang21;
+//        //Temp for testing
+//        personId = martin.getId();
+//        address = vang21;
         
         return personFacade.addAddressToPerson(personId, address);
     }
