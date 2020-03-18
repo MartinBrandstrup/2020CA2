@@ -145,7 +145,8 @@ public class PersonResource
     public String populate(@PathParam("numberOfEntries") int numberOfEntries)
     {
         List<PersonDTO> pDTOList = new ArrayList();
-        for (Person person : FACADE.populateDatabaseWithPersons(numberOfEntries))
+        List<Person> pList = FACADE.populateDatabaseWithPersons(numberOfEntries);
+        for (Person person : pList)
         {
             pDTOList.add(new PersonDTO(person));
         }

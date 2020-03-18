@@ -135,7 +135,8 @@ public class HobbyResource
     public String populate(@PathParam("numberOfEntries") int numberOfEntries)
     {
         List<HobbyDTO> hDTOList = new ArrayList();
-        for (Hobby hobby : FACADE.populateDatabaseWithHobbies(numberOfEntries))
+        List<Hobby> hList = FACADE.populateDatabaseWithHobbies(numberOfEntries);
+        for (Hobby hobby : hList)
         {
             hDTOList.add(new HobbyDTO(hobby));
         }
