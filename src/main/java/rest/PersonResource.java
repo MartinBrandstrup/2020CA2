@@ -55,8 +55,8 @@ public class PersonResource
         return "{\"msg\":\"Hello World\"}";
     }
 
-    @Path("/count")
     @GET
+    @Path("/count")
     @Produces(MediaType.APPLICATION_JSON)
     public String getPersonCount()
     {
@@ -98,7 +98,6 @@ public class PersonResource
     }
 
     @POST
-    @Path("/new")
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
     public String persistPerson(String person)
@@ -109,7 +108,6 @@ public class PersonResource
     }
 
     @DELETE
-    @Path("/delete")
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
     public String deletePerson(String personDTO)
@@ -121,7 +119,7 @@ public class PersonResource
     }
 
     @DELETE
-    @Path("/delete/{id}")
+    @Path("/{id}")
     @Produces(MediaType.APPLICATION_JSON)
     public String deletePersonById(@PathParam("id") int id)
     {
@@ -130,7 +128,7 @@ public class PersonResource
     }
 
     @PUT
-    @Path("/edit/{id}")
+    @Path("/{id}")
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
     public String editPersonById(@PathParam("id") int id, String hobby)

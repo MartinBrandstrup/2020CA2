@@ -88,7 +88,6 @@ public class HobbyResource
     }
 
     @POST
-    @Path("/new")
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
     public String persistHobby(String hobby)
@@ -99,7 +98,6 @@ public class HobbyResource
     }
 
     @DELETE
-    @Path("/delete")
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
     public String deleteHobby(String hobbyDTO)
@@ -111,7 +109,7 @@ public class HobbyResource
     }
 
     @DELETE
-    @Path("/delete/{id}")
+    @Path("/{id}")
     @Produces(MediaType.APPLICATION_JSON)
     public String deleteHobbyById(@PathParam("id") int id)
     {
@@ -120,7 +118,7 @@ public class HobbyResource
     }
 
     @PUT
-    @Path("/edit/{id}")
+    @Path("/{id}")
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
     public String editHobbyById(@PathParam("id") int id, String hobby)
