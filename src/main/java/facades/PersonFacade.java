@@ -123,22 +123,110 @@ public class PersonFacade implements IPersonFacade
         }
     }
 
+    /**
+     * Attempts to delete the provided Person object's entry from the database.
+     * Returns the deleted Person object; null if the operation fails.
+     *
+     * @param person The Person object to delete.
+     * @return the deleted Person object.
+     */
     @Override
     public Person deletePerson(PersonDTO person)
     {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        EntityManager em = getEntityManager();
+        try
+        {
+            Person p = em.find(Person.class, person.getId());
+
+            em.getTransaction().begin();
+            em.remove(p);
+            em.getTransaction().commit();
+            return p;
+        }
+        catch (Exception ex)
+        {
+            System.out.println("Operation deletePerson failed.");
+            ex.printStackTrace();
+            return null;
+        }
+        finally
+        {
+            em.close();
+        }
     }
 
+    /**
+     * Attempts to delete the Person of the provided id object's entry from the
+     * database. Returns the deleted Person object; null if the operation fails.
+     *
+     * @param id The id of the Person object to delete.
+     * @return the deleted Person object.
+     */
     @Override
     public Person deletePersonById(int id)
     {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        EntityManager em = getEntityManager();
+        try
+        {
+            Person p = em.find(Person.class, id);
+
+            em.getTransaction().begin();
+            em.remove(p);
+            em.getTransaction().commit();
+            return p;
+        }
+        catch (Exception ex)
+        {
+            System.out.println("Operation deletePersonById failed.");
+            ex.printStackTrace();
+            return null;
+        }
+        finally
+        {
+            em.close();
+        }
     }
 
+    /**
+     * Attempts to edit an existing entry in the database to match a given Person
+     * object. Returns the changed object; null if the operation fails.
+     *
+     * @param oldPersonId The id of the old person to be changed.
+     * @param newPerson The object containing the information to change to.
+     * @return the changed object with the new values.
+     */
     @Override
     public Person editPerson(int oldPersonId, Person newPerson)
     {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        EntityManager em = getEntityManager();
+        try
+        {
+            Person p = em.find(Person.class, oldPersonId);
+
+            p.setFirstName(newPerson.getFirstName());
+            p.setLastName(newPerson.getLastName());
+            p.setEmail(newPerson.getEmail());
+            p.setAddress(newPerson.getAddress());
+            for (Hobby hobby : p.getHobbies())
+            {
+                newPerson.addHobby(hobby);
+            }
+
+            em.getTransaction().begin();
+            em.merge(p);
+            em.getTransaction().commit();
+            return p;
+        }
+        catch (Exception ex)
+        {
+            System.out.println("Operation editPerson failed.");
+            ex.printStackTrace();
+            return null;
+        }
+        finally
+        {
+            em.close();
+        }
     }
 
     @Override
