@@ -46,7 +46,6 @@ public class MasterResource
 
     @PUT
     @Path("/addressPerson/{pId}/{aId}")
-    @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
     public String coupleAddressToPerson(@PathParam("pId") int personId, 
             @PathParam("aId") int addressId)
@@ -60,7 +59,8 @@ public class MasterResource
     @Produces(MediaType.APPLICATION_JSON)
     public String populate()
     {
-        return GSON.toJson(FACADE.populateDatabaseWithTestData());
+        String res = FACADE.populateDatabaseWithTestData();
+        return GSON.toJson(res);
     }
 
 }
