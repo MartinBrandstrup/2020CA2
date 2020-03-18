@@ -4,6 +4,7 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import dtos.HobbyDTO;
 import dtos.PersonDTO;
+import entities.Address;
 import entities.Hobby;
 import utils.EMF_Creator;
 import facades.HobbyFacade;
@@ -43,13 +44,23 @@ public class MasterResource
         return "{\"msg\":\"Hello World\"}";
     }
 
-    @POST
-    @Path("/test")
+    @PUT
+    @Path("/addressPerson/{pId}/{aId}")
+    @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
-    public String test()
+    public String coupleAddressToPerson(@PathParam("pId") int personId, 
+            @PathParam("aId") int addressId)
     {
-        PersonDTO pDTO = FACADE.tempMethodToTest();
+        PersonDTO pDTO = FACADE.coupleAddressToPerson(personId, addressId);
         return GSON.toJson(pDTO);
+    }
+    
+    @POST
+    @Path("/populate")
+    @Produces(MediaType.APPLICATION_JSON)
+    public String populate()
+    {
+        return GSON.toJson(FACADE.populateDatabaseWithTestData());
     }
 
 }
