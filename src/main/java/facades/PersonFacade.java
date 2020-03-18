@@ -373,14 +373,14 @@ public class PersonFacade implements IPersonFacade
      * @return a List<Person> containing the created objects after they have
      * been managed by the Entity Manager.
      */
-    public List<PersonDTO> populateDatabaseWithPersons(int numberOfEntries)
+    public List<Person> populateDatabaseWithPersons(int numberOfEntries)
     {
         EntityManager em = emf.createEntityManager();
         try
         {
             em.getTransaction().begin();
             em.createNamedQuery("Person.deleteAllRows").executeUpdate();
-            List<PersonDTO> personDTOList = new ArrayList<>();
+            List<Person> personList = new ArrayList<>();
             synchronized (this)
             {
                 for (int i = 0; i < numberOfEntries; i++)
@@ -389,12 +389,12 @@ public class PersonFacade implements IPersonFacade
                     String lastName = "lastName" + i;
                     String email = "email" + i;
                     Person p = new Person(firstName, lastName, email);
-                    personDTOList.add(new PersonDTO(p));
+                    personList.add(p);
                     em.persist(p);
                 }
             }
             em.getTransaction().commit();
-            return personDTOList;
+            return personList;
         }
         catch (IllegalStateException ex)
         {

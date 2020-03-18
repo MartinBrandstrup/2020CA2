@@ -13,6 +13,7 @@ import entities.Person;
 import utils.EMF_Creator;
 import facades.FacadeExample;
 import facades.PersonFacade;
+import java.util.ArrayList;
 import java.util.List;
 import javax.persistence.EntityManagerFactory;
 import javax.ws.rs.Consumes;
@@ -131,9 +132,9 @@ public class PersonResource
     @Path("/{id}")
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
-    public String editPersonById(@PathParam("id") int id, String hobby)
+    public String editPersonById(@PathParam("id") int id, String person)
     {
-        Person p = GSON.fromJson(hobby, Person.class);
+        Person p = GSON.fromJson(person, Person.class);
         Person editedPerson = FACADE.editPerson(id, p);
         return GSON.toJson(new PersonDTO(editedPerson));
     }
@@ -143,7 +144,12 @@ public class PersonResource
     @Produces(MediaType.APPLICATION_JSON)
     public String populate(@PathParam("numberOfEntries") int numberOfEntries)
     {
-        List<PersonDTO> pDTOList = FACADE.populateDatabaseWithPersons(numberOfEntries);
+        List<PersonDTO> pDTOList = new ArrayList();
+        for (Person person : FACADE.populateDatabaseWithPersons(numberOfEntries))
+        {
+            pDTOList.add(new PersonDTO(person));
+        }
+        
         return GSON.toJson(pDTOList);
 //        return "{\"msg\":\"Database has been populated with " + numberOfEntries + " Persons!\"}";
     }

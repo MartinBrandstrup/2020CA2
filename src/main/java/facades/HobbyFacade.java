@@ -303,14 +303,14 @@ public class HobbyFacade
      * @return a List<Hobby> containing the created objects after they have been
      * managed by the Entity Manager.
      */
-    public List<HobbyDTO> populateDatabaseWithHobbies(int numberOfEntries)
+    public List<Hobby> populateDatabaseWithHobbies(int numberOfEntries)
     {
         EntityManager em = emf.createEntityManager();
         try
         {
             em.getTransaction().begin();
             em.createNamedQuery("Hobby.deleteAllRows").executeUpdate();
-            List<HobbyDTO> hobbyDTOList = new ArrayList<>();
+            List<Hobby> hobbyList = new ArrayList<>();
             synchronized (this)
             {
                 for (int i = 0; i < numberOfEntries; i++)
@@ -318,12 +318,12 @@ public class HobbyFacade
                     String name = "name" + i;
                     String description = "description" + i;
                     Hobby h = new Hobby(name, description);
-                    hobbyDTOList.add(new HobbyDTO(h));
+                    hobbyList.add(h);
                     em.persist(h);
                 }
             }
             em.getTransaction().commit();
-            return hobbyDTOList;
+            return hobbyList;
         }
         catch (IllegalStateException ex)
         {

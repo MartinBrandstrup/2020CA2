@@ -6,6 +6,7 @@ import dtos.HobbyDTO;
 import entities.Hobby;
 import utils.EMF_Creator;
 import facades.HobbyFacade;
+import java.util.ArrayList;
 import java.util.List;
 import javax.persistence.EntityManagerFactory;
 import javax.ws.rs.Consumes;
@@ -133,8 +134,11 @@ public class HobbyResource
     @Produces(MediaType.APPLICATION_JSON)
     public String populate(@PathParam("numberOfEntries") int numberOfEntries)
     {
-        
-        List<HobbyDTO> hDTOList = FACADE.populateDatabaseWithHobbies(numberOfEntries);
+        List<HobbyDTO> hDTOList = new ArrayList();
+        for (Hobby hobby : FACADE.populateDatabaseWithHobbies(numberOfEntries))
+        {
+            hDTOList.add(new HobbyDTO(hobby));
+        }
         return GSON.toJson(hDTOList);
 //        return "{\"msg\":\"Database has been populated with " + numberOfEntries + " Hobbies!\"}";
     }
