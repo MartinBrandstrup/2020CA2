@@ -118,10 +118,34 @@ public class PersonFacade implements IPersonFacade
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
+    /**
+     * Attempts to retrieve a Person object from the database corresponding to
+     * the provided ID. Used mainly for back-end work, since not all information
+     * of the Person object should be displayed on the front-end. Returns null if
+     * the operation fails
+     *
+     * @param id The provided ID to search the database for.
+     * @return a Person object containing all information.
+     */
     @Override
     public Person getPersonById(int id)
     {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        EntityManager em = getEntityManager();
+        try
+        {
+            Person p = em.find(Person.class, id);
+            return p;
+        }
+        catch (Exception ex)
+        {
+            System.out.println("Operation getPersonById failed.");
+            ex.printStackTrace();
+            return null;
+        }
+        finally
+        {
+            em.close();
+        }
     }
 
     @Override

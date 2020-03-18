@@ -109,7 +109,7 @@ public class HobbyFacade
     /**
      * Attempts to retrieve a Hobby object from the database corresponding to
      * the provided ID. Used mainly for back-end work, since not all information
-     * of the Car object should be displayed on the front-end. Returns null if
+     * of the Hobby object should be displayed on the front-end. Returns null if
      * the operation fails
      *
      * @param id The provided ID to search the database for.
