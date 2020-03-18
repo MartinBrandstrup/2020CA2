@@ -46,7 +46,7 @@ public class MasterResource
     }
 
     @PUT
-    @Path("/addressPerson/{aId}/{pId}")
+    @Path("/personToAddress/{aId}/{pId}")
     @Produces(MediaType.APPLICATION_JSON)
     public String couplePersonToAddress(@PathParam("aId") int addressId, 
             @PathParam("pId") int personId)
