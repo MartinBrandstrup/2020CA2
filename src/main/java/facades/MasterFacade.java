@@ -5,6 +5,7 @@
  */
 package facades;
 
+import dtos.PersonDTO;
 import entities.Hobby;
 import entities.Person;
 import java.util.ArrayList;
@@ -55,22 +56,23 @@ public class MasterFacade
     /**
      * This thing here needs some work!
      */
-    public void tempMethodToTest()
+    public PersonDTO tempMethodToTest()
     {
         Person martin = new Person("Martin", "Brandstrup", "martin.l.brandstrup@gmail.com");
         Hobby java = new Hobby("Java", "Software development 101");
         Hobby js = new Hobby("JavaScript", "Software development 102");
 
         //Remember to manage entities first thing for id
-        personFacade.persistPerson(martin);
-        hobbyFacade.persistHobby(java);
-        hobbyFacade.persistHobby(js);
+        martin = personFacade.persistPerson(martin);
+        java = hobbyFacade.persistHobby(java);
+        js = hobbyFacade.persistHobby(js);
 
         List<Hobby> hobbies = new ArrayList<>();
         hobbies.add(java);
         hobbies.add(js);
 
-        personFacade.addHobbiesToPerson(martin, hobbies);
+        return personFacade.addHobbiesToPerson(martin.getId(), hobbies);
 
     }
+
 }

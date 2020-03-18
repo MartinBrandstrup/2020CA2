@@ -3,6 +3,7 @@ package rest;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import dtos.HobbyDTO;
+import dtos.PersonDTO;
 import entities.Hobby;
 import utils.EMF_Creator;
 import facades.HobbyFacade;
@@ -42,13 +43,13 @@ public class MasterResource
         return "{\"msg\":\"Hello World\"}";
     }
 
-    @GET
+    @POST
     @Path("/test")
     @Produces(MediaType.APPLICATION_JSON)
     public String test()
     {
-        FACADE.tempMethodToTest();
-        return "{\"msg\":\"Test method success?\"}";
+        PersonDTO pDTO = FACADE.tempMethodToTest();
+        return GSON.toJson(pDTO);
     }
 
 }
