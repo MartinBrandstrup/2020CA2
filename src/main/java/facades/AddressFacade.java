@@ -4,6 +4,7 @@ import dtos.AddressDTO;
 import dtos.PersonDTO;
 import entities.Address;
 import entities.CityInfo;
+import entities.Hobby;
 import entities.Person;
 import entities.Phone;
 import java.util.ArrayList;
@@ -12,15 +13,13 @@ import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.TypedQuery;
 
-public class AddressFacade
-{
+public class AddressFacade {
 
     private static AddressFacade instance;
     private static EntityManagerFactory emf;
 
     //Private Constructor to ensure Singleton
-    private AddressFacade()
-    {
+    private AddressFacade() {
     }
 
     /**
@@ -28,46 +27,40 @@ public class AddressFacade
      * @param _emf
      * @return an instance of this facade class.
      */
-    public static AddressFacade getAddressFacade(EntityManagerFactory _emf)
-    {
-        if (instance == null)
-        {
+    public static AddressFacade getAddressFacade(EntityManagerFactory _emf) {
+        if (instance == null) {
             emf = _emf;
             instance = new AddressFacade();
         }
         return instance;
     }
 
-    private EntityManager getEntityManager()
-    {
+    private EntityManager getEntityManager() {
         return emf.createEntityManager();
     }
 
-    public long getAddressCount()
-    {
+    public long getAddressCount() {
         EntityManager em = emf.createEntityManager();
-        try
-        {
+        try {
             long addressCount = (long) em.createQuery("SELECT COUNT(a) FROM Address a").getSingleResult();
             return addressCount;
-        }
-        finally
-        {
+        } finally {
             em.close();
         }
 
     }
+
     // not sure about this one
 //    public long getAddressCountByHobby(Hobby arg0) {
 //        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
 //    }
     /**
-     * 
-     * @return 
+     *
+     * @return
      */
     public List<AddressDTO> getAllAddress() {
-                EntityManager em = getEntityManager();
-        
+        EntityManager em = getEntityManager();
+
         try {
             List<AddressDTO> returnList = new ArrayList();
             TypedQuery<Address> persons = em.createQuery("SELECT a FROM Address a", Address.class);
@@ -82,24 +75,26 @@ public class AddressFacade
         }
 
     }
+
     /**
-     * 
-     * @return 
+     *
+     * @return
      */
     public List<AddressDTO> getAllAddressByPerson(Person arg0) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
+
     /**
-     * 
-     * @return 
+     *
+     * @return
      */
     public List<AddressDTO> getAllAddressByCity(CityInfo arg0) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
-    
+
     /**
-     * 
-     * @return 
+     *
+     * @return
      */
     public Address getAddressById(int arg0) {
         EntityManager em = emf.createEntityManager();
@@ -107,80 +102,121 @@ public class AddressFacade
         try {
             Address adr = em.find(Address.class, arg0);
             return adr;
-        } finally {
+        }  catch (Exception ex){
+            System.out.println("Operation getAddressById failed.");
+            ex.printStackTrace();
+            return null;
+        }finally {
             em.close();
         }
     }
 
     /**
-     * 
-     * @return 
+     *
+     * @return
      */
     public AddressDTO getAddressDTOById(int arg0) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+         EntityManager em = emf.createEntityManager();
+
+        try {
+            Address adr = em.find(Address.class, arg0);
+            AddressDTO adrDTO = new AddressDTO(adr);
+            return adrDTO;
+        }
+         catch (Exception ex){
+            System.out.println("Operation getAddressDTOById failed.");
+            ex.printStackTrace();
+            return null;
+        }finally {
+            em.close();
+        }
     }
 
     /**
-     * 
-     * @return 
+     *
+     * @return
      */
     public AddressDTO getAddressDTOByPhone(Phone arg0) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     /**
-     * 
+     *
      * @param arg0
-     * @return 
+     * @return
      */
     public Address persistAddress(Address arg0) {
         {
+            EntityManager em = getEntityManager();
+            try {
+                em.getTransaction().begin();
+                em.persist(arg0);
+                em.getTransaction().commit();
+                return arg0;
+            } catch (Exception ex) {
+                System.out.println("Operation persistAdress failed.");
+                return null;
+            } finally {
+                em.close();
+            }
+        }
+    }
+
+    /**
+     *
+     * @return
+     */
+    public Address deleteAddressById(int id) {
         EntityManager em = getEntityManager();
-        try
-        {
+        try {
+            Address adr = em.find(Address.class, id);
+
             em.getTransaction().begin();
-            em.persist(arg0);
+            em.remove(adr);
             em.getTransaction().commit();
-            return arg0;
-        }
-        catch (Exception ex)
-        {
-            System.out.println("Operation persistAdress failed.");
+            return adr;
+        } catch (Exception ex) {
+            System.out.println("Operation deleteAddress failed.");
+            ex.printStackTrace();
             return null;
-        }
-        finally
-        {
+        } finally {
             em.close();
         }
-    }
-    }
-    /**
-     * 
-     * @return 
-     */
-    public Address deleteAddress(AddressDTO arg0) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+
     }
 
-    /**
-     * 
-     * @return 
-     */
-    public Address deleteAddressById(int arg0) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
+//    /**
+//     *
+//     * @param id = Used to find the Address user wish to edit
+//     * @param addressDTRO = the new values to be inserted in to taget Address
+//     * @return
+//     */
+//    public AddressDTO editAddress(int id, AddressDTO addressDTRO) {
+//        EntityManager em = getEntityManager();
+//        try {
+//            Address adr = em.find(Address.class, id);
+//
+//            em.getTransaction().begin();
+//            adr.setStreet(addressDTRO.getStreet());
+//            adr.setAdditionalInfo(addressDTRO.getAdditionalInfo());
+//            // adr.setCityInfo();
+//            //em.merge(adr); => should not need this: https://www.objectdb.com/java/jpa/persistence/update
+//            em.getTransaction().commit();
+//            AddressDTO edited = new AddressDTO(adr);
+//            return edited;
+//        } catch (Exception ex) {
+//            System.out.println("Operation edit failed.");
+//            ex.printStackTrace();
+//            return null;
+//        } finally {
+//            em.close();
+//        }
+//
+//    }
 
     /**
-     * 
-     * @return 
-     */
-    public Address editAddress(Address arg0) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-
-    /**
-     * 
-     * @return 
+     *
+     * @return
      */
     public PersonDTO addAddressToPerson(Person arg0, Address arg1) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
