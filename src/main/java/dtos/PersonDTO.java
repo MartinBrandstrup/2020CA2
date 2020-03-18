@@ -18,13 +18,8 @@ public class PersonDTO
 {
 
     private int id;
-    private String firstName;
-    private String lastName;
-    private String street;
-    private String city;
-    private String zip;
-    private List<String> phones;
-    private List<String> hobbies;
+    private String firstName, lastName, street, city, zip;
+    private List<String> phones, hobbies;
 
     public PersonDTO(Person person)
     {
