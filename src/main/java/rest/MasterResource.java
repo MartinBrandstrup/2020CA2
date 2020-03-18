@@ -42,7 +42,8 @@ public class MasterResource
         return "{\"msg\":\"Hello World\"}";
     }
 
-    @POST
+    @GET
+    @Path("/test")
     @Produces(MediaType.APPLICATION_JSON)
     public String test()
     {
