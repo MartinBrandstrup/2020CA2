@@ -42,7 +42,7 @@ public interface IPersonFacade
 
     public Person deletePersonById(int id);
 
-    public Person editPerson(Person person);
+    public Person editPerson(int oldPersonId, Person newPerson);
 
     public PersonDTO addHobbiesToPerson(Person person, List<Hobby> hobbies);
 

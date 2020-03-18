@@ -136,7 +136,7 @@ public class PersonFacade implements IPersonFacade
     }
 
     @Override
-    public Person editPerson(Person person)
+    public Person editPerson(int oldPersonId, Person newPerson)
     {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
@@ -148,13 +148,15 @@ public class PersonFacade implements IPersonFacade
         try
         {
             person = em.find(Person.class, person.getId()); //Getting managed
-            
+
             for (Hobby hobby : list)
             {
-                if(!(person.getHobbies().contains(hobby)))
+                if (!(person.getHobbies().contains(hobby)))
+                {
                     person.addHobby(hobby);
+                }
             }
-            
+
             em.getTransaction().begin();
             em.merge(person);
             em.getTransaction().commit();
