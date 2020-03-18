@@ -123,7 +123,7 @@ public class HobbyResource
     @Path("/edit/{id}")
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
-    public String editHobby(@PathParam("id") int id, String hobby)
+    public String editHobbyById(@PathParam("id") int id, String hobby)
     {
         Hobby h = GSON.fromJson(hobby, Hobby.class);
         Hobby editedHobby = FACADE.editHobby(id, h);
