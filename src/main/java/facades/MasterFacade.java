@@ -5,6 +5,7 @@
  */
 package facades;
 
+import dtos.AddressDTO;
 import dtos.PersonDTO;
 import entities.Address;
 import entities.Hobby;
@@ -73,12 +74,12 @@ public class MasterFacade
 //            em.createNamedQuery("Hobby.deleteAllRows").executeUpdate();
 //            em.createNamedQuery("Person.deleteAllRows").executeUpdate();
 
-            this.martin = personFacade.persistPerson(martin);
-            this.flemming = personFacade.persistPerson(flemming);
-            this.java = hobbyFacade.persistHobby(java);
-            this.js = hobbyFacade.persistHobby(js);
-            this.vang21 = addressFacade.persistAddress(vang21);
-            this.vang25 = addressFacade.persistAddress(vang25);
+            personFacade.persistPerson(martin);
+            personFacade.persistPerson(flemming);
+            hobbyFacade.persistHobby(java);
+            hobbyFacade.persistHobby(js);
+            addressFacade.persistAddress(vang21);
+            addressFacade.persistAddress(vang25);
 
             em.getTransaction().commit();
             return "Operation populateDatabaseWithTestData successful.";
@@ -102,15 +103,12 @@ public class MasterFacade
         }
     }
 
-    public PersonDTO coupleAddressToPerson(int personId, int addressId)
+    public AddressDTO couplePersonToAddress(int addressId, int personId)
     {
-        Address address = addressFacade.getAddressById(addressId);
-        
-//        //Temp for testing
-//        personId = martin.getId();
-//        address = vang21;
-        
-        return personFacade.addAddressToPerson(personId, address);
+        Person person = personFacade.getPersonById(personId);
+        AddressDTO aDTO = addressFacade.addPersonToAddress(addressId, person);
+        System.out.println(aDTO.getStreet());
+        return aDTO;
     }
 
 }
