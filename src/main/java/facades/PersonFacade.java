@@ -44,6 +44,11 @@ public class PersonFacade implements IPersonFacade
         return emf.createEntityManager();
     }
 
+    /**
+     * Counts the amount of Person entries existing in the database.
+     *
+     * @return The amount of existing entries in the database.
+     */
     @Override
     public long getPersonCount()
     {
@@ -131,6 +136,13 @@ public class PersonFacade implements IPersonFacade
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
+    /**
+     * Attempts to persist a Person object to the database. Returns the persisted
+     * object if successful; null if the operation fails.
+     *
+     * @param hobby The Person object to persist.
+     * @return the Person object after it has been managed by the Entity Manager.
+     */
     @Override
     public Person persistPerson(Person person)
     {
