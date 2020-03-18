@@ -13,65 +13,71 @@ import java.util.List;
  *
  * @author Christian
  */
-public class AddressDTO {
-    
+public class AddressDTO
+{
+
     private int id;
     private String street, additionalInfo;
     List<String> persons;
 
-    public AddressDTO(Address a) 
+    public AddressDTO(Address a)
     {
         this.id = a.getId();
         this.street = a.getStreet();
         this.additionalInfo = a.getAdditionalInfo();
-         if (a.getPersons() != null)
+        if (a.getPersons() != null)
         {
             for (Person person : a.getPersons())
             {
-                this.persons.add(person.toString());
+                this.persons.add(person.getEmail());
             }
-        }     
+        }
     }
 
-    public int getId() {
+    public int getId()
+    {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(int id)
+    {
         this.id = id;
     }
 
-    public String getStreet() {
+    public String getStreet()
+    {
         return street;
     }
 
-    public void setStreet(String street) {
+    public void setStreet(String street)
+    {
         this.street = street;
     }
 
-    public String getAdditionalInfo() {
+    public String getAdditionalInfo()
+    {
         return additionalInfo;
     }
 
-    public void setAdditionalInfo(String additionalInfo) {
+    public void setAdditionalInfo(String additionalInfo)
+    {
         this.additionalInfo = additionalInfo;
     }
 
-    public List<String> getPersons() {
+    public List<String> getPersons()
+    {
         return persons;
     }
 
-    public void setPersons(List<String> persons) {
+    public void setPersons(List<String> persons)
+    {
         this.persons = persons;
     }
 
     @Override
-    public String toString() {
+    public String toString()
+    {
         return "AddressDTO{" + "id=" + id + ", street=" + street + ", additionalInfo=" + additionalInfo + ", persons=" + persons + '}';
     }
 
-    
-    
-    
-    
 }
