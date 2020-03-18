@@ -1,5 +1,7 @@
 package entities;
 
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import java.io.Serializable;
 import java.util.HashSet;
 import java.util.Objects;
@@ -25,6 +27,8 @@ import javax.persistence.OneToMany;
 public class Person implements Serializable
 {
 
+    private static final Gson GSON = new GsonBuilder().setPrettyPrinting().create();
+    
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -40,11 +44,11 @@ public class Person implements Serializable
     {
         CascadeType.MERGE, CascadeType.PERSIST
     })
-    private Set<Phone> phones = new HashSet();
+    private Set<Phone> phones;
 
     @ManyToMany
     @JoinTable(name = "PERSON_HOBBY")
-    private Set<Hobby> hobbies = new HashSet();
+    private Set<Hobby> hobbies;
 
     @Override
     public int hashCode()
@@ -94,6 +98,8 @@ public class Person implements Serializable
         this.firstName = firstName;
         this.lastName = lastName;
         this.email = email;
+        this.phones = new HashSet();
+        this.hobbies = new HashSet();
     }
 
     public int getId()
@@ -183,8 +189,10 @@ public class Person implements Serializable
     @Override
     public String toString()
     {
-        return "Person{" + "firstName=" + firstName + ", lastName=" 
-                + lastName + ", email=" + email + ", address=" + address + '}';
+        return "{ \"id\":\"" + id + "\", \"firstName\":\"" + firstName 
+                + "\", \"lastName\":\"" + lastName + "\", \"email\":\"" 
+                + email + "\", \"street\":\"" + address.getStreet() + " }";
     }
+
 
 }
