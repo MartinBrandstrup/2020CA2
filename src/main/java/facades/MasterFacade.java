@@ -6,6 +6,7 @@
 package facades;
 
 import dtos.PersonDTO;
+import entities.Address;
 import entities.Hobby;
 import entities.Person;
 import java.util.ArrayList;
@@ -21,10 +22,18 @@ import javax.persistence.EntityManagerFactory;
 public class MasterFacade
 {
 
+    Person martin = new Person("Martin", "Brandstrup", "martin.l.brandstrup@gmail.com");
+    Person flemming = new Person("Flemming", "Hansen", "flemming.hansen@gmail.com");
+    Hobby java = new Hobby("Java", "Software development 101");
+    Hobby js = new Hobby("JavaScript", "Software development 102");
+    Address vang21 = new Address("Vangegade 21", "Den eksisterer kun i min fantasi");
+    Address vang25 = new Address("Vangegade 25", "Den eksisterer kun i min fantasi");
+
     private static EntityManagerFactory emf;
 
     HobbyFacade hobbyFacade = HobbyFacade.getHobbyFacade(emf);
     PersonFacade personFacade = PersonFacade.getPersonFacade(emf);
+    AddressFacade addressFacade = AddressFacade.getAddressFacade(emf);
 
     private static MasterFacade instance;
 
@@ -53,26 +62,55 @@ public class MasterFacade
         return emf.createEntityManager();
     }
 
-    /**
-     * This thing here needs some work!
-     */
-    public PersonDTO tempMethodToTest()
+    public String populateDatabaseWithTestData()
     {
-        Person martin = new Person("Martin", "Brandstrup", "martin.l.brandstrup@gmail.com");
-        Hobby java = new Hobby("Java", "Software development 101");
-        Hobby js = new Hobby("JavaScript", "Software development 102");
+        EntityManager em = emf.createEntityManager();
 
-        //Remember to manage entities first thing for id
-        martin = personFacade.persistPerson(martin);
-        java = hobbyFacade.persistHobby(java);
-        js = hobbyFacade.persistHobby(js);
+        try
+        {
+            em.getTransaction().begin();
+            em.createNamedQuery("Address.deleteAllRows").executeUpdate();
+            em.createNamedQuery("Hobby.deleteAllRows").executeUpdate();
+            em.createNamedQuery("Person.deleteAllRows").executeUpdate();
 
-        List<Hobby> hobbies = new ArrayList<>();
-        hobbies.add(java);
-        hobbies.add(js);
+            martin = personFacade.persistPerson(martin);
+            flemming = personFacade.persistPerson(flemming);
+            java = hobbyFacade.persistHobby(java);
+            js = hobbyFacade.persistHobby(js);
+            vang21 = addressFacade.persistAddress(vang21);
+            vang25 = addressFacade.persistAddress(vang25);
 
-        return personFacade.addHobbiesToPerson(martin.getId(), hobbies);
+            em.getTransaction().commit();
+            return "Operation populateDatabaseWithTestData successful";
+        }
+        catch (IllegalStateException ex)
+        {
+            System.out.println("Operation populateDatabaseWithTestData "
+                    + "encountered an error with the EntityManager");
+            ex.printStackTrace();
+            return null;
+        }
+        catch (Exception ex)
+        {
+            System.out.println("Operation populateDatabaseWithTestData failed.");
+            ex.printStackTrace();
+            return null;
+        }
+        finally
+        {
+            em.close();
+        }
+    }
 
+    public PersonDTO coupleAddressToPerson(int personId, int addressId)
+    {
+        Address address = addressFacade.getAddressById(addressId);
+        
+        //Temp for testing
+        personId = martin.getId();
+        address = vang21;
+        
+        return personFacade.addAddressToPerson(personId, address);
     }
 
 }
