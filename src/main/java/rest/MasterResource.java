@@ -7,10 +7,13 @@ import dtos.HobbyDTO;
 import dtos.PersonDTO;
 import entities.Address;
 import entities.Hobby;
+import exceptions.DatabaseException;
 import utils.EMF_Creator;
 import facades.HobbyFacade;
 import facades.MasterFacade;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.persistence.EntityManagerFactory;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.DELETE;
@@ -51,8 +54,15 @@ public class MasterResource
     public String couplePersonToAddress(@PathParam("aId") int addressId, 
             @PathParam("pId") int personId)
     {
-        AddressDTO aDTO = FACADE.couplePersonToAddress(addressId, personId);
-        System.out.println(aDTO.getStreet());
+        AddressDTO aDTO;
+        try
+        {
+            aDTO = FACADE.couplePersonToAddress(addressId, personId);
+        }
+        catch (DatabaseException ex)
+        {
+            return ex.getMessage();
+        }
         return GSON.toJson(aDTO);
     }
     

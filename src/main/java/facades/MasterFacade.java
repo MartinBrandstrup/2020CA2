@@ -10,8 +10,11 @@ import dtos.PersonDTO;
 import entities.Address;
 import entities.Hobby;
 import entities.Person;
+import exceptions.DatabaseException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 
@@ -103,11 +106,19 @@ public class MasterFacade
         }
     }
 
-    public AddressDTO couplePersonToAddress(int addressId, int personId)
+    public AddressDTO couplePersonToAddress(int addressId, int personId) throws DatabaseException
     {
         Person person = personFacade.getPersonById(personId);
-        AddressDTO aDTO = addressFacade.addPersonToAddress(addressId, person);
-        System.out.println(aDTO.getStreet());
+        AddressDTO aDTO;
+        try
+        {
+            aDTO = addressFacade.addPersonToAddress(addressId, person);
+        }
+        catch (DatabaseException ex)
+        {
+            addressFacade.removePersonFromAddress(person.getAddress().getId(), person);
+            aDTO = addressFacade.addPersonToAddress(addressId, person);
+        }
         return aDTO;
     }
 
