@@ -318,33 +318,6 @@ public class PersonFacade implements IPersonFacade
     }
 
     @Override
-    public PersonDTO addAddressToPerson(int personId, Address adrs)
-    {
-        EntityManager em = getEntityManager();
-        try
-        {
-            Person p = em.find(Person.class, personId); //Getting managed
-
-            p.setAddress(adrs);
-
-            em.getTransaction().begin();
-            em.merge(p);
-            em.getTransaction().commit();
-            return new PersonDTO(p);
-        }
-        catch (Exception ex)
-        {
-            System.out.println("Operation addAddressToPerson failed.");
-            ex.printStackTrace();
-            return null;
-        }
-        finally
-        {
-            em.close();
-        }
-    }
-
-    @Override
     public PersonDTO removeHobbyFromPerson(int personId, Hobby hobby)
     {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
@@ -352,12 +325,6 @@ public class PersonFacade implements IPersonFacade
 
     @Override
     public PersonDTO removePhoneFromPerson(int personId, Phone phone)
-    {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-
-    @Override
-    public PersonDTO removeAddressFromPerson(int personId, Address adrs)
     {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }

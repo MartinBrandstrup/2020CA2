@@ -48,12 +48,8 @@ public interface IPersonFacade
 
     public PersonDTO addPhonesToPerson(int personId, List<Phone> hobbies);
 
-    public PersonDTO addAddressToPerson(int personId, Address address);
-    
     public PersonDTO removeHobbyFromPerson(int personId, Hobby hobby);
 
     public PersonDTO removePhoneFromPerson(int personId, Phone phone);
-
-    public PersonDTO removeAddressFromPerson(int personId, Address address);
 
 }

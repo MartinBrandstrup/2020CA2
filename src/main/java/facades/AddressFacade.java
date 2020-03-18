@@ -214,12 +214,31 @@ public class AddressFacade {
 //
 //    }
 
-    /**
-     *
-     * @return
-     */
-    public PersonDTO addAddressToPerson(Person arg0, Address arg1) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
 
+    public AddressDTO addPersonToAddress(int addressId, Person person)
+    {
+        EntityManager em = getEntityManager();
+        try
+        {
+            Address a = em.find(Address.class, addressId); //Getting managed
+
+            a.addPerson(person);
+
+            em.getTransaction().begin();
+            em.merge(a);
+            em.getTransaction().commit();
+            return new AddressDTO(a);
+        }
+        catch (Exception ex)
+        {
+            System.out.println("Operation addPersonToAddress failed.");
+            ex.printStackTrace();
+            return null;
+        }
+        finally
+        {
+            em.close();
+        }
+    }
+    
 }
