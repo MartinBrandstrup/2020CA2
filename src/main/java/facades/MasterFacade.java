@@ -73,15 +73,15 @@ public class MasterFacade
             em.createNamedQuery("Hobby.deleteAllRows").executeUpdate();
             em.createNamedQuery("Person.deleteAllRows").executeUpdate();
 
-            martin = personFacade.persistPerson(martin);
-            flemming = personFacade.persistPerson(flemming);
-            java = hobbyFacade.persistHobby(java);
-            js = hobbyFacade.persistHobby(js);
-            vang21 = addressFacade.persistAddress(vang21);
-            vang25 = addressFacade.persistAddress(vang25);
+            this.martin = personFacade.persistPerson(martin);
+            this.flemming = personFacade.persistPerson(flemming);
+            this.java = hobbyFacade.persistHobby(java);
+            this.js = hobbyFacade.persistHobby(js);
+            this.vang21 = addressFacade.persistAddress(vang21);
+            this.vang25 = addressFacade.persistAddress(vang25);
 
             em.getTransaction().commit();
-            return "Operation populateDatabaseWithTestData successful";
+            return "Operation populateDatabaseWithTestData successful.";
         }
         catch (IllegalStateException ex)
         {
