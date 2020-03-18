@@ -133,8 +133,10 @@ public class HobbyResource
     @Produces(MediaType.APPLICATION_JSON)
     public String populate(@PathParam("numberOfEntries") int numberOfEntries)
     {
-        FACADE.populateDatabaseWithHobbies(numberOfEntries);
-        return "{\"msg\":\"Database has been populated with " + numberOfEntries + " Hobbies!\"}";
+        
+        List<HobbyDTO> hDTOList = FACADE.populateDatabaseWithHobbies(numberOfEntries);
+        return GSON.toJson(hDTOList);
+//        return "{\"msg\":\"Database has been populated with " + numberOfEntries + " Hobbies!\"}";
     }
 
 }

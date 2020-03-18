@@ -143,8 +143,9 @@ public class PersonResource
     @Produces(MediaType.APPLICATION_JSON)
     public String populate(@PathParam("numberOfEntries") int numberOfEntries)
     {
-        FACADE.populateDatabaseWithPersons(numberOfEntries);
-        return "{\"msg\":\"Database has been populated with " + numberOfEntries + " Persons!\"}";
+        List<PersonDTO> pDTOList = FACADE.populateDatabaseWithPersons(numberOfEntries);
+        return GSON.toJson(pDTOList);
+//        return "{\"msg\":\"Database has been populated with " + numberOfEntries + " Persons!\"}";
     }
 }
 
