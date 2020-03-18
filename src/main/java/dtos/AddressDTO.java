@@ -7,6 +7,7 @@ package dtos;
 
 import entities.Address;
 import entities.Person;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -18,7 +19,7 @@ public class AddressDTO
 
     private int id;
     private String street, additionalInfo;
-    List<String> persons;
+    List<String> persons = new ArrayList();
 
     public AddressDTO(Address a)
     {
@@ -29,7 +30,7 @@ public class AddressDTO
         {
             for (Person person : a.getPersons())
             {
-                this.persons.add(person.getEmail());
+                this.persons.add(person.toString());
             }
         }
     }
