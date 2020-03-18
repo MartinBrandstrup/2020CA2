@@ -2,6 +2,7 @@ package rest;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import dtos.AddressDTO;
 import dtos.HobbyDTO;
 import dtos.PersonDTO;
 import entities.Address;
@@ -45,13 +46,14 @@ public class MasterResource
     }
 
     @PUT
-    @Path("/addressPerson/{pId}/{aId}")
+    @Path("/addressPerson/{aId}/{pId}")
     @Produces(MediaType.APPLICATION_JSON)
-    public String coupleAddressToPerson(@PathParam("pId") int personId, 
-            @PathParam("aId") int addressId)
+    public String couplePersonToAddress(@PathParam("aId") int addressId, 
+            @PathParam("pId") int personId)
     {
-        PersonDTO pDTO = FACADE.coupleAddressToPerson(personId, addressId);
-        return GSON.toJson(pDTO);
+        AddressDTO aDTO = FACADE.couplePersonToAddress(addressId, personId);
+        System.out.println(aDTO.getStreet());
+        return GSON.toJson(aDTO);
     }
     
     @POST
