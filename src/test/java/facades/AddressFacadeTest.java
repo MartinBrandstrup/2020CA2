@@ -40,6 +40,8 @@ public class AddressFacadeTest {
     Address adr1 = new Address(street1, AdditionalInfo1);
     Address adr2 = new Address(street2, AdditionalInfo2);
     Address adr3 = new Address(street3, AdditionalInfo3);
+    AddressDTO adrDTO1 = new AddressDTO(adr1);
+    AddressDTO adrDTO3 = new AddressDTO(adr3);
 
     public AddressFacadeTest() {
     }
@@ -129,10 +131,17 @@ public class AddressFacadeTest {
     }
 
 //    @Test
-//    public void getAddressDTOById(int arg0) {
-//        assertEquals(2, facade.getAddressCount(), "Expects two rows in the database");
-//    }
+//    public void getAddressDTOById() {
+//         System.out.println("GetAddressById");
+//        AddressFacade adrF = facade;
+//        int AdressID = adrF.persistAddress(adr3).getId();
+//        System.out.println(AdressID);
+//        adrDTO3.setId(AdressID);
+//        AddressDTO res = facade.getAddressDTOById(AdressID);
+//        assertEquals(adrDTO3, res, "Expects adr3");
 //
+//    }
+
 //    @Test
 //    public void getAddressDTOByPhone(Phone arg0) {
 //        assertEquals(2, facade.getAddressCount(), "Expects two rows in the database");
@@ -147,21 +156,25 @@ public class AddressFacadeTest {
         assertNotNull(AdressID);
     }
 //
-//    @Test
-//    public void deleteAddress(AddressDTO arg0) {
-//        assertEquals(2, facade.getAddressCount(), "Expects two rows in the database");
-//    }
+    @Test
+    public void deleteAddressById() {
+        System.out.println("DeleteAddressById");
+        facade.persistAddress(adr3);
+        int newId = adr3.getId();
+        System.out.println("new adr id: " + newId );
+        facade.deleteAddressById(newId);
+        assertEquals(null, facade.getAddressById(newId), "Expects two rows in the database");
+    }
 //
 //    @Test
-//    public void deleteAddressById(int arg0) {
-//        assertEquals(2, facade.getAddressCount(), "Expects two rows in the database");
+//    public void editAddress() {
+//        System.out.println("editAddress");
+//        facade.persistAddress(adr3);
+//        facade.editAddress(adr3.getId(), adrDTO1);
+//        AddressDTO expt = new AddressDTO(facade.getAddressById(adr3.getId())); 
+//        assertEquals(adrDTO1, expt, "Expects two rows in the database");
 //    }
-//
-//    @Test
-//    public void editAddress(Address arg0) {
-//        assertEquals(2, facade.getAddressCount(), "Expects two rows in the database");
-//    }
-//
+
 
     // needs PersistAdrss + getaddressbyID
 //    @Test
