@@ -139,6 +139,15 @@ public class PersonResource
         Person editedPerson = FACADE.editPerson(id, p);
         return GSON.toJson(new PersonDTO(editedPerson));
     }
+    
+    @POST
+    @Path("/populate/{numberOfEntries}")
+    @Produces(MediaType.APPLICATION_JSON)
+    public String populate(@PathParam("numberOfEntries") int numberOfEntries)
+    {
+        FACADE.populateDatabaseWithPersons(numberOfEntries);
+        return "{\"msg\":\"Database has been populated with " + numberOfEntries + " Persons!\"}";
+    }
 }
 
 //    @GET

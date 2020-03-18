@@ -6,10 +6,12 @@ import entities.CityInfo;
 import entities.Hobby;
 import entities.Person;
 import entities.Phone;
+import java.util.ArrayList;
 import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
+import javax.persistence.TypedQuery;
 
 public class PersonFacade implements IPersonFacade
 {
@@ -64,10 +66,39 @@ public class PersonFacade implements IPersonFacade
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
+    /**
+     * Retrieves all Persons from the database as PersonDTOs objects. Returns
+     * null if the operation fails.
+     *
+     * @return a List<PersonDTO>.
+     */
     @Override
     public List<PersonDTO> getAllPersons()
     {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        EntityManager em = getEntityManager();
+        try
+        {
+            List<PersonDTO> personDTOList = new ArrayList<>();
+            TypedQuery<Person> query
+                    = em.createQuery("SELECT p FROM Person p", Person.class);
+
+            for (Person p : query.getResultList())
+            {
+                personDTOList.add(new PersonDTO(p));
+            }
+
+            return personDTOList;
+        }
+        catch (Exception ex)
+        {
+            System.out.println("Operation getAllPersons failed.");
+            ex.printStackTrace();
+            return null;
+        }
+        finally
+        {
+            em.close();
+        }
     }
 
     @Override
@@ -188,8 +219,8 @@ public class PersonFacade implements IPersonFacade
     }
 
     /**
-     * Attempts to edit an existing entry in the database to match a given Person
-     * object. Returns the changed object; null if the operation fails.
+     * Attempts to edit an existing entry in the database to match a given
+     * Person object. Returns the changed object; null if the operation fails.
      *
      * @param oldPersonId The id of the old person to be changed.
      * @param newPerson The object containing the information to change to.
@@ -292,4 +323,56 @@ public class PersonFacade implements IPersonFacade
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
+    /**
+     * Populates the database with a set of dummy entries for testing. Returns a
+     * list of these entries as Java objects after they have been managed; null
+     * if the operation fails. WARNING: wipes the database of existing entries!
+     * Part of this method is synchronized to avoid race conditions and thus
+     * match the object ids with their position in the returned List.
+     *
+     * @param numberOfEntries The number of entries to populate database with.
+     * @return a List<Person> containing the created objects after they have been
+     * managed by the Entity Manager.
+     */
+    public List<Person> populateDatabaseWithPersons(int numberOfEntries)
+    {
+        EntityManager em = emf.createEntityManager();
+        try
+        {
+            em.getTransaction().begin();
+            em.createNamedQuery("Person.deleteAllRows").executeUpdate();
+            List<Person> personList = new ArrayList<>();
+            synchronized (this)
+            {
+                for (int i = 0; i < numberOfEntries; i++)
+                {
+                    String firstName = "firstName" + i;
+                    String lastName = "lastName" + i;
+                    String email = "email" + i;
+                    Person p = new Person(firstName, lastName, email);
+                    personList.add(p);
+                    em.persist(p);
+                }
+            }
+            em.getTransaction().commit();
+            return personList;
+        }
+        catch (IllegalStateException ex)
+        {
+            System.out.println("Operation populateDatabaseWithHobbies "
+                    + "encountered an error with the EntityManager");
+            ex.printStackTrace();
+            return null;
+        }
+        catch (Exception ex)
+        {
+            System.out.println("Operation populateDatabaseWithHobbies failed.");
+            ex.printStackTrace();
+            return null;
+        }
+        finally
+        {
+            em.close();
+        }
+    }
 }
