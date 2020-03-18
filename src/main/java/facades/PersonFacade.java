@@ -261,25 +261,25 @@ public class PersonFacade implements IPersonFacade
     }
 
     @Override
-    public PersonDTO addHobbiesToPerson(Person person, List<Hobby> list)
+    public PersonDTO addHobbiesToPerson(int personId, List<Hobby> list)
     {
         EntityManager em = getEntityManager();
         try
         {
-            person = em.find(Person.class, person.getId()); //Getting managed
+            Person p = em.find(Person.class, personId); //Getting managed
 
             for (Hobby hobby : list)
             {
-                if (!(person.getHobbies().contains(hobby)))
-                {
-                    person.addHobby(hobby);
-                }
+//                if (!(person.getHobbies().contains(hobby)))
+//                {
+                    p.addHobby(hobby);
+//                }
             }
 
             em.getTransaction().begin();
-            em.merge(person);
+            em.merge(p);
             em.getTransaction().commit();
-            return new PersonDTO(person);
+            return new PersonDTO(p);
         }
         catch (Exception ex)
         {
@@ -294,31 +294,31 @@ public class PersonFacade implements IPersonFacade
     }
 
     @Override
-    public PersonDTO addPhonesToPerson(Person person, List<Phone> list)
+    public PersonDTO addPhonesToPerson(int personId, List<Phone> list)
     {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
-    public PersonDTO addAddressToPerson(Person person, Address adrs)
+    public PersonDTO addAddressToPerson(int personId, Address adrs)
     {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
-    public PersonDTO removeHobbyFromPerson(Person person, Hobby hobby)
+    public PersonDTO removeHobbyFromPerson(int personId, Hobby hobby)
     {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
-    public PersonDTO removePhoneFromPerson(Person person, Phone phone)
+    public PersonDTO removePhoneFromPerson(int personId, Phone phone)
     {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
-    public PersonDTO removeAddressFromPerson(Person person, Address adrs)
+    public PersonDTO removeAddressFromPerson(int personId, Address adrs)
     {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
