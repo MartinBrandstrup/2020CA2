@@ -237,10 +237,16 @@ public class PersonFacade implements IPersonFacade
             p.setFirstName(newPerson.getFirstName());
             p.setLastName(newPerson.getLastName());
             p.setEmail(newPerson.getEmail());
-            p.setAddress(newPerson.getAddress());
-            for (Hobby hobby : p.getHobbies())
+            if (p.getAddress() != null)
             {
-                newPerson.addHobby(hobby);
+                p.setAddress(newPerson.getAddress());
+            }
+            if (p.getHobbies() != null)
+            {
+                for (Hobby hobby : p.getHobbies())
+                {
+                    newPerson.addHobby(hobby);
+                }
             }
 
             em.getTransaction().begin();
@@ -272,7 +278,7 @@ public class PersonFacade implements IPersonFacade
             {
 //                if (!(person.getHobbies().contains(hobby)))
 //                {
-                    p.addHobby(hobby);
+                p.addHobby(hobby);
 //                }
             }
 
@@ -283,7 +289,7 @@ public class PersonFacade implements IPersonFacade
         }
         catch (Exception ex)
         {
-            System.out.println("Operation persistPerson failed.");
+            System.out.println("Operation addHobbiesToPerson failed.");
             ex.printStackTrace();
             return null;
         }
@@ -302,7 +308,28 @@ public class PersonFacade implements IPersonFacade
     @Override
     public PersonDTO addAddressToPerson(int personId, Address adrs)
     {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        EntityManager em = getEntityManager();
+        try
+        {
+            Person p = em.find(Person.class, personId); //Getting managed
+
+            p.setAddress(adrs);
+
+            em.getTransaction().begin();
+            em.merge(p);
+            em.getTransaction().commit();
+            return new PersonDTO(p);
+        }
+        catch (Exception ex)
+        {
+            System.out.println("Operation addAddressToPerson failed.");
+            ex.printStackTrace();
+            return null;
+        }
+        finally
+        {
+            em.close();
+        }
     }
 
     @Override
@@ -331,17 +358,17 @@ public class PersonFacade implements IPersonFacade
      * match the object ids with their position in the returned List.
      *
      * @param numberOfEntries The number of entries to populate database with.
-     * @return a List<Person> containing the created objects after they have been
-     * managed by the Entity Manager.
+     * @return a List<Person> containing the created objects after they have
+     * been managed by the Entity Manager.
      */
-    public List<Person> populateDatabaseWithPersons(int numberOfEntries)
+    public List<PersonDTO> populateDatabaseWithPersons(int numberOfEntries)
     {
         EntityManager em = emf.createEntityManager();
         try
         {
             em.getTransaction().begin();
             em.createNamedQuery("Person.deleteAllRows").executeUpdate();
-            List<Person> personList = new ArrayList<>();
+            List<PersonDTO> personDTOList = new ArrayList<>();
             synchronized (this)
             {
                 for (int i = 0; i < numberOfEntries; i++)
@@ -350,12 +377,12 @@ public class PersonFacade implements IPersonFacade
                     String lastName = "lastName" + i;
                     String email = "email" + i;
                     Person p = new Person(firstName, lastName, email);
-                    personList.add(p);
+                    personDTOList.add(new PersonDTO(p));
                     em.persist(p);
                 }
             }
             em.getTransaction().commit();
-            return personList;
+            return personDTOList;
         }
         catch (IllegalStateException ex)
         {
