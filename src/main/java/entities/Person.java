@@ -27,8 +27,6 @@ import javax.persistence.OneToMany;
 public class Person implements Serializable
 {
 
-    private static final Gson GSON = new GsonBuilder().setPrettyPrinting().create();
-    
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -98,6 +96,7 @@ public class Person implements Serializable
         this.firstName = firstName;
         this.lastName = lastName;
         this.email = email;
+        this.address = null;
         this.phones = new HashSet();
         this.hobbies = new HashSet();
     }
@@ -189,10 +188,9 @@ public class Person implements Serializable
     @Override
     public String toString()
     {
-        return "{ \"id\":\"" + id + "\", \"firstName\":\"" + firstName 
-                + "\", \"lastName\":\"" + lastName + "\", \"email\":\"" 
+        return "{ \"id\":\"" + id + "\", \"firstName\":\"" + firstName
+                + "\", \"lastName\":\"" + lastName + "\", \"email\":\""
                 + email + "\", \"street\":\"" + address.getStreet() + " }";
     }
-
 
 }

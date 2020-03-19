@@ -1,5 +1,6 @@
 package facades;
 
+import exceptions.ORMException;
 import exceptions.DatabaseException;
 import dtos.AddressDTO;
 import dtos.PersonDTO;
@@ -216,7 +217,7 @@ public class AddressFacade {
 //    }
 
 
-    public AddressDTO addPersonToAddress(int addressId, Person person) throws DatabaseException
+    public AddressDTO addPersonToAddress(int addressId, Person person) throws ORMException
     {
         EntityManager em = getEntityManager();
         try
@@ -225,7 +226,7 @@ public class AddressFacade {
 
             if(person.getAddress() != null)
             {
-                throw new DatabaseException("The provided Person already has an address.");
+                throw new ORMException("The provided Person already has an address.");
             }
             a.addPerson(person);
 
@@ -246,9 +247,24 @@ public class AddressFacade {
         }
     }
 
-    void removePersonFromAddress(int addressId, Person person)
+    public AddressDTO removePersonFromAddress(int addressId, Person person)
     {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        EntityManager em = getEntityManager();
+        try
+        {
+            Address a = em.find(Address.class, addressId);
+            
+            a.removePerson(person);
+            
+            em.getTransaction().begin();
+            em.merge(a);
+            em.getTransaction().commit();
+            return new AddressDTO(a);
+        }
+        finally
+        {
+            em.close();
+        }
     }
     
 }

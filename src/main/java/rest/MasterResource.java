@@ -8,6 +8,7 @@ import dtos.PersonDTO;
 import entities.Address;
 import entities.Hobby;
 import exceptions.DatabaseException;
+import exceptions.ORMException;
 import utils.EMF_Creator;
 import facades.HobbyFacade;
 import facades.MasterFacade;
@@ -59,7 +60,7 @@ public class MasterResource
         {
             aDTO = FACADE.couplePersonToAddress(addressId, personId);
         }
-        catch (DatabaseException ex)
+        catch (ORMException ex)
         {
             return ex.getMessage();
         }

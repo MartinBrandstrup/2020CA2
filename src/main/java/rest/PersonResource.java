@@ -101,11 +101,12 @@ public class PersonResource
     @POST
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
-    public String persistPerson(String person)
+    public String persistPerson(String personDTO)
     {
-        Person p = GSON.fromJson(person, Person.class); //Converts the request from a JSON string to a Java Entity
-        Person pManaged = FACADE.persistPerson(p); //Persists the object to the database
-        return GSON.toJson(new PersonDTO(pManaged)); //Returns the managed object as a DTO
+        PersonDTO pDTO = GSON.fromJson(personDTO, PersonDTO.class); //Converts the request from a JSON string to a DTO
+        Person pManaged = FACADE.persistPerson(                     //Persists the object to the database
+                new Person(pDTO.getFirstName(), pDTO.getLastName(), pDTO.getEmail()));
+        return GSON.toJson(new PersonDTO(pManaged));                //Returns the managed object as a DTO
     }
 
     @DELETE
