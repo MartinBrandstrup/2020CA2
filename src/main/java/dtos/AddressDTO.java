@@ -19,6 +19,8 @@ public class AddressDTO
 
     private int id;
     private String street, additionalInfo;
+    private String city;
+    private String zip;
     List<String> persons = new ArrayList();
 
     public AddressDTO(Address a)
