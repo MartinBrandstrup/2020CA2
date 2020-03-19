@@ -130,17 +130,17 @@ public class AddressFacadeTest {
 
     }
 
-//    @Test
-//    public void getAddressDTOById() {
-//         System.out.println("GetAddressById");
-//        AddressFacade adrF = facade;
-//        int AdressID = adrF.persistAddress(adr3).getId();
-//        System.out.println(AdressID);
-//        adrDTO3.setId(AdressID);
-//        AddressDTO res = facade.getAddressDTOById(AdressID);
-//        assertEquals(adrDTO3, res, "Expects adr3");
-//
-//    }
+    @Test
+    public void getAddressDTOById() {
+         System.out.println("GetAddressById");
+        AddressFacade adrF = facade;
+        int addressID = adrF.persistAddress(adr3).getId();
+        System.out.println(addressID);
+        adrDTO3.setId(addressID);
+        AddressDTO res = facade.getAddressDTOById(addressID);
+        assertEquals(adrDTO3, res, "Expects adr3");
+        //sammenling id
+    }
 
 //    @Test
 //    public void getAddressDTOByPhone(Phone arg0) {
