@@ -2,6 +2,7 @@ package facades;
 
 import dtos.HobbyDTO;
 import entities.Hobby;
+import exceptions.NoObjectException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
@@ -71,23 +72,14 @@ public class HobbyFacadeTest
     @BeforeEach
     public void setUp()
     {
-        if (!(hobbyList.isEmpty()))
+        if (!(this.hobbyList.isEmpty()))
         {
-            hobbyList.clear();
+            this.hobbyList.clear();
         }
 
-        hobbyList = facade.populateDatabaseWithHobbies(numberOfEntries);
+        this.hobbyList = facade.populateDatabaseWithHobbies(numberOfEntries);
 
-//        hobbyList.sort((Hobby h1, Hobby h2) -> h1.getId() - h2.getId());
-        //Lambda expressions not supported??
-        Collections.sort(hobbyList, new Comparator<Hobby>()
-        {
-            @Override
-            public int compare(Hobby h1, Hobby h2)
-            {
-                return h1.getId() - h2.getId();
-            }
-        });
+        hobbyList.sort((Hobby h1, Hobby h2) -> h1.getId() - h2.getId());
     }
 
     @AfterEach
@@ -120,7 +112,7 @@ public class HobbyFacadeTest
     }
 
     @Test
-    public void getHobbyByIDTest()
+    public void getHobbyByIDTest() throws NoObjectException
     {
         List<HobbyDTO> databaseContent = facade.getAllHobbies();
         int databaseIdOffset = databaseContent.get(databaseContent.size() - 1).getId();
@@ -129,7 +121,7 @@ public class HobbyFacadeTest
     }
 
     @Test
-    public void getHobbyDTOByIDTest()
+    public void getHobbyDTOByIDTest() throws NoObjectException
     {
         List<HobbyDTO> databaseContent = facade.getAllHobbies();
         int databaseIdOffset = databaseContent.get(databaseContent.size() - 1).getId();
