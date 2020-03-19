@@ -18,33 +18,33 @@ public class PersonDTO
 {
 
     private int id;
-    private String firstName;
-    private String lastName;
-    private String street;
-    private String city;
-    private String zip;
-    private List<String> phones;
-    private List<String> hobbies;
+    private String firstName, lastName, email, street, city, zip;
+    private List<String> phones, hobbies;
 
-    public PersonDTO(Person person)
+    public PersonDTO(Person p)
     {
-        this.id = person.getId();
-        this.firstName = person.getFirstName();
-        this.street = person.getAddress().getStreet();
-        this.city = person.getAddress().getCityInfo().getCity();
-        this.zip = String.valueOf(person.getAddress().getCityInfo().getZipCode());
-
-        if (person.getHobbies() != null)
+        this.id = p.getId();
+        this.firstName = p.getFirstName();
+        this.lastName = p.getLastName();
+        this.email = p.getEmail();
+        if (p.getAddress() != null)
         {
-            for (Hobby hobby : person.getHobbies())
+            this.street = p.getAddress().getStreet();
+            this.city = p.getAddress().getCityInfo().getCity();
+            this.zip = String.valueOf(p.getAddress().getCityInfo().getZipCode());
+        }
+
+        if (!(p.getHobbies() == null && p.getHobbies().isEmpty()))
+        {
+            for (Hobby hobby : p.getHobbies())
             {
                 this.hobbies.add(hobby.toString());
             }
         }
 
-        if (person.getPhones() != null)
+        if (!(p.getPhones() == null && p.getPhones().isEmpty()))
         {
-            for (Phone phone : person.getPhones())
+            for (Phone phone : p.getPhones())
             {
                 this.phones.add(phone.toString());
             }
@@ -100,6 +100,16 @@ public class PersonDTO
     public void setLastName(String lastName)
     {
         this.lastName = lastName;
+    }
+
+    public String getEmail()
+    {
+        return email;
+    }
+
+    public void setEmail(String email)
+    {
+        this.email = email;
     }
 
     public String getStreet()
