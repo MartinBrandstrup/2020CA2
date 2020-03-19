@@ -12,6 +12,7 @@ import entities.Address;
 import entities.Hobby;
 import entities.Person;
 import exceptions.DatabaseException;
+import exceptions.NoObjectException;
 import exceptions.ORMException;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -109,18 +110,23 @@ public class MasterFacade
             em.close();
         }
     }
-
-    public AddressDTO couplePersonToAddress(int addressId, int personId) throws ORMException, CouplingException
+    
+    private static boolean contains(final int[] arr, final int key)
     {
-        Person person = personFacade.getPersonById(personId);
+        return Arrays.stream(arr).anyMatch(i -> i == key);
+    }
+
+    public AddressDTO couplePersonToAddress(int personId, int addressId) throws ORMException, CouplingException, NoObjectException
+    {
+        Person p = personFacade.getPersonById(personId);
         AddressDTO aDTO;
 
-        if (person.getAddress() != null)
+        if (p.getAddress() != null)
         {
-            addressFacade.removePersonFromAddress(addressId, person);
+            addressFacade.removePersonFromAddress(addressId, p);
         }
 
-        aDTO = addressFacade.addPersonToAddress(addressId, person);
+        aDTO = addressFacade.addPersonToAddress(addressId, p);
 
         if (aDTO == null)
         {
@@ -129,12 +135,7 @@ public class MasterFacade
         return aDTO;
     }
 
-    public static boolean contains(final int[] arr, final int key)
-    {
-        return Arrays.stream(arr).anyMatch(i -> i == key);
-    }
-
-    public AddressDTO couplePersonsToAddress(int addressId, int[] personIds) throws ORMException, CouplingException
+    public AddressDTO couplePersonsToAddress(int[] personIds, int addressId) throws ORMException, CouplingException
     {
         EntityManager em = getEntityManager();
         AddressDTO aDTO = null;
@@ -156,14 +157,14 @@ public class MasterFacade
 //        {
 //            personList.add(p);
 //        }
-        for (Person person : personList)
+        for (Person p : personList)
         {
-            if (person.getAddress() != null)
+            if (p.getAddress() != null)
             {
-                addressFacade.removePersonFromAddress(addressId, person);
+                addressFacade.removePersonFromAddress(addressId, p);
             }
 
-            aDTO = addressFacade.addPersonToAddress(addressId, person);
+            aDTO = addressFacade.addPersonToAddress(addressId, p);
         }
 
         if (aDTO == null)
@@ -174,4 +175,56 @@ public class MasterFacade
         return aDTO;
     }
 
+    public PersonDTO coupleHobbiesToPerson(int[] hobbyIds, int personId) throws ORMException, CouplingException
+    {
+        EntityManager em = getEntityManager();
+        PersonDTO pDTO = null;
+        List<Hobby> hobbyList = new ArrayList<>();
+        Person p = em.find(Person.class, personId);
+
+        TypedQuery<Hobby> query
+                = em.createQuery("SELECT h FROM Hobby h", Hobby.class);
+        for (Hobby h : query.getResultList())
+        {
+            if (contains(hobbyIds, h.getId()))
+            {
+                hobbyList.add(h);
+            }
+        }
+        
+        for (Hobby h : hobbyList)
+        {
+            if (!(h.getPersons().contains(p) && p.getHobbies().contains(h)))
+            {
+                pDTO = personFacade.addHobbyToPerson(personId, h);
+            }
+        }
+
+        if (pDTO == null)
+        {
+            throw new CouplingException("Return value of coupleHobbiesToPerson is null.");
+        }
+
+        return pDTO;
+    }
+    
+    public PersonDTO removeHobbyFromPerson(int hobbyId, int personId) throws ORMException, CouplingException, NoObjectException
+    {
+        PersonDTO pDTO = null;
+        Hobby h = hobbyFacade.getHobbyById(hobbyId);
+        
+        if(h.getPersons() == null || h.getPersons().isEmpty())
+        {
+            throw new ORMException("The provided Hobby does not contain any Person relations.");
+        }
+        
+        pDTO = personFacade.removeHobbyFromPerson(personId, h);
+        
+        if (pDTO == null)
+        {
+            throw new CouplingException("Return value of coupleHobbiesToPerson is null.");
+        }
+        
+        return pDTO;
+    }
 }

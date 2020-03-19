@@ -11,6 +11,7 @@ import entities.Address;
 import entities.Hobby;
 import exceptions.CouplingException;
 import exceptions.DatabaseException;
+import exceptions.NoObjectException;
 import exceptions.ORMException;
 import utils.EMF_Creator;
 import facades.HobbyFacade;
@@ -54,10 +55,10 @@ public class MasterResource
     }
 
     @PUT
-    @Path("/personToAddress/{aId}/{pId}")
+    @Path("/personToAddress/{pId}/{aId}")
     @Produces(MediaType.APPLICATION_JSON)
-    public String couplePersonToAddress(@PathParam("aId") int addressId,
-            @PathParam("pId") int personId)
+    public String couplePersonToAddress(@PathParam("pId") int personId, 
+            @PathParam("aId") int addressId)
     {
         try
         {
@@ -67,6 +68,10 @@ public class MasterResource
         catch (ORMException | CouplingException ex)
         {
             return ex.getMessage();
+        }
+        catch (NoObjectException ex)
+        {
+            return ex.getMessage() + " Wrong input.";
         }
     }
 
@@ -79,12 +84,51 @@ public class MasterResource
         int[] idList = GSON.fromJson(personIds, int[].class);
         try
         {
-            AddressDTO aDTO = FACADE.couplePersonsToAddress(addressId, idList);
+            AddressDTO aDTO = FACADE.couplePersonsToAddress(idList, addressId);
             return GSON.toJson(aDTO);
         }
         catch (ORMException | CouplingException ex)
         {
             return ex.getMessage();
+        }
+    }
+    
+    @PUT
+    @Path("/hobbiesToPerson/{pId}")
+    @Consumes(MediaType.APPLICATION_JSON)
+    @Produces(MediaType.APPLICATION_JSON)
+    public String coupleHobbiesToPerson(@PathParam("pId") int personId, String hobbyIds)
+    {
+        int[] idList = GSON.fromJson(hobbyIds, int[].class);
+        try
+        {
+            PersonDTO pDTO = FACADE.coupleHobbiesToPerson(idList, personId);
+            return GSON.toJson(pDTO);
+        }
+        catch (ORMException | CouplingException ex)
+        {
+            return ex.getMessage();
+        }
+    }
+    
+    @PUT
+    @Path("/hobbyFromPerson/{hId}/{pId}")
+    @Produces(MediaType.APPLICATION_JSON)
+    public String removeHobbyFromPerson(@PathParam("hId") int hobbyId, 
+            @PathParam("pId") int personId)
+    {
+        try
+        {
+            PersonDTO pDTO = FACADE.removeHobbyFromPerson(hobbyId, personId);
+            return GSON.toJson(pDTO);
+        }
+        catch (ORMException | CouplingException ex)
+        {
+            return ex.getMessage();
+        }
+        catch (NoObjectException ex)
+        {
+            return ex.getMessage() + " Wrong input.";
         }
     }
 
