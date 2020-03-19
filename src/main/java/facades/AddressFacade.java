@@ -14,7 +14,10 @@ import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.TypedQuery;
-
+/**
+ *
+ * @author Christian
+ */
 public class AddressFacade {
 
     private static AddressFacade instance;
