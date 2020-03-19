@@ -18,21 +18,21 @@ public class PersonDTO
 {
 
     private int id;
-    private String firstName;
-    private String lastName;
-    private String street;
-    private String city;
-    private String zip;
-    private List<String> phones;
-    private List<String> hobbies;
+    private String firstName, lastName, email, street, city, zip;
+    private List<String> phones, hobbies;
 
     public PersonDTO(Person person)
     {
         this.id = person.getId();
         this.firstName = person.getFirstName();
-        this.street = person.getAddress().getStreet();
-        this.city = person.getAddress().getCityInfo().getCity();
-        this.zip = String.valueOf(person.getAddress().getCityInfo().getZipCode());
+        this.lastName = person.getLastName();
+        this.email = person.getEmail();
+        if (person.getAddress() != null)
+        {
+            this.street = person.getAddress().getStreet();
+            this.city = person.getAddress().getCityInfo().getCity();
+            this.zip = String.valueOf(person.getAddress().getCityInfo().getZipCode());
+        }
 
         if (person.getHobbies() != null)
         {

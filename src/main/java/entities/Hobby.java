@@ -26,11 +26,10 @@ public class Hobby implements Serializable
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
     @Column(nullable = false, unique = true)
-    private String name;
-    private String description;
+    private String name, description;
 
     @ManyToMany(mappedBy = "hobbies")
-    private Set<Person> persons = new HashSet();
+    private Set<Person> persons;
 
     @Override
     public int hashCode()
@@ -77,6 +76,7 @@ public class Hobby implements Serializable
     {
         this.name = name;
         this.description = description;
+        this.persons = new HashSet();
     }
 
     public int getId()
@@ -117,7 +117,8 @@ public class Hobby implements Serializable
     @Override
     public String toString()
     {
-        return "Hobby{" + "name=" + name + ", description=" + description + '}';
+        return "{ \"id\":\"" + id + "\", \"name\":\"" + name 
+                + "\", \"description\":\"" + description + " }";
     }
 
 }

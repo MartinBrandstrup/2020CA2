@@ -42,18 +42,14 @@ public interface IPersonFacade
 
     public Person deletePersonById(int id);
 
-    public Person editPerson(Person person);
+    public Person editPerson(int oldPersonId, Person newPerson);
 
-    public PersonDTO addHobbiesToPerson(Person person, List<Hobby> hobbies);
+    public PersonDTO addHobbiesToPerson(int personId, List<Hobby> hobbies);
 
-    public PersonDTO addPhonesToPerson(Person person, List<Phone> hobbies);
+    public PersonDTO addPhonesToPerson(int personId, List<Phone> hobbies);
 
-    public PersonDTO addAddressToPerson(Person person, Address address);
-    
-    public PersonDTO removeHobbyFromPerson(Person person, Hobby hobby);
+    public PersonDTO removeHobbyFromPerson(int personId, Hobby hobby);
 
-    public PersonDTO removePhoneFromPerson(Person person, Phone phone);
-
-    public PersonDTO removeAddressFromPerson(Person person, Address address);
+    public PersonDTO removePhoneFromPerson(int personId, Phone phone);
 
 }

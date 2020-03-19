@@ -2,12 +2,18 @@ package rest;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import dtos.AddressDTO;
 import dtos.HobbyDTO;
+import dtos.PersonDTO;
+import entities.Address;
 import entities.Hobby;
+import exceptions.DatabaseException;
 import utils.EMF_Creator;
 import facades.HobbyFacade;
 import facades.MasterFacade;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.persistence.EntityManagerFactory;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.DELETE;
@@ -42,12 +48,31 @@ public class MasterResource
         return "{\"msg\":\"Hello World\"}";
     }
 
-    @POST
+    @PUT
+    @Path("/personToAddress/{aId}/{pId}")
     @Produces(MediaType.APPLICATION_JSON)
-    public String test()
+    public String couplePersonToAddress(@PathParam("aId") int addressId, 
+            @PathParam("pId") int personId)
     {
-        FACADE.tempMethodToTest();
-        return "{\"msg\":\"Test method success?\"}";
+        AddressDTO aDTO;
+        try
+        {
+            aDTO = FACADE.couplePersonToAddress(addressId, personId);
+        }
+        catch (DatabaseException ex)
+        {
+            return ex.getMessage();
+        }
+        return GSON.toJson(aDTO);
+    }
+    
+    @POST
+    @Path("/populate")
+    @Produces(MediaType.APPLICATION_JSON)
+    public String populate()
+    {
+        String res = FACADE.populateDatabaseWithTestData();
+        return GSON.toJson(res);
     }
 
 }

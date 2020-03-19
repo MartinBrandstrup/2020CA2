@@ -71,12 +71,12 @@ public class HobbyFacadeTest
     @BeforeEach
     public void setUp()
     {
-        if (!(hobbyList.isEmpty()))
+        if (!(this.hobbyList.isEmpty()))
         {
-            hobbyList.clear();
+            this.hobbyList.clear();
         }
 
-        hobbyList = facade.populateDatabaseWithHobbies(numberOfEntries);
+        this.hobbyList = facade.populateDatabaseWithHobbies(numberOfEntries);
 
 //        hobbyList.sort((Hobby h1, Hobby h2) -> h1.getId() - h2.getId());
         //Lambda expressions not supported??

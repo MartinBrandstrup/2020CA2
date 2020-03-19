@@ -6,6 +6,7 @@ import dtos.HobbyDTO;
 import entities.Hobby;
 import utils.EMF_Creator;
 import facades.HobbyFacade;
+import java.util.ArrayList;
 import java.util.List;
 import javax.persistence.EntityManagerFactory;
 import javax.ws.rs.Consumes;
@@ -45,7 +46,7 @@ public class HobbyResource
         return "{\"msg\":\"Hello World\"}";
     }
 
-    @Path("count")
+    @Path("/count")
     @GET
     @Produces(MediaType.APPLICATION_JSON)
     public String getHobbyCount()
@@ -88,7 +89,6 @@ public class HobbyResource
     }
 
     @POST
-    @Path("/new")
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
     public String persistHobby(String hobby)
@@ -99,7 +99,6 @@ public class HobbyResource
     }
 
     @DELETE
-    @Path("/delete")
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
     public String deleteHobby(String hobbyDTO)
@@ -111,7 +110,7 @@ public class HobbyResource
     }
 
     @DELETE
-    @Path("/delete/{id}")
+    @Path("/{id}")
     @Produces(MediaType.APPLICATION_JSON)
     public String deleteHobbyById(@PathParam("id") int id)
     {
@@ -120,10 +119,10 @@ public class HobbyResource
     }
 
     @PUT
-    @Path("/edit/{id}")
+    @Path("/{id}")
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
-    public String editHobby(@PathParam("id") int id, String hobby)
+    public String editHobbyById(@PathParam("id") int id, String hobby)
     {
         Hobby h = GSON.fromJson(hobby, Hobby.class);
         Hobby editedHobby = FACADE.editHobby(id, h);
@@ -135,8 +134,14 @@ public class HobbyResource
     @Produces(MediaType.APPLICATION_JSON)
     public String populate(@PathParam("numberOfEntries") int numberOfEntries)
     {
-        FACADE.populateDatabaseWithHobbies(numberOfEntries);
-        return "{\"msg\":\"Database has been populated with " + numberOfEntries + " Hobbies!\"}";
+        List<HobbyDTO> hDTOList = new ArrayList();
+        List<Hobby> hList = FACADE.populateDatabaseWithHobbies(numberOfEntries);
+        for (Hobby hobby : hList)
+        {
+            hDTOList.add(new HobbyDTO(hobby));
+        }
+        return GSON.toJson(hDTOList);
+//        return "{\"msg\":\"Database has been populated with " + numberOfEntries + " Hobbies!\"}";
     }
 
 }
