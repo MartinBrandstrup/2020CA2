@@ -29,7 +29,8 @@ public class Address implements Serializable
     private int id;
 
     @Column(nullable = false, unique = true)
-    private String street, additionalInfo;
+    private String street;
+    private String additionalInfo;
 
     @ManyToOne
     private CityInfo cityInfo;
@@ -85,6 +86,7 @@ public class Address implements Serializable
     {
         this.street = street;
         this.additionalInfo = additionalInfo;
+        this.cityInfo = null;
         this.persons = new HashSet();
     }
 
