@@ -7,13 +7,11 @@ package exceptions;
 
 /**
  *
- * @author Brandstrup
+ * @author Christian
  */
-public class DatabaseException extends Exception
-{
-    public DatabaseException(String msg)
-    {
+public class missingInputException extends Exception {
+
+    public missingInputException(String msg) {
         super(msg);
     }
-    
 }

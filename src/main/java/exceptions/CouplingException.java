@@ -9,9 +9,10 @@ package exceptions;
  *
  * @author Brandstrup
  */
-public class DatabaseException extends Exception
+public class CouplingException extends Exception
 {
-    public DatabaseException(String msg)
+
+    public CouplingException(String msg)
     {
         super(msg);
     }

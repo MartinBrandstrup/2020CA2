@@ -9,9 +9,10 @@ package exceptions;
  *
  * @author Brandstrup
  */
-public class DatabaseException extends Exception
+public class NoObjectException extends Exception
 {
-    public DatabaseException(String msg)
+
+    public NoObjectException(String msg)
     {
         super(msg);
     }

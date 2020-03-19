@@ -5,19 +5,23 @@
  */
 package facades;
 
+import exceptions.CouplingException;
 import dtos.AddressDTO;
 import dtos.PersonDTO;
 import entities.Address;
 import entities.Hobby;
 import entities.Person;
 import exceptions.DatabaseException;
+import exceptions.NoObjectException;
 import exceptions.ORMException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
+import javax.persistence.TypedQuery;
 
 /**
  *
@@ -106,21 +110,121 @@ public class MasterFacade
             em.close();
         }
     }
-
-    public AddressDTO couplePersonToAddress(int addressId, int personId) throws ORMException
+    
+    private static boolean contains(final int[] arr, final int key)
     {
-        Person person = personFacade.getPersonById(personId);
+        return Arrays.stream(arr).anyMatch(i -> i == key);
+    }
+
+    public AddressDTO couplePersonToAddress(int personId, int addressId) throws ORMException, CouplingException, NoObjectException
+    {
+        Person p = personFacade.getPersonById(personId);
         AddressDTO aDTO;
-        try
+
+        if (p.getAddress() != null)
         {
-            aDTO = addressFacade.addPersonToAddress(addressId, person);
+            addressFacade.removePersonFromAddress(addressId, p);
         }
-        catch (ORMException ex)
+
+        aDTO = addressFacade.addPersonToAddress(addressId, p);
+
+        if (aDTO == null)
         {
-            addressFacade.removePersonFromAddress(person.getAddress().getId(), person);
-            aDTO = addressFacade.addPersonToAddress(addressId, person);
+            throw new CouplingException("Return value of couplePersonToAddress is null.");
         }
         return aDTO;
     }
 
+    public AddressDTO couplePersonsToAddress(int[] personIds, int addressId) throws ORMException, CouplingException
+    {
+        EntityManager em = getEntityManager();
+        AddressDTO aDTO = null;
+        List<Person> personList = new ArrayList<>();
+
+        TypedQuery<Person> query
+                = em.createQuery("SELECT p FROM Person p", Person.class);
+        for (Person p : query.getResultList())
+        {
+            if (contains(personIds, p.getId()))
+            {
+                personList.add(p);
+            }
+        }
+//        TypedQuery<Person> query
+//                = em.createQuery("SELECT p FROM Person p WHERE p.id IN (:ids)",
+//                        Person.class).setParameter("ids", Arrays.asList(personIds));
+//        for (Person p : query.getResultList())
+//        {
+//            personList.add(p);
+//        }
+        for (Person p : personList)
+        {
+            if (p.getAddress() != null)
+            {
+                addressFacade.removePersonFromAddress(addressId, p);
+            }
+
+            aDTO = addressFacade.addPersonToAddress(addressId, p);
+        }
+
+        if (aDTO == null)
+        {
+            throw new CouplingException("Return value of couplePersonsToAddress is null.");
+        }
+
+        return aDTO;
+    }
+
+    public PersonDTO coupleHobbiesToPerson(int[] hobbyIds, int personId) throws ORMException, CouplingException
+    {
+        EntityManager em = getEntityManager();
+        PersonDTO pDTO = null;
+        List<Hobby> hobbyList = new ArrayList<>();
+        Person p = em.find(Person.class, personId);
+
+        TypedQuery<Hobby> query
+                = em.createQuery("SELECT h FROM Hobby h", Hobby.class);
+        for (Hobby h : query.getResultList())
+        {
+            if (contains(hobbyIds, h.getId()))
+            {
+                hobbyList.add(h);
+            }
+        }
+        
+        for (Hobby h : hobbyList)
+        {
+            if (!(h.getPersons().contains(p) && p.getHobbies().contains(h)))
+            {
+                pDTO = personFacade.addHobbyToPerson(personId, h);
+            }
+        }
+
+        if (pDTO == null)
+        {
+            throw new CouplingException("Return value of coupleHobbiesToPerson is null.");
+        }
+
+        return pDTO;
+    }
+    
+    public PersonDTO removeHobbyFromPerson(int hobbyId, int personId) throws ORMException, CouplingException, NoObjectException
+    {
+        PersonDTO pDTO = null;
+        Hobby h = hobbyFacade.getHobbyById(hobbyId);
+        
+        if(h.getPersons() == null || h.getPersons().isEmpty())
+        {
+            throw new ORMException("The provided Hobby does not contain any Person relations.");
+        }
+        
+        pDTO = personFacade.removeHobbyFromPerson(personId, h);
+        
+        if (pDTO == null)
+        {
+            throw new CouplingException("Return value of coupleHobbiesToPerson is null.");
+        }
+        
+        return pDTO;
+    }
 }

@@ -21,30 +21,30 @@ public class PersonDTO
     private String firstName, lastName, email, street, city, zip;
     private List<String> phones, hobbies;
 
-    public PersonDTO(Person person)
+    public PersonDTO(Person p)
     {
-        this.id = person.getId();
-        this.firstName = person.getFirstName();
-        this.lastName = person.getLastName();
-        this.email = person.getEmail();
-        if (person.getAddress() != null)
+        this.id = p.getId();
+        this.firstName = p.getFirstName();
+        this.lastName = p.getLastName();
+        this.email = p.getEmail();
+        if (p.getAddress() != null)
         {
-            this.street = person.getAddress().getStreet();
-            this.city = person.getAddress().getCityInfo().getCity();
-            this.zip = String.valueOf(person.getAddress().getCityInfo().getZipCode());
+            this.street = p.getAddress().getStreet();
+            this.city = p.getAddress().getCityInfo().getCity();
+            this.zip = String.valueOf(p.getAddress().getCityInfo().getZipCode());
         }
 
-        if (person.getHobbies() != null)
+        if (!(p.getHobbies() == null && p.getHobbies().isEmpty()))
         {
-            for (Hobby hobby : person.getHobbies())
+            for (Hobby hobby : p.getHobbies())
             {
                 this.hobbies.add(hobby.toString());
             }
         }
 
-        if (person.getPhones() != null)
+        if (!(p.getPhones() == null && p.getPhones().isEmpty()))
         {
-            for (Phone phone : person.getPhones())
+            for (Phone phone : p.getPhones())
             {
                 this.phones.add(phone.toString());
             }
