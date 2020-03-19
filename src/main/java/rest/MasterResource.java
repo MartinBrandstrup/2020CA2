@@ -7,6 +7,7 @@ import dtos.HobbyDTO;
 import dtos.PersonDTO;
 import entities.Address;
 import entities.Hobby;
+import exceptions.CouplingException;
 import exceptions.DatabaseException;
 import exceptions.ORMException;
 import utils.EMF_Creator;
@@ -52,21 +53,38 @@ public class MasterResource
     @PUT
     @Path("/personToAddress/{aId}/{pId}")
     @Produces(MediaType.APPLICATION_JSON)
-    public String couplePersonToAddress(@PathParam("aId") int addressId, 
+    public String couplePersonToAddress(@PathParam("aId") int addressId,
             @PathParam("pId") int personId)
     {
-        AddressDTO aDTO;
         try
         {
-            aDTO = FACADE.couplePersonToAddress(addressId, personId);
+            AddressDTO aDTO = FACADE.couplePersonToAddress(addressId, personId);
+            return GSON.toJson(aDTO);
         }
-        catch (ORMException ex)
+        catch (ORMException | CouplingException ex)
         {
             return ex.getMessage();
         }
-        return GSON.toJson(aDTO);
     }
-    
+
+    @PUT
+    @Path("/personsToAddress/{aId}")
+    @Consumes(MediaType.APPLICATION_JSON)
+    @Produces(MediaType.APPLICATION_JSON)
+    public String couplePersonsToAddress(@PathParam("aId") int addressId, String personIds)
+    {
+        int[] ids = GSON.fromJson(personIds, int[].class);
+        try
+        {
+            AddressDTO aDTO = FACADE.couplePersonsToAddress(addressId, ids);
+            return GSON.toJson(aDTO);
+        }
+        catch (ORMException | CouplingException ex)
+        {
+            return ex.getMessage();
+        }
+    }
+
     @POST
     @Path("/populate")
     @Produces(MediaType.APPLICATION_JSON)

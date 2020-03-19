@@ -5,6 +5,7 @@
  */
 package facades;
 
+import exceptions.CouplingException;
 import dtos.AddressDTO;
 import dtos.PersonDTO;
 import entities.Address;
@@ -18,6 +19,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
+import javax.persistence.TypedQuery;
 
 /**
  *
@@ -107,10 +109,11 @@ public class MasterFacade
         }
     }
 
-    public AddressDTO couplePersonToAddress(int addressId, int personId) throws ORMException
+    public AddressDTO couplePersonToAddress(int addressId, int personId) throws ORMException, CouplingException
     {
         Person person = personFacade.getPersonById(personId);
         AddressDTO aDTO;
+        
         try
         {
             aDTO = addressFacade.addPersonToAddress(addressId, person);
@@ -120,6 +123,48 @@ public class MasterFacade
             addressFacade.removePersonFromAddress(person.getAddress().getId(), person);
             aDTO = addressFacade.addPersonToAddress(addressId, person);
         }
+        
+        if (aDTO == null)
+        {
+            throw new CouplingException("Return value of couplePersonToAddress is null.");
+        }
+        return aDTO;
+    }
+
+    public AddressDTO couplePersonsToAddress(int addressId, int[] personIds) throws ORMException, CouplingException
+    {
+        EntityManager em = getEntityManager();
+        AddressDTO aDTO = null;
+        List<Person> personList = new ArrayList<>();
+
+        TypedQuery<Person> query
+                = em.createQuery("SELECT p FROM Person p WHERE p.id IN :ids",
+                        Person.class).setParameter("ids", personIds);
+
+        for (Person p : query.getResultList())
+        {
+            personList.add(p);
+        }
+
+        for (Person person : personList)
+        {
+            try
+            {
+                aDTO = addressFacade.addPersonToAddress(addressId, person);
+            }
+            catch (ORMException ex)
+            {
+                addressFacade.removePersonFromAddress(person.getAddress().getId(), person);
+                aDTO = addressFacade.addPersonToAddress(addressId, person);
+            }
+
+        }
+
+        if (aDTO == null)
+        {
+            throw new CouplingException("Return value of couplePersonsToAddress is null.");
+        }
+
         return aDTO;
     }
 
