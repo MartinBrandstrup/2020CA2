@@ -29,8 +29,8 @@ public class Address implements Serializable
     private int id;
 
     @Column(nullable = false, unique = true)
-    private String Street;
-    private String AdditionalInfo;
+    private String street;
+    private String additionalInfo;
 
     @ManyToOne
     private CityInfo cityInfo;
@@ -39,12 +39,12 @@ public class Address implements Serializable
     {
         CascadeType.MERGE, CascadeType.PERSIST
     })
-    private Set<Person> persons = new HashSet();
+    private Set<Person> persons;
 
     @Override
     public int hashCode()
     {
-        return Objects.hash(this.Street);
+        return Objects.hash(this.street);
     }
 
     @Override
@@ -63,7 +63,7 @@ public class Address implements Serializable
             return false;
         }
         final Address other = (Address) obj;
-        if (!Objects.equals(this.Street, other.Street))
+        if (!Objects.equals(this.street, other.street))
         {
             return false;
         }
@@ -78,14 +78,16 @@ public class Address implements Serializable
      * When initializing this object, remember to populate with Person Entities
      * according to the OneToMany relation (HashSet) using the addPerson method.
      *
-     * @param Street The street name for this address. Is mapped as unique in
+     * @param street The street name for this address. Is mapped as unique in
      * the database.
-     * @param AdditionalInfo Optional information about this address.
+     * @param additionalInfo Optional information about this address.
      */
-    public Address(String Street, String AdditionalInfo)
+    public Address(String street, String additionalInfo)
     {
-        this.Street = Street;
-        this.AdditionalInfo = AdditionalInfo;
+        this.street = street;
+        this.additionalInfo = additionalInfo;
+        this.cityInfo = null;
+        this.persons = new HashSet();
     }
 
     public int getId()
@@ -100,22 +102,22 @@ public class Address implements Serializable
 
     public String getStreet()
     {
-        return Street;
+        return street;
     }
 
-    public void setStreet(String Street)
+    public void setStreet(String street)
     {
-        this.Street = Street;
+        this.street = street;
     }
 
     public String getAdditionalInfo()
     {
-        return AdditionalInfo;
+        return additionalInfo;
     }
 
-    public void setAdditionalInfo(String AdditionalInfo)
+    public void setAdditionalInfo(String additionalInfo)
     {
-        this.AdditionalInfo = AdditionalInfo;
+        this.additionalInfo = additionalInfo;
     }
 
     public CityInfo getCityInfo()
@@ -148,7 +150,9 @@ public class Address implements Serializable
     @Override
     public String toString()
     {
-        return "Address{" + "Street=" + Street + ", AdditionalInfo=" + AdditionalInfo + ", cityInfo=" + cityInfo + '}';
+        return "{ \"id\":\"" + id + "\", \"street\":\"" + street 
+                + "\", \"additionalInfo\":\"" + additionalInfo 
+                + "\", \"city\":\"" + cityInfo.getCity() + " }";
     }
 
 }
