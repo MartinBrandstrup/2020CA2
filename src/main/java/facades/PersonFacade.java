@@ -164,7 +164,7 @@ public class PersonFacade implements IPersonFacade
      * Attempts to persist a Person object to the database. Returns the persisted
      * object if successful; null if the operation fails.
      *
-     * @param hobby The Person object to persist.
+     * @param person The Person object to persist.
      * @return the Person object after it has been managed by the Entity Manager.
      */
     @Override

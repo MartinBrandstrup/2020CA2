@@ -11,6 +11,7 @@ import entities.Address;
 import entities.Hobby;
 import entities.Person;
 import exceptions.DatabaseException;
+import exceptions.ORMException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
@@ -106,7 +107,7 @@ public class MasterFacade
         }
     }
 
-    public AddressDTO couplePersonToAddress(int addressId, int personId) throws DatabaseException
+    public AddressDTO couplePersonToAddress(int addressId, int personId) throws ORMException
     {
         Person person = personFacade.getPersonById(personId);
         AddressDTO aDTO;
@@ -114,7 +115,7 @@ public class MasterFacade
         {
             aDTO = addressFacade.addPersonToAddress(addressId, person);
         }
-        catch (DatabaseException ex)
+        catch (ORMException ex)
         {
             addressFacade.removePersonFromAddress(person.getAddress().getId(), person);
             aDTO = addressFacade.addPersonToAddress(addressId, person);
