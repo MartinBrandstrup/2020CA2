@@ -2,6 +2,7 @@ package facades;
 
 import dtos.HobbyDTO;
 import entities.Hobby;
+import exceptions.NoObjectException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
@@ -111,7 +112,7 @@ public class HobbyFacadeTest
     }
 
     @Test
-    public void getHobbyByIDTest()
+    public void getHobbyByIDTest() throws NoObjectException
     {
         List<HobbyDTO> databaseContent = facade.getAllHobbies();
         int databaseIdOffset = databaseContent.get(databaseContent.size() - 1).getId();
@@ -120,7 +121,7 @@ public class HobbyFacadeTest
     }
 
     @Test
-    public void getHobbyDTOByIDTest()
+    public void getHobbyDTOByIDTest() throws NoObjectException
     {
         List<HobbyDTO> databaseContent = facade.getAllHobbies();
         int databaseIdOffset = databaseContent.get(databaseContent.size() - 1).getId();
