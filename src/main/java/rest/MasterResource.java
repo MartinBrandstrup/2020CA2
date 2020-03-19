@@ -2,12 +2,24 @@ package rest;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import com.google.gson.JsonArray;
+import com.google.gson.JsonElement;
+import dtos.AddressDTO;
 import dtos.HobbyDTO;
+import dtos.PersonDTO;
+import entities.Address;
 import entities.Hobby;
+import exceptions.CouplingException;
+import exceptions.DatabaseException;
+import exceptions.NoObjectException;
+import exceptions.ORMException;
 import utils.EMF_Creator;
 import facades.HobbyFacade;
 import facades.MasterFacade;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.persistence.EntityManagerFactory;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.DELETE;
@@ -42,12 +54,91 @@ public class MasterResource
         return "{\"msg\":\"Hello World\"}";
     }
 
-    @POST
+    @PUT
+    @Path("/personToAddress/{pId}/{aId}")
     @Produces(MediaType.APPLICATION_JSON)
-    public String test()
+    public String couplePersonToAddress(@PathParam("pId") int personId, 
+            @PathParam("aId") int addressId)
     {
-        FACADE.tempMethodToTest();
-        return "{\"msg\":\"Test method success?\"}";
+        try
+        {
+            AddressDTO aDTO = FACADE.couplePersonToAddress(addressId, personId);
+            return GSON.toJson(aDTO);
+        }
+        catch (ORMException | CouplingException ex)
+        {
+            return ex.getMessage();
+        }
+        catch (NoObjectException ex)
+        {
+            return ex.getMessage() + " Wrong input.";
+        }
+    }
+
+    @PUT
+    @Path("/personsToAddress/{aId}")
+    @Consumes(MediaType.APPLICATION_JSON)
+    @Produces(MediaType.APPLICATION_JSON)
+    public String couplePersonsToAddress(@PathParam("aId") int addressId, String personIds)
+    {
+        int[] idList = GSON.fromJson(personIds, int[].class);
+        try
+        {
+            AddressDTO aDTO = FACADE.couplePersonsToAddress(idList, addressId);
+            return GSON.toJson(aDTO);
+        }
+        catch (ORMException | CouplingException ex)
+        {
+            return ex.getMessage();
+        }
+    }
+    
+    @PUT
+    @Path("/hobbiesToPerson/{pId}")
+    @Consumes(MediaType.APPLICATION_JSON)
+    @Produces(MediaType.APPLICATION_JSON)
+    public String coupleHobbiesToPerson(@PathParam("pId") int personId, String hobbyIds)
+    {
+        int[] idList = GSON.fromJson(hobbyIds, int[].class);
+        try
+        {
+            PersonDTO pDTO = FACADE.coupleHobbiesToPerson(idList, personId);
+            return GSON.toJson(pDTO);
+        }
+        catch (ORMException | CouplingException ex)
+        {
+            return ex.getMessage();
+        }
+    }
+    
+    @PUT
+    @Path("/hobbyFromPerson/{hId}/{pId}")
+    @Produces(MediaType.APPLICATION_JSON)
+    public String removeHobbyFromPerson(@PathParam("hId") int hobbyId, 
+            @PathParam("pId") int personId)
+    {
+        try
+        {
+            PersonDTO pDTO = FACADE.removeHobbyFromPerson(hobbyId, personId);
+            return GSON.toJson(pDTO);
+        }
+        catch (ORMException | CouplingException ex)
+        {
+            return ex.getMessage();
+        }
+        catch (NoObjectException ex)
+        {
+            return ex.getMessage() + " Wrong input.";
+        }
+    }
+
+    @POST
+    @Path("/populate")
+    @Produces(MediaType.APPLICATION_JSON)
+    public String populate()
+    {
+        String res = FACADE.populateDatabaseWithTestData();
+        return GSON.toJson(res);
     }
 
 }
