@@ -8,13 +8,14 @@ package rest;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import dtos.PersonDTO;
-import entities.Hobby;
 import entities.Person;
+import exceptions.NoObjectException;
 import utils.EMF_Creator;
-import facades.FacadeExample;
 import facades.PersonFacade;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.persistence.EntityManagerFactory;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.DELETE;
@@ -48,9 +49,9 @@ public class PersonResource
 
     @GET
     @Produces(
-    {
-        MediaType.APPLICATION_JSON
-    })
+            {
+                MediaType.APPLICATION_JSON
+            })
     public String demo()
     {
         return "{\"msg\":\"Hello World\"}";
@@ -87,14 +88,14 @@ public class PersonResource
     @Produces(MediaType.APPLICATION_JSON)
     public String getPersonById(@PathParam("id") int id)
     {
-        PersonDTO pDTO = FACADE.getPersonDTOById(id);
-        if (pDTO != null)
+        try
         {
+            PersonDTO pDTO = FACADE.getPersonDTOById(id);
             return GSON.toJson(pDTO);
         }
-        else
+        catch (NoObjectException ex)
         {
-            return "{\"msg\":\"Operation getPersonById " + id + " failed\"}";
+            return ex.getMessage();
         }
     }
 
@@ -104,7 +105,7 @@ public class PersonResource
     public String persistPerson(String personDTO)
     {
         PersonDTO pDTO = GSON.fromJson(personDTO, PersonDTO.class); //Converts the request from a JSON string to a DTO
-        Person pManaged = FACADE.persistPerson(                     //Persists the object to the database
+        Person pManaged = FACADE.persistPerson( //Persists the object to the database
                 new Person(pDTO.getFirstName(), pDTO.getLastName(), pDTO.getEmail()));
         return GSON.toJson(new PersonDTO(pManaged));                //Returns the managed object as a DTO
     }
@@ -139,7 +140,7 @@ public class PersonResource
         Person editedPerson = FACADE.editPerson(id, p);
         return GSON.toJson(new PersonDTO(editedPerson));
     }
-    
+
     @POST
     @Path("/populate/{numberOfEntries}")
     @Produces(MediaType.APPLICATION_JSON)
@@ -151,7 +152,7 @@ public class PersonResource
         {
             pDTOList.add(new PersonDTO(person));
         }
-        
+
         return GSON.toJson(pDTOList);
 //        return "{\"msg\":\"Database has been populated with " + numberOfEntries + " Persons!\"}";
     }

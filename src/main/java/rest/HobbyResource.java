@@ -4,10 +4,13 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import dtos.HobbyDTO;
 import entities.Hobby;
+import exceptions.NoObjectException;
 import utils.EMF_Creator;
 import facades.HobbyFacade;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.persistence.EntityManagerFactory;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.DELETE;
@@ -20,7 +23,7 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 
 /**
- * 
+ *
  * @author Brandstrup
  */
 @Path("hobby")
@@ -77,14 +80,14 @@ public class HobbyResource
     @Produces(MediaType.APPLICATION_JSON)
     public String getHobbyByID(@PathParam("id") int id)
     {
-        HobbyDTO hDTO = FACADE.getHobbyDTOById(id);
-        if (hDTO != null)
+        try
         {
+            HobbyDTO hDTO = FACADE.getHobbyDTOById(id);
             return GSON.toJson(hDTO);
         }
-        else
+        catch (NoObjectException ex)
         {
-            return "{\"msg\":\"Operation getHobbyByID " + id + " failed\"}";
+            return ex.getMessage();
         }
     }
 
@@ -94,7 +97,7 @@ public class HobbyResource
     public String persistHobby(String hobbyDTO)
     {
         HobbyDTO hDTO = GSON.fromJson(hobbyDTO, HobbyDTO.class);     //Converts the request from a JSON string to a DTO
-        Hobby hManaged = FACADE.persistHobby(                        //Persists the object to the database
+        Hobby hManaged = FACADE.persistHobby( //Persists the object to the database
                 new Hobby(hDTO.getName(), hDTO.getDescription()));
         return GSON.toJson(new HobbyDTO(hManaged));                  //Returns the managed object as a DTO
     }
