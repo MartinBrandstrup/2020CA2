@@ -1,5 +1,6 @@
 package facades;
 
+import exceptions.ORMException;
 import exceptions.DatabaseException;
 import dtos.AddressDTO;
 import dtos.PersonDTO;
@@ -225,7 +226,7 @@ public class AddressFacade {
 
             if(person.getAddress() != null)
             {
-                throw new DatabaseException("The provided Person already has an address.");
+                throw new ORMException("The provided Person already has an address.");
             }
             a.addPerson(person);
 
