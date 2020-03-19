@@ -14,6 +14,7 @@ import entities.Person;
 import exceptions.DatabaseException;
 import exceptions.ORMException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -113,22 +114,24 @@ public class MasterFacade
     {
         Person person = personFacade.getPersonById(personId);
         AddressDTO aDTO;
-        
-        try
+
+        if (person.getAddress() != null)
         {
-            aDTO = addressFacade.addPersonToAddress(addressId, person);
+            addressFacade.removePersonFromAddress(addressId, person);
         }
-        catch (ORMException ex)
-        {
-            addressFacade.removePersonFromAddress(person.getAddress().getId(), person);
-            aDTO = addressFacade.addPersonToAddress(addressId, person);
-        }
-        
+
+        aDTO = addressFacade.addPersonToAddress(addressId, person);
+
         if (aDTO == null)
         {
             throw new CouplingException("Return value of couplePersonToAddress is null.");
         }
         return aDTO;
+    }
+
+    public static boolean contains(final int[] arr, final int key)
+    {
+        return Arrays.stream(arr).anyMatch(i -> i == key);
     }
 
     public AddressDTO couplePersonsToAddress(int addressId, int[] personIds) throws ORMException, CouplingException
@@ -138,26 +141,29 @@ public class MasterFacade
         List<Person> personList = new ArrayList<>();
 
         TypedQuery<Person> query
-                = em.createQuery("SELECT p FROM Person p WHERE p.id IN :ids",
-                        Person.class).setParameter("ids", personIds);
-
+                = em.createQuery("SELECT p FROM Person p", Person.class);
         for (Person p : query.getResultList())
         {
-            personList.add(p);
+            if (contains(personIds, p.getId()))
+            {
+                personList.add(p);
+            }
         }
-
+//        TypedQuery<Person> query
+//                = em.createQuery("SELECT p FROM Person p WHERE p.id IN (:ids)",
+//                        Person.class).setParameter("ids", Arrays.asList(personIds));
+//        for (Person p : query.getResultList())
+//        {
+//            personList.add(p);
+//        }
         for (Person person : personList)
         {
-            try
+            if (person.getAddress() != null)
             {
-                aDTO = addressFacade.addPersonToAddress(addressId, person);
-            }
-            catch (ORMException ex)
-            {
-                addressFacade.removePersonFromAddress(person.getAddress().getId(), person);
-                aDTO = addressFacade.addPersonToAddress(addressId, person);
+                addressFacade.removePersonFromAddress(addressId, person);
             }
 
+            aDTO = addressFacade.addPersonToAddress(addressId, person);
         }
 
         if (aDTO == null)

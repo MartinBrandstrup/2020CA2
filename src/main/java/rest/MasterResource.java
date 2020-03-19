@@ -2,6 +2,8 @@ package rest;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import com.google.gson.JsonArray;
+import com.google.gson.JsonElement;
 import dtos.AddressDTO;
 import dtos.HobbyDTO;
 import dtos.PersonDTO;
@@ -13,6 +15,7 @@ import exceptions.ORMException;
 import utils.EMF_Creator;
 import facades.HobbyFacade;
 import facades.MasterFacade;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -73,10 +76,10 @@ public class MasterResource
     @Produces(MediaType.APPLICATION_JSON)
     public String couplePersonsToAddress(@PathParam("aId") int addressId, String personIds)
     {
-        int[] ids = GSON.fromJson(personIds, int[].class);
+        int[] idList = GSON.fromJson(personIds, int[].class);
         try
         {
-            AddressDTO aDTO = FACADE.couplePersonsToAddress(addressId, ids);
+            AddressDTO aDTO = FACADE.couplePersonsToAddress(addressId, idList);
             return GSON.toJson(aDTO);
         }
         catch (ORMException | CouplingException ex)
