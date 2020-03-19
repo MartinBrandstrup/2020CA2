@@ -78,16 +78,7 @@ public class HobbyFacadeTest
 
         this.hobbyList = facade.populateDatabaseWithHobbies(numberOfEntries);
 
-//        hobbyList.sort((Hobby h1, Hobby h2) -> h1.getId() - h2.getId());
-        //Lambda expressions not supported??
-        Collections.sort(hobbyList, new Comparator<Hobby>()
-        {
-            @Override
-            public int compare(Hobby h1, Hobby h2)
-            {
-                return h1.getId() - h2.getId();
-            }
-        });
+        hobbyList.sort((Hobby h1, Hobby h2) -> h1.getId() - h2.getId());
     }
 
     @AfterEach
