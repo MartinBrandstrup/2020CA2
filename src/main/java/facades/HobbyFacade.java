@@ -1,5 +1,6 @@
 package facades;
 
+import exceptions.NoObjectException;
 import entities.Hobby;
 import dtos.HobbyDTO;
 import java.util.ArrayList;
@@ -114,14 +115,24 @@ public class HobbyFacade
      *
      * @param id The provided ID to search the database for.
      * @return a Hobby object containing all information.
+     * @throws exceptions.NoObjectException - if the provided id does not match
+     * an entry in the database.
      */
-    public Hobby getHobbyById(int id)
+    public Hobby getHobbyById(int id) throws NoObjectException
     {
         EntityManager em = getEntityManager();
         try
         {
             Hobby h = em.find(Hobby.class, id);
+            if (h == null)
+            {
+                throw new NoObjectException("No object matching provided id exists in database.");
+            }
             return h;
+        }
+        catch (IllegalArgumentException ex)
+        {
+            throw new NoObjectException("No object matching provided id exists in database.");
         }
         catch (Exception ex)
         {
@@ -137,21 +148,31 @@ public class HobbyFacade
 
     /**
      * Attempts to retrieve a HobbyDTO object from the database corresponding to
-     * the provided ID. Used mainly for front-end since not all necessary info
-     * is provided with a DTO object. Returns null if the operation fails.
+     * the provided ID. Used mainly for front-end since not all necessary info is
+     * provided with a DTO object. Returns null if the operation fails.
      *
      * @param id The provided ID to search the database for.
      * @return a HobbyDTO object containing the necessary information to be
      * displayed on the front-end.
+     * @throws exceptions.NoObjectException - if the provided id does not match
+     * an entry in the database.
      */
-    public HobbyDTO getHobbyDTOById(int id)
+    public HobbyDTO getHobbyDTOById(int id) throws NoObjectException
     {
         EntityManager em = getEntityManager();
         try
         {
             Hobby h = em.find(Hobby.class, id);
             HobbyDTO hDTO = new HobbyDTO(h);
+            if (hDTO == null)
+            {
+                throw new NoObjectException("No object matching provided id exists in database.");
+            }
             return hDTO;
+        }
+        catch (IllegalArgumentException ex)
+        {
+            throw new NoObjectException("No object matching provided id exists in database.");
         }
         catch (Exception ex)
         {

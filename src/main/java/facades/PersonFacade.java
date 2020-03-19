@@ -6,6 +6,7 @@ import entities.CityInfo;
 import entities.Hobby;
 import entities.Person;
 import entities.Phone;
+import exceptions.NoObjectException;
 import java.util.ArrayList;
 import java.util.List;
 import javax.persistence.EntityManager;
@@ -94,12 +95,12 @@ public class PersonFacade implements IPersonFacade
 
             return personDTOList;
         }
-        catch (Exception ex)
-        {
-            System.out.println("Operation getAllPersons failed.");
-            ex.printStackTrace();
-            return null;
-        }
+//        catch (Exception ex)
+//        {
+//            System.out.println("Operation getAllPersons failed.");
+//            ex.printStackTrace();
+//            return null;
+//        }
         finally
         {
             em.close();
@@ -126,15 +127,25 @@ public class PersonFacade implements IPersonFacade
      *
      * @param id The provided ID to search the database for.
      * @return a Person object containing all information.
+     * @throws exceptions.NoObjectException - if the provided id does not match
+     * an entry in the database.
      */
     @Override
-    public Person getPersonById(int id)
+    public Person getPersonById(int id) throws NoObjectException
     {
         EntityManager em = getEntityManager();
         try
         {
             Person p = em.find(Person.class, id);
+            if (p == null)
+            {
+                throw new NoObjectException("No object matching provided id exists in database.");
+            }
             return p;
+        }
+        catch (IllegalArgumentException ex)
+        {
+            throw new NoObjectException("No object matching provided id exists in database.");
         }
         catch (Exception ex)
         {
@@ -148,10 +159,45 @@ public class PersonFacade implements IPersonFacade
         }
     }
 
+    /**
+     * Attempts to retrieve a PersonDTO object from the database corresponding to
+     * the provided ID. Used mainly for front-end since not all necessary info is
+     * provided with a DTO object. Returns null if the operation fails.
+     *
+     * @param id The provided ID to search the database for.
+     * @return a PersonDTO object containing the necessary information to be
+     * displayed on the front-end.
+     * @throws exceptions.NoObjectException - if the provided id does not match
+     * an entry in the database.
+     */
     @Override
-    public PersonDTO getPersonDTOById(int id)
+    public PersonDTO getPersonDTOById(int id) throws NoObjectException
     {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        EntityManager em = getEntityManager();
+        try
+        {
+            Person p = em.find(Person.class, id);
+            PersonDTO pDTO = new PersonDTO(p);
+            if (pDTO == null)
+            {
+                throw new NoObjectException("No object matching provided id exists in database.");
+            }
+            return pDTO;
+        }
+        catch (IllegalArgumentException ex)
+        {
+            throw new NoObjectException("No object matching provided id exists in database.");
+        }
+//        catch (Exception ex)
+//        {
+//            System.out.println("Operation getPersonDTOById failed.");
+//            ex.printStackTrace();
+//            return null;
+//        }
+        finally
+        {
+            em.close();
+        }
     }
 
     @Override
@@ -161,11 +207,12 @@ public class PersonFacade implements IPersonFacade
     }
 
     /**
-     * Attempts to persist a Person object to the database. Returns the persisted
-     * object if successful; null if the operation fails.
+     * Attempts to persist a Person object to the database. Returns the
+     * persisted object if successful; null if the operation fails.
      *
      * @param person The Person object to persist.
-     * @return the Person object after it has been managed by the Entity Manager.
+     * @return the Person object after it has been managed by the Entity
+     * Manager.
      */
     @Override
     public Person persistPerson(Person person)
@@ -303,20 +350,14 @@ public class PersonFacade implements IPersonFacade
     }
 
     @Override
-    public PersonDTO addHobbiesToPerson(int personId, List<Hobby> list)
+    public PersonDTO addHobbyToPerson(int personId, Hobby hobby)
     {
         EntityManager em = getEntityManager();
         try
         {
             Person p = em.find(Person.class, personId); //Getting managed
 
-            for (Hobby hobby : list)
-            {
-//                if (!(person.getHobbies().contains(hobby)))
-//                {
-                p.addHobby(hobby);
-//                }
-            }
+            p.addHobby(hobby);
 
             em.getTransaction().begin();
             em.merge(p);
@@ -336,7 +377,7 @@ public class PersonFacade implements IPersonFacade
     }
 
     @Override
-    public PersonDTO addPhonesToPerson(int personId, List<Phone> list)
+    public PersonDTO addPhoneToPerson(int personId, Phone phone)
     {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
@@ -344,7 +385,22 @@ public class PersonFacade implements IPersonFacade
     @Override
     public PersonDTO removeHobbyFromPerson(int personId, Hobby hobby)
     {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        EntityManager em = getEntityManager();
+        try
+        {
+            Person p = em.find(Person.class, personId);
+            
+            p.removeHobby(hobby);
+            
+            em.getTransaction().begin();
+            em.merge(p);
+            em.getTransaction().commit();
+            return new PersonDTO(p);
+        }
+        finally
+        {
+            em.close();
+        }
     }
 
     @Override

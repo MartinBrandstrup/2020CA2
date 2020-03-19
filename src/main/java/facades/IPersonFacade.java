@@ -6,11 +6,11 @@
 package facades;
 
 import dtos.PersonDTO;
-import entities.Address;
 import entities.CityInfo;
 import entities.Hobby;
 import entities.Person;
 import entities.Phone;
+import exceptions.NoObjectException;
 import java.util.List;
 
 /**
@@ -30,9 +30,9 @@ public interface IPersonFacade
 
     public List<PersonDTO> getAllPersonsByCity(CityInfo cityInfo);
 
-    public Person getPersonById(int id);
+    public Person getPersonById(int id) throws NoObjectException;
 
-    public PersonDTO getPersonDTOById(int id);
+    public PersonDTO getPersonDTOById(int id) throws NoObjectException;
 
     public PersonDTO getPersonDTOByPhone(Phone phone);
 
@@ -44,9 +44,9 @@ public interface IPersonFacade
 
     public Person editPerson(int oldPersonId, Person newPerson);
 
-    public PersonDTO addHobbiesToPerson(int personId, List<Hobby> hobbies);
+    public PersonDTO addHobbyToPerson(int personId, Hobby hobby);
 
-    public PersonDTO addPhonesToPerson(int personId, List<Phone> hobbies);
+    public PersonDTO addPhoneToPerson(int personId, Phone phone);
 
     public PersonDTO removeHobbyFromPerson(int personId, Hobby hobby);
 

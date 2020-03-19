@@ -12,8 +12,9 @@ package exceptions;
 public class ORMException extends Exception
 {
 
-    public ORMException(String the_provided_Person_already_has_an_addres)
+    public ORMException(String msg)
     {
+        super(msg);
     }
     
 }
