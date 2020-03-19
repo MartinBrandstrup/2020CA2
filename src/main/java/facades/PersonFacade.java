@@ -121,8 +121,8 @@ public class PersonFacade implements IPersonFacade
     /**
      * Attempts to retrieve a Person object from the database corresponding to
      * the provided ID. Used mainly for back-end work, since not all information
-     * of the Person object should be displayed on the front-end. Returns null if
-     * the operation fails
+     * of the Person object should be displayed on the front-end. Returns null
+     * if the operation fails
      *
      * @param id The provided ID to search the database for.
      * @return a Person object containing all information.
@@ -161,11 +161,12 @@ public class PersonFacade implements IPersonFacade
     }
 
     /**
-     * Attempts to persist a Person object to the database. Returns the persisted
-     * object if successful; null if the operation fails.
+     * Attempts to persist a Person object to the database. Returns the
+     * persisted object if successful; null if the operation fails.
      *
      * @param person The Person object to persist.
-     * @return the Person object after it has been managed by the Entity Manager.
+     * @return the Person object after it has been managed by the Entity
+     * Manager.
      */
     @Override
     public Person persistPerson(Person person)
@@ -303,20 +304,14 @@ public class PersonFacade implements IPersonFacade
     }
 
     @Override
-    public PersonDTO addHobbiesToPerson(int personId, List<Hobby> list)
+    public PersonDTO addHobbyToPerson(int personId, Hobby hobby)
     {
         EntityManager em = getEntityManager();
         try
         {
             Person p = em.find(Person.class, personId); //Getting managed
 
-            for (Hobby hobby : list)
-            {
-//                if (!(person.getHobbies().contains(hobby)))
-//                {
-                p.addHobby(hobby);
-//                }
-            }
+            p.addHobby(hobby);
 
             em.getTransaction().begin();
             em.merge(p);
@@ -336,7 +331,7 @@ public class PersonFacade implements IPersonFacade
     }
 
     @Override
-    public PersonDTO addPhonesToPerson(int personId, List<Phone> list)
+    public PersonDTO addPhoneToPerson(int personId, Phone phone)
     {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
@@ -344,7 +339,22 @@ public class PersonFacade implements IPersonFacade
     @Override
     public PersonDTO removeHobbyFromPerson(int personId, Hobby hobby)
     {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        EntityManager em = getEntityManager();
+        try
+        {
+            Person p = em.find(Person.class, personId);
+            
+            p.removeHobby(hobby);
+            
+            em.getTransaction().begin();
+            em.merge(p);
+            em.getTransaction().commit();
+            return new PersonDTO(p);
+        }
+        finally
+        {
+            em.close();
+        }
     }
 
     @Override
