@@ -69,6 +69,22 @@ public class AddressDTO {
         this.persons = persons;
     }
 
+    public String getCity() {
+        return city;
+    }
+
+    public void setCity(String city) {
+        this.city = city;
+    }
+
+    public String getZip() {
+        return zip;
+    }
+
+    public void setZip(String zip) {
+        this.zip = zip;
+    }
+
     @Override
     public String toString() {
         return "AddressDTO{" + "id=" + id + ", street=" + street + ", additionalInfo=" + additionalInfo + ", persons=" + persons + '}';

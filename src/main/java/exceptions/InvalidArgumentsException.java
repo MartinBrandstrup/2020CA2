@@ -9,9 +9,9 @@ package exceptions;
  *
  * @author Christian
  */
-public class missingInputException extends Exception {
+public class InvalidArgumentsException extends Exception {
 
-    public missingInputException(String msg) {
+    public InvalidArgumentsException(String msg) {
         super(msg);
     }
 }
