@@ -91,11 +91,12 @@ public class HobbyResource
     @POST
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
-    public String persistHobby(String hobby)
+    public String persistHobby(String hobbyDTO)
     {
-        Hobby h = GSON.fromJson(hobby, Hobby.class); //Converts the request from a JSON string to a Java Entity
-        Hobby hManaged = FACADE.persistHobby(h); //Persists the object to the database
-        return GSON.toJson(new HobbyDTO(hManaged)); //Returns the managed object as a DTO
+        HobbyDTO hDTO = GSON.fromJson(hobbyDTO, HobbyDTO.class);     //Converts the request from a JSON string to a DTO
+        Hobby hManaged = FACADE.persistHobby(                        //Persists the object to the database
+                new Hobby(hDTO.getName(), hDTO.getDescription()));
+        return GSON.toJson(new HobbyDTO(hManaged));                  //Returns the managed object as a DTO
     }
 
     @DELETE
