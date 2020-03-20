@@ -7,6 +7,7 @@ package dtos;
 
 import entities.Hobby;
 import entities.Person;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -18,7 +19,7 @@ public class HobbyDTO
 
     private int id;
     private String name, description;
-    private List<String> persons;
+    private List<String> persons = new ArrayList<>();
 
     public HobbyDTO(Hobby hobby)
     {
