@@ -188,9 +188,15 @@ public class Person implements Serializable
     @Override
     public String toString()
     {
+        String adr = null;
+        if (this.address != null)
+        {
+            adr = this.address.getStreet();
+        }
+        
         return "{ \"id\":\"" + id + "\", \"firstName\":\"" + firstName
                 + "\", \"lastName\":\"" + lastName + "\", \"email\":\""
-                + email + "\", \"street\":\"" + address.getStreet() + " }";
+                + email + "\", \"street\":\"" + adr + " }";
     }
 
 }

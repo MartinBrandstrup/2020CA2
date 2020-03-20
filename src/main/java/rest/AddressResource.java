@@ -93,16 +93,16 @@ public class AddressResource
         }
     }
 
-//    @POST
-//    @Path("/new")
-//    @Consumes(MediaType.APPLICATION_JSON)
-//    @Produces(MediaType.APPLICATION_JSON)
-//    public String persistAddress(String address)
-//    {
-//        Address adr = GSON.fromJson(address, Address.class); //Converts the request from a JSON string to a Java Entity
-//        Address adrPersist = FACADE.persistAddress(adr); //Persists the object to the database
-//        return GSON.toJson(new AddressDTO(adrPersist)); //Returns the managed object as a DTO
-//    }
+    @POST
+    @Path("/new")
+    @Consumes(MediaType.APPLICATION_JSON)
+    @Produces(MediaType.APPLICATION_JSON)
+    public String persistAddress(String address)
+    {
+        Address adr = GSON.fromJson(address, Address.class); //Converts the request from a JSON string to a Java Entity
+        Address adrPersist = FACADE.persistAddress(adr); //Persists the object to the database
+        return GSON.toJson(new AddressDTO(adrPersist)); //Returns the managed object as a DTO
+    }
 //
 //    @DELETE
 //    @Path("/delete")

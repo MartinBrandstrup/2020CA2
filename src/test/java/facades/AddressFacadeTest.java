@@ -42,6 +42,8 @@ public class AddressFacadeTest {
     Address adr3 = new Address(street3, AdditionalInfo3);
     AddressDTO adrDTO1 = new AddressDTO(adr1);
     AddressDTO adrDTO3 = new AddressDTO(adr3);
+//    Person per1 = new Person("Bob", "Bobson", "BobTheBuilder");
+//    Person per2 = new Person("John", "Johnson", "John@gmail.com");
 
     public AddressFacadeTest() {
     }
@@ -80,10 +82,15 @@ public class AddressFacadeTest {
     public void setUp() {
         EntityManager em = emf.createEntityManager();
         try {
+            
             em.getTransaction().begin();
             em.createNamedQuery("Address.deleteAllRows").executeUpdate();
+//            per1.setAddress(adr1);
+//            per2.setAddress(adr2);
             em.persist(adr1);
             em.persist(adr2);
+//            em.persist(per1);
+//            em.persist(per2);
 
             em.getTransaction().commit();
         } finally {
@@ -108,12 +115,7 @@ public class AddressFacadeTest {
         System.out.println("Expects: 2 " + adrDTO.size());
         assertEquals(2, adrDTO.size(), "Expects two rows in the database");
     }
-//
-//    @Test
-//    public void getAllAddressByPerson(Person arg0) {
-//        assertEquals(2, facade.getAddressCount(), "Expects two rows in the database");
-//    }
-//
+    
 //    @Test
 //    public void getAllAddressByCity(CityInfo arg0) {
 //        assertEquals(2, facade.getAddressCount(), "Expects two rows in the database");
@@ -134,19 +136,14 @@ public class AddressFacadeTest {
 //    public void getAddressDTOById() {
 //         System.out.println("GetAddressById");
 //        AddressFacade adrF = facade;
-//        int AdressID = adrF.persistAddress(adr3).getId();
-//        System.out.println(AdressID);
-//        adrDTO3.setId(AdressID);
-//        AddressDTO res = facade.getAddressDTOById(AdressID);
+//        int addressID = adrF.persistAddress(adr3).getId();
+//        System.out.println(addressID);
+//        adrDTO3.setId(addressID);
+//        AddressDTO res = facade.getAddressDTOById(addressID);
 //        assertEquals(adrDTO3, res, "Expects adr3");
-//
+//        //sammenling id
 //    }
 
-//    @Test
-//    public void getAddressDTOByPhone(Phone arg0) {
-//        assertEquals(2, facade.getAddressCount(), "Expects two rows in the database");
-//    }
-//
     @Test
     public void persistAddress() {
         System.out.println("Persist Adress");

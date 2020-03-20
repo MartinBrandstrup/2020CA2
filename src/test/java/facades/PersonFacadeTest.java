@@ -1,5 +1,7 @@
 package facades;
 
+import entities.Address;
+import entities.Hobby;
 import entities.Person;
 import utils.EMF_Creator;
 import javax.persistence.EntityManager;
@@ -15,13 +17,18 @@ import utils.EMF_Creator.DbSelector;
 import utils.EMF_Creator.Strategy;
 
 //Uncomment the line below, to temporarily disable this test
-@Disabled
+//@Disabled
 public class PersonFacadeTest
 {
 
     private static EntityManagerFactory emf;
     private static PersonFacade facade;
-
+    Person pers1 = new Person("Jon", "Black", "notSnow@lol");
+    Person pers2 = new Person("Bat", "Duck", "Nanananana");
+    Hobby hb1 = new Hobby("Programing", "Something");
+    Hobby hb2 = new Hobby("Snacking", "Allways");
+    
+    
     public PersonFacadeTest()
     {
     }
@@ -67,8 +74,10 @@ public class PersonFacadeTest
         {
             em.getTransaction().begin();
             em.createNamedQuery("Person.deleteAllRows").executeUpdate();
-//            em.persist(new Person("firstName", "lastName", "email", address));
-//            em.persist(new Person("firstName", "lastName", "email", address));
+//            pers1.addHobby(hb1);
+//            pers2.addHobby(hb2);
+            em.persist(pers1);
+            em.persist(pers2);
 
             em.getTransaction().commit();
         }
@@ -89,5 +98,14 @@ public class PersonFacadeTest
     {
         assertEquals(2, facade.getPersonCount(), "Expects two rows in the database");
     }
+//    @Test
+//    public void getAllPersonByHobby(){
+//          assertEquals(1, facade.getAllPersonByHobby(hb1), "Expects 1 rows in the database");
+//    }
+//    @Test
+//    public void countPeopleWithHobby(){
+//        assertEquals(1, facade.getPersonCountByHobby(hb1), "Expects 1 rows in the database");
+//    }
+
 
 }
