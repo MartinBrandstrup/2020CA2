@@ -8,6 +8,7 @@ package dtos;
 import entities.Hobby;
 import entities.Person;
 import entities.Phone;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -19,7 +20,8 @@ public class PersonDTO
 
     private int id;
     private String firstName, lastName, email, street, city, zip;
-    private List<String> phones, hobbies;
+    private List<String> phones = new ArrayList<>();
+    private List<String> hobbies = new ArrayList<>();
 
     public PersonDTO(Person p)
     {
@@ -41,7 +43,7 @@ public class PersonDTO
         {
             for (Hobby hobby : p.getHobbies())
             {
-                this.hobbies.add(hobby.toString());
+                this.hobbies.add(hobby.getName());
             }
         }
 

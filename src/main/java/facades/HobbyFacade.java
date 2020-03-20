@@ -174,12 +174,12 @@ public class HobbyFacade
         {
             throw new NoObjectException("No object matching provided id exists in database.");
         }
-        catch (Exception ex)
-        {
-            System.out.println("Operation getHobbyDTOById failed.");
-            ex.printStackTrace();
-            return null;
-        }
+//        catch (Exception ex)
+//        {
+//            System.out.println("Operation getHobbyDTOById failed.");
+//            ex.printStackTrace();
+//            return null;
+//        }
         finally
         {
             em.close();
