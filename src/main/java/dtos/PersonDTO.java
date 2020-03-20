@@ -30,8 +30,11 @@ public class PersonDTO
         if (p.getAddress() != null)
         {
             this.street = p.getAddress().getStreet();
-            this.city = p.getAddress().getCityInfo().getCity();
-            this.zip = String.valueOf(p.getAddress().getCityInfo().getZipCode());
+            if (p.getAddress().getCityInfo() != null)
+            {
+                this.city = p.getAddress().getCityInfo().getCity();
+                this.zip = String.valueOf(p.getAddress().getCityInfo().getZipCode());
+            }
         }
 
         if (!(p.getHobbies() == null && p.getHobbies().isEmpty()))
