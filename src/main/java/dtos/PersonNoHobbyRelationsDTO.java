@@ -15,15 +15,14 @@ import java.util.List;
  *
  * @author Christian & Brandstrup
  */
-public class PersonDTO
+public class PersonNoHobbyRelationsDTO
 {
 
     private int id;
     private String firstName, lastName, email, street, city, zip;
 //    private List<PhoneNoPersonRelationsDTO> phones = new ArrayList<>();
-    private List<HobbyNoPersonRelationsDTO> hobbies = new ArrayList<>();
 
-    public PersonDTO(Person p)
+    public PersonNoHobbyRelationsDTO(Person p)
     {
         this.id = p.getId();
         this.firstName = p.getFirstName();
@@ -36,14 +35,6 @@ public class PersonDTO
             {
                 this.city = p.getAddress().getCityInfo().getCity();
                 this.zip = String.valueOf(p.getAddress().getCityInfo().getZipCode());
-            }
-        }
-
-        if (!(p.getHobbies() == null && p.getHobbies().isEmpty()))
-        {
-            for (Hobby hobby : p.getHobbies())
-            {
-                this.hobbies.add(new HobbyNoPersonRelationsDTO(hobby));
             }
         }
 
@@ -152,20 +143,14 @@ public class PersonDTO
 //        return phones;
 //    }
 
-    public List<HobbyNoPersonRelationsDTO> getHobbies()
-    {
-        return hobbies;
-    }
-
     @Override
     public String toString()
     {
-        return "PersonDTO{" + "id=" + id + ", firstName=" + firstName 
-                + ", lastName=" + lastName + ", email=" + email + ", street=" 
-                + street + ", city=" + city + ", zip=" + zip 
+        return "PersonNoHobbyRelationsDTO{" + "id=" + id + ", firstName="
+                + firstName + ", lastName=" + lastName + ", email=" + email
+                + ", street=" + street + ", city=" + city + ", zip=" + zip 
 //                + ", phones=" + phones 
-                + ", hobbies=" + hobbies + '}';
+                + '}';
     }
-
 
 }
