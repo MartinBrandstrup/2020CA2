@@ -12,10 +12,13 @@ import dtos.PersonDTO;
 import entities.Hobby;
 import entities.Person;
 import exceptions.NoObjectException;
+import facades.HobbyFacade;
 import utils.EMF_Creator;
 import facades.PersonFacade;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.persistence.EntityManagerFactory;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.DELETE;
@@ -44,6 +47,7 @@ public class PersonResource {
     //An alternative way to get the EntityManagerFactory, whithout having to type the details all over the code
     //EMF = EMF_Creator.createEntityManagerFactory(DbSelector.DEV, Strategy.CREATE);
     private static final PersonFacade FACADE = PersonFacade.getPersonFacade(EMF);
+    private static final HobbyFacade hFACADE = HobbyFacade.getHobbyFacade(EMF);
     private static final Gson GSON = new GsonBuilder().setPrettyPrinting().create();
 
     @GET
@@ -141,35 +145,50 @@ public class PersonResource {
     }
 
     @GET
-    @Path("/personswithhobby")
-    @Consumes(MediaType.APPLICATION_JSON)
+    @Path("/PersonsWithHobby/{hId}")
     @Produces(MediaType.APPLICATION_JSON)
-    public String personsWithHobbys(String hobbyDTO) {
-        HobbyDTO hDTO = GSON.fromJson(hobbyDTO, HobbyDTO.class);
-        Hobby h = new Hobby(hDTO.getName(), hDTO.getDescription());
-        List<PersonDTO> persons = FACADE.getAllPersonByHobby(h);
-        if (persons != null){
-        return GSON.toJson(persons);    
-        } else {
-            return "Operation failed";
+    public String personsWithHobby(@PathParam("hId") int id)
+    {
+        List<PersonDTO> persons = FACADE.getAllPersonByHobby(id);
+        if (persons != null)
+        {
+            return GSON.toJson(persons);
+        }
+        else
+        {
+            return "Operation personsWithHobby failed.";
         }
     }
+//    @GET
+//    @Path("/personswithhobby")
+//    @Consumes(MediaType.APPLICATION_JSON)
+//    @Produces(MediaType.APPLICATION_JSON)
+//    public String personsWithHobbys(String hobbyDTO) {
+//        HobbyDTO hDTO = GSON.fromJson(hobbyDTO, HobbyDTO.class);
+//        Hobby h = new Hobby(hDTO.getName(), hDTO.getDescription());
+//        List<PersonDTO> persons = FACADE.getAllPersonByHobby(h);
+//        if (persons != null){
+//        return GSON.toJson(persons);
+//        } else {
+//            return "Operation failed";
+//        }
+//    }
 
     @GET
-    @Path("/amountofpersonswithhobby")
-    @Consumes(MediaType.APPLICATION_JSON)
+    @Path("/countPersonsWithHobby/{hId}")
     @Produces(MediaType.APPLICATION_JSON)
-    public String AmountOfPersonsWithHobbys(String hobbyDTO) {
-        HobbyDTO hDTO = GSON.fromJson(hobbyDTO, HobbyDTO.class);
-        Hobby hobby = new Hobby(hDTO.getName(), hDTO.getDescription());
-        List<PersonDTO> persons = FACADE.getAllPersonByHobby(hobby);
-        long amount = (long) persons.size();
-        // alternativ (not supported yet)
-//       long amount = FACADE.getPersonCountByHobby(hobby);
-        if (String.valueOf(amount) != null) {
-            return GSON.toJson(String.valueOf(amount));
-        } else {
-            return "Operation failed";
+    public String countPersonsWithHobby(@PathParam("hId") int id)
+    {
+        long amount = FACADE.countPeopleWithHobby(id);
+        if (String.valueOf(amount) != null)
+        {
+            return GSON.toJson(
+//                    "The amount of people with the hobby matching id: " + id + " is equal to: " + 
+                    String.valueOf(amount));
+        }
+        else
+        {
+            return "Operation countPersonsWithHobby failed.";
         }
     }
 

@@ -15,29 +15,20 @@ import java.util.List;
  *
  * @author Christian & Brandstrup
  */
-public class PersonDTO
+public class PersonNoAddressRelationsDTO
 {
 
     private int id;
-    private String firstName, lastName, email, street, city, zip;
+    private String firstName, lastName, email;
 //    private List<PhoneNoPersonRelationsDTO> phones = new ArrayList<>();
     private List<HobbyNoPersonRelationsDTO> hobbies = new ArrayList<>();
 
-    public PersonDTO(Person p)
+    public PersonNoAddressRelationsDTO(Person p)
     {
         this.id = p.getId();
         this.firstName = p.getFirstName();
         this.lastName = p.getLastName();
         this.email = p.getEmail();
-        if (p.getAddress() != null)
-        {
-            this.street = p.getAddress().getStreet();
-            if (p.getAddress().getCityInfo() != null)
-            {
-                this.city = p.getAddress().getCityInfo().getCity();
-                this.zip = String.valueOf(p.getAddress().getCityInfo().getZipCode());
-            }
-        }
 
         if (!(p.getHobbies() == null && p.getHobbies().isEmpty()))
         {
@@ -117,36 +108,6 @@ public class PersonDTO
         this.email = email;
     }
 
-    public String getStreet()
-    {
-        return street;
-    }
-
-    public void setStreet(String street)
-    {
-        this.street = street;
-    }
-
-    public String getCity()
-    {
-        return city;
-    }
-
-    public void setCity(String city)
-    {
-        this.city = city;
-    }
-
-    public String getZip()
-    {
-        return zip;
-    }
-
-    public void setZip(String zip)
-    {
-        this.zip = zip;
-    }
-
 //    public List<PhoneNoPersonRelationsDTO> getPhones()
 //    {
 //        return phones;
@@ -160,9 +121,8 @@ public class PersonDTO
     @Override
     public String toString()
     {
-        return "PersonDTO{" + "id=" + id + ", firstName=" + firstName 
-                + ", lastName=" + lastName + ", email=" + email + ", street=" 
-                + street + ", city=" + city + ", zip=" + zip 
+        return "PersonNoAddressRelationsDTO{" + "id=" + id + ", firstName=" 
+                + firstName + ", lastName=" + lastName + ", email=" + email 
 //                + ", phones=" + phones 
                 + ", hobbies=" + hobbies + '}';
     }

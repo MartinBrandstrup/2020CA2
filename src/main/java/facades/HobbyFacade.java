@@ -74,8 +74,7 @@ public class HobbyFacade
     }
 
     /**
-     * Retrieves all Hobbies from the database as HobbyDTOs objects. Returns
-     * null if the operation fails.
+     * Retrieves all Hobbies from the database as HobbyDTOs objects.
      *
      * @return a List<HobbyDTO>.
      */
@@ -95,12 +94,6 @@ public class HobbyFacade
 
             return hobbyDTOList;
         }
-        catch (Exception ex)
-        {
-            System.out.println("Operation getAllHobbies failed.");
-            ex.printStackTrace();
-            return null;
-        }
         finally
         {
             em.close();
@@ -110,8 +103,7 @@ public class HobbyFacade
     /**
      * Attempts to retrieve a Hobby object from the database corresponding to
      * the provided ID. Used mainly for back-end work, since not all information
-     * of the Hobby object should be displayed on the front-end. Returns null if
-     * the operation fails
+     * of the Hobby object should be displayed on the front-end.
      *
      * @param id The provided ID to search the database for.
      * @return a Hobby object containing all information.
@@ -132,13 +124,7 @@ public class HobbyFacade
         }
         catch (IllegalArgumentException ex)
         {
-            throw new NoObjectException("No object matching provided id exists in database.");
-        }
-        catch (Exception ex)
-        {
-            System.out.println("Operation getHobbyById failed.");
-            ex.printStackTrace();
-            return null;
+            throw new NoObjectException("No object matching provided id exists in database. IllegalArgumentException.");
         }
         finally
         {
@@ -149,7 +135,7 @@ public class HobbyFacade
     /**
      * Attempts to retrieve a HobbyDTO object from the database corresponding to
      * the provided ID. Used mainly for front-end since not all necessary info is
-     * provided with a DTO object. Returns null if the operation fails.
+     * provided with a DTO object.
      *
      * @param id The provided ID to search the database for.
      * @return a HobbyDTO object containing the necessary information to be
@@ -174,12 +160,34 @@ public class HobbyFacade
         {
             throw new NoObjectException("No object matching provided id exists in database.");
         }
-//        catch (Exception ex)
-//        {
-//            System.out.println("Operation getHobbyDTOById failed.");
-//            ex.printStackTrace();
-//            return null;
-//        }
+        finally
+        {
+            em.close();
+        }
+    }
+    
+    /**
+     * Attempts to retrieve a Hobby object from the database corresponding to
+     * the provided name. Used mainly for back-end work, since not all information
+     * of the Hobby object should be displayed on the front-end.
+     *
+     * @param name The provided name to search the database for.
+     * @return a Person object containing all information.
+     */
+    public Hobby getHobbyByName(String name)
+    {
+        EntityManager em = getEntityManager();
+        try
+        {
+            Hobby h;
+
+            TypedQuery<Hobby> query = em.createQuery("SELECT h FROM Hobby h "
+                    + "WHERE h.name = :hobbyName", Hobby.class)
+                    .setParameter("hobbyName", name);
+            h = query.getSingleResult();
+            
+            return h;
+        }
         finally
         {
             em.close();
@@ -188,7 +196,7 @@ public class HobbyFacade
 
     /**
      * Attempts to persist a Hobby object to the database. Returns the persisted
-     * object if successful; null if the operation fails.
+     * object if successful.
      *
      * @param hobby The Hobby object to persist.
      * @return the Hobby object after it has been managed by the Entity Manager.
@@ -203,12 +211,6 @@ public class HobbyFacade
             em.getTransaction().commit();
             return hobby;
         }
-        catch (Exception ex)
-        {
-            System.out.println("Operation persistHobby failed.");
-            ex.printStackTrace();
-            return null;
-        }
         finally
         {
             em.close();
@@ -217,7 +219,7 @@ public class HobbyFacade
 
     /**
      * Attempts to delete the provided Hobby object's entry from the database.
-     * Returns the deleted Hobby object; null if the operation fails.
+     * Returns the deleted Hobby object.
      *
      * @param hobby The Hobby object to delete.
      * @return the deleted Hobby object.
@@ -234,12 +236,6 @@ public class HobbyFacade
             em.getTransaction().commit();
             return h;
         }
-        catch (Exception ex)
-        {
-            System.out.println("Operation deleteHobby failed.");
-            ex.printStackTrace();
-            return null;
-        }
         finally
         {
             em.close();
@@ -248,7 +244,7 @@ public class HobbyFacade
 
     /**
      * Attempts to delete the Hobby of the provided id object's entry from the
-     * database. Returns the deleted Hobby object; null if the operation fails.
+     * database.
      *
      * @param id The id of the Hobby object to delete.
      * @return the deleted Hobby object.
@@ -265,12 +261,6 @@ public class HobbyFacade
             em.getTransaction().commit();
             return h;
         }
-        catch (Exception ex)
-        {
-            System.out.println("Operation deleteHobbyById failed.");
-            ex.printStackTrace();
-            return null;
-        }
         finally
         {
             em.close();
@@ -279,7 +269,7 @@ public class HobbyFacade
 
     /**
      * Attempts to edit an existing entry in the database to match a given Hobby
-     * object. Returns the changed object; null if the operation fails.
+     * object. Returns the changed object.
      *
      * @param oldHobbyId The id of the old hobby to be changed.
      * @param newHobby The object containing the information to change to.
@@ -300,12 +290,6 @@ public class HobbyFacade
             em.merge(h);
             em.getTransaction().commit();
             return h;
-        }
-        catch (Exception ex)
-        {
-            System.out.println("Operation editHobby failed.");
-            ex.printStackTrace();
-            return null;
         }
         finally
         {

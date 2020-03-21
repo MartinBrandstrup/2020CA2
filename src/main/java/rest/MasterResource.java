@@ -62,7 +62,7 @@ public class MasterResource
     {
         try
         {
-            AddressDTO aDTO = FACADE.couplePersonToAddress(addressId, personId);
+            AddressDTO aDTO = FACADE.couplePersonToAddress(personId, addressId);
             return GSON.toJson(aDTO);
         }
         catch (ORMException | CouplingException ex)
@@ -137,7 +137,15 @@ public class MasterResource
     @Produces(MediaType.APPLICATION_JSON)
     public String populate()
     {
-        String res = FACADE.populateDatabaseWithTestData();
+        String res;
+        try
+        {
+            res = FACADE.populateDatabaseWithTestData();
+        }
+        catch (CouplingException ex)
+        {
+            return ex.getMessage();
+        }
         return GSON.toJson(res);
     }
 

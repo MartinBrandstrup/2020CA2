@@ -14,26 +14,17 @@ import java.util.List;
  *
  * @author Brandstrup
  */
-public class HobbyDTO
+public class HobbyNoPersonRelationsDTO
 {
 
     private int id;
     private String name, description;
-    private List<PersonNoHobbyRelationsDTO> persons = new ArrayList<>();
 
-    public HobbyDTO(Hobby hobby)
+    public HobbyNoPersonRelationsDTO(Hobby hobby)
     {
         this.id = hobby.getId();
         this.name = hobby.getName();
         this.description = hobby.getDescription();
-
-        if (hobby.getPersons() != null)
-        {
-            for (Person person : hobby.getPersons())
-            {
-                this.persons.add(new PersonNoHobbyRelationsDTO(person));
-            }
-        }
     }
 
     public int getId()
@@ -61,16 +52,11 @@ public class HobbyDTO
         this.description = description;
     }
 
-    public List<PersonNoHobbyRelationsDTO> getPersons()
-    {
-        return persons;
-    }
-
     @Override
     public String toString()
     {
-        return "HobbyDTO{" + "id=" + id + ", name=" + name + ", description="
-                + description + ", persons=" + persons + '}';
+        return "HobbyNoRelationsDTO{" + "id=" + id + ", name=" + name
+                + ", description=" + description + '}';
     }
 
 }

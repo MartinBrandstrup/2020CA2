@@ -17,20 +17,20 @@ import java.util.List;
 public class AddressDTO {
 
     private int id;
-    private String street, additionalInfo;
-    private String city;
-    private String zip;
-    List<String> persons = new ArrayList();
+    private String street, additionalInfo, city, zip;
+    List<PersonNoAddressRelationsDTO> persons = new ArrayList();
 
     public AddressDTO(Address address) {
         this.id = address.getId();
         this.street = address.getStreet();
         this.additionalInfo = address.getAdditionalInfo();
+        
         if (address.getPersons() != null) {
             for (Person person : address.getPersons()) {
-                this.persons.add(person.toString());
+                this.persons.add(new PersonNoAddressRelationsDTO(person));
             }
         }
+        
         if (address.getCityInfo() != null) {
             this.zip = String.valueOf(address.getCityInfo().getZipCode());
             this.city = address.getCityInfo().getCity();
@@ -61,12 +61,8 @@ public class AddressDTO {
         this.additionalInfo = additionalInfo;
     }
 
-    public List<String> getPersons() {
+    public List<PersonNoAddressRelationsDTO> getPersons() {
         return persons;
-    }
-
-    public void setPersons(List<String> persons) {
-        this.persons = persons;
     }
 
     public String getCity() {
