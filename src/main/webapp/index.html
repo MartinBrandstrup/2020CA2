@@ -3,81 +3,24 @@
     <head>
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <link href="style.css" rel="stylesheet">
+        <link rel="stylesheet" href="CSS/indexCSS.css">
         <style>
-            #workflow {
-                font-family: "Trebuchet MS", Arial, Helvetica, sans-serif;
-                border-collapse: collapse;
-                width: 100%;
-
-            }
-
-            #workflow td, #workflow th {
-                border: 1px solid black;
-                padding: 8px;
-                front-size: 10px;
-
-
-            }
-            #workflow tr:nth-child(even){background-color: #f2f2f2;}
-
-            #workflow tr:hover {background-color: #ddd;}
-
-
-            #workflow th {
-                background-color: #4CAF50;
-                border: 1px solid black;
-                color: white;
-                text-align: center;
-                font-size: 15px;}
-
-
-            /*headline*/
-            h1 {
-                color: Black;
-                text-align: center;
-            }
-            /* new paragaf*/
-            h2 {
-                text-align:left;
-            }
-            /*elaborating text*/
-            h3 {
-                text-align:left;
-                text-indent: 25px;
-            }
-
-            /*Main test*/
-            p {
-                font-family: Times New Roman;
-                font-size: 15px;
-                width: 900px;
-                text-indent: 75px;
-                text-align: justify;
-            } 
-            a:link, a:visited {
-                background-color: green;
-                color: white;
-                padding: 10px 10px;
-                text-align: left;
-                text-decoration: none;
-                display: inline-block;
-            }
-
+           
         </style>
     </head>
 
     <body>
 
- <h1 class="center">CA2</h1>
+ <h1>CA2</h1>
     <div id="IndexTable"></div>
 
     <!--Group information-->
-    <h2 class="center">Persons with hobbies</h2>
+    <h2>Persons with hobbies</h2>
     <!--Table => use /fill and use /all to --> 
     <button onclick="myCreateFunction()">All persons</button>
     
-    <div  id="indexTable"> 
-        <table class="centerTable">
+    <div id="indexTable"> 
+        <table>
             <thead>
                 <tr>
                     <th>id</th>

@@ -22,10 +22,12 @@ fetch(URLTest)
         let list = data.map(function(person){
                 // table with values
                 return "<tr><td>" + person.id + "</td>" +
-                        "<tr><td>" + person.firstName + "</td>" +
+                        "<td>" + person.firstName + "</td>" +
                         "<td>" + person.lastName + "</td>" +
                         "<td>" + person.email + "</td>" +
                         "</tr>";
             }).join("");
             document.getElementById("indexTabelBody").innerHTML = list;
-})
+});
+
+

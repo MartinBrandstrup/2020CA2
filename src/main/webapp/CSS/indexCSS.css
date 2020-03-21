@@ -1,0 +1,110 @@
+/*
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+*/
+/* 
+    Created on : 23. feb. 2020, 09.53.04
+    Author     : Christian
+*/
+  .center {
+                margin: auto;
+                width: 25%;
+                padding: 10px;
+            }
+            .indexTable {
+                margin: auto;
+                width: 40%;
+                padding: 10px;
+            }
+
+            #indexTable {
+                font-family: "Trebuchet MS", Arial, Helvetica, sans-serif;
+                border-collapse: collapse;
+                width: 100%;
+
+            }
+
+            #indexTable td, #workflow th {
+                border: 1px solid black;
+                padding: 8px;
+                front-size: 10px;
+
+
+            }
+            #indexTable tr:nth-child(even){background-color: #f2f2f2;}
+
+            #indexTable tr:hover {background-color: #ddd;}
+
+
+            #indexTable th {
+                background-color: #4CAF50;
+                border: 1px solid black;
+                color: white;
+                text-align: center;
+                font-size: 15px;}   
+
+            .button{
+                margin: auto;
+                text-align: center;
+                width: 15%;
+                padding: 10px;
+            }
+ #workflow {
+                font-family: "Trebuchet MS", Arial, Helvetica, sans-serif;
+                border-collapse: collapse;
+                width: 100%;
+
+            }
+
+            #workflow td, #workflow th {
+                border: 1px solid black;
+                padding: 8px;
+                front-size: 10px;
+
+
+            }
+            #workflow tr:nth-child(even){background-color: #f2f2f2;}
+
+            #workflow tr:hover {background-color: #ddd;}
+
+
+            #workflow th {
+                background-color: #4CAF50;
+                border: 1px solid black;
+                color: white;
+                text-align: center;
+                font-size: 15px;}
+
+
+            /*headline*/
+            h1 {
+                color: Black;
+                text-align: center;
+            }
+            /* new paragaf*/
+            h2 {
+                text-align:left;
+            }
+            /*elaborating text*/
+            h3 {
+                text-align:left;
+                text-indent: 25px;
+            }
+
+            /*Main test*/
+            p {
+                font-family: Times New Roman;
+                font-size: 15px;
+                width: 900px;
+                text-indent: 75px;
+                text-align: justify;
+            } 
+            a:link, a:visited {
+                background-color: green;
+                color: white;
+                padding: 10px 10px;
+                text-align: left;
+                text-decoration: none;
+                display: inline-block;
+            }
