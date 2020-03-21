@@ -123,11 +123,11 @@ public class PersonFacade implements IPersonFacade {
             }
             return p;
         } catch (IllegalArgumentException ex) {
-            throw new NoObjectException("No object matching provided id exists in database.");
-        } catch (Exception ex) {
-            System.out.println("Operation getPersonById failed.");
-            ex.printStackTrace();
-            return null;
+            throw new NoObjectException("No object matching provided id exists in database. IllegalArgumentException.");
+//        } catch (Exception ex) {
+//            System.out.println("Operation getPersonById failed.");
+//            ex.printStackTrace();
+//            return null;
         } finally {
             em.close();
         }

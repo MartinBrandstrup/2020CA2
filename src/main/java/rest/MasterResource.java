@@ -62,7 +62,7 @@ public class MasterResource
     {
         try
         {
-            AddressDTO aDTO = FACADE.couplePersonToAddress(addressId, personId);
+            AddressDTO aDTO = FACADE.couplePersonToAddress(personId, addressId);
             return GSON.toJson(aDTO);
         }
         catch (ORMException | CouplingException ex)

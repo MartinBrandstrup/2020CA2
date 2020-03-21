@@ -120,7 +120,7 @@ public class MasterFacade
     {
         Person p = personFacade.getPersonById(personId);
         AddressDTO aDTO;
-
+        
         if (p.getAddress() != null)
         {
             addressFacade.removePersonFromAddress(addressId, p);
