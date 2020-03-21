@@ -140,7 +140,7 @@ public class PersonResource {
 //        return "{\"msg\":\"Database has been populated with " + numberOfEntries + " Persons!\"}";
     }
 
-     @GET
+    @GET
     @Path("/personswithhobby")
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
@@ -148,9 +148,13 @@ public class PersonResource {
         HobbyDTO hDTO = GSON.fromJson(hobbyDTO, HobbyDTO.class);
         Hobby h = new Hobby(hDTO.getName(), hDTO.getDescription());
         List<PersonDTO> persons = FACADE.getAllPersonByHobby(h);
-        return  GSON.toJson(persons);
+        if (persons != null){
+        return GSON.toJson(persons);    
+        } else {
+            return "Operation failed";
+        }
     }
-    
+
     @GET
     @Path("/amountofpersonswithhobby")
     @Consumes(MediaType.APPLICATION_JSON)
@@ -158,8 +162,15 @@ public class PersonResource {
     public String AmountOfPersonsWithHobbys(String hobbyDTO) {
         HobbyDTO hDTO = GSON.fromJson(hobbyDTO, HobbyDTO.class);
         Hobby hobby = new Hobby(hDTO.getName(), hDTO.getDescription());
-       long amount = FACADE.getPersonCountByHobby(hobby);
-       return GSON.toJson(String.valueOf(amount));
+        List<PersonDTO> persons = FACADE.getAllPersonByHobby(hobby);
+        long amount = (long) persons.size();
+        // alternativ (not supported yet)
+//       long amount = FACADE.getPersonCountByHobby(hobby);
+        if (String.valueOf(amount) != null) {
+            return GSON.toJson(String.valueOf(amount));
+        } else {
+            return "Operation failed";
+        }
     }
 
 }
