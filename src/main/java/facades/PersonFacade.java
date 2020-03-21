@@ -9,9 +9,12 @@ import entities.Phone;
 import exceptions.NoObjectException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
+import javax.persistence.Query;
 import javax.persistence.TypedQuery;
 
 public class PersonFacade implements IPersonFacade {
@@ -379,22 +382,27 @@ public class PersonFacade implements IPersonFacade {
         }
     }
 
-    public List<PersonDTO> getAllPersonByHobby(Hobby hobby) {
+    public List<PersonDTO> getAllPersonByHobby(int id) {
         EntityManager em = emf.createEntityManager();
         try {
-            TypedQuery<Person> query = em.createQuery("SELECT p FROM Person p JOIN p.hobby h WHERE h.hobby = :hobby", Person.class).setParameter("hobby", hobby);
             List<PersonDTO> ListOfPersonDTO = new ArrayList<>();
+            
+            TypedQuery<Person> query = em.createQuery("SELECT p FROM Person p "
+                    + "JOIN p.hobbies h WHERE h.id = :hobbyId", Person.class)
+                    .setParameter("hobbyId", id);
+            
             for (Person person : query.getResultList()) {
                 ListOfPersonDTO.add(new PersonDTO(person)); 
             }
+            
             return ListOfPersonDTO;
         } finally {
             em.close();
         }
     }
 
-    public long countPeopleWithHobby(Hobby hobby) {
-        long count = (long) getAllPersonByHobby(hobby).size();
+    public long countPeopleWithHobby(int id) {
+        long count = getAllPersonByHobby(id).size();
         return count;
     }
 
