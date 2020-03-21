@@ -7,15 +7,15 @@ package rest;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import dtos.HobbyDTO;
 import dtos.PersonDTO;
+import entities.Hobby;
 import entities.Person;
 import exceptions.NoObjectException;
 import utils.EMF_Creator;
 import facades.PersonFacade;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.persistence.EntityManagerFactory;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.DELETE;
@@ -32,8 +32,7 @@ import javax.ws.rs.core.MediaType;
  * @author Christian & Brandstrup
  */
 @Path("person")
-public class PersonResource
-{
+public class PersonResource {
 
     private static final EntityManagerFactory EMF = EMF_Creator.createEntityManagerFactory(
             "pu",
@@ -52,16 +51,14 @@ public class PersonResource
             {
                 MediaType.APPLICATION_JSON
             })
-    public String demo()
-    {
+    public String demo() {
         return "{\"msg\":\"Hello World\"}";
     }
 
     @GET
     @Path("/count")
     @Produces(MediaType.APPLICATION_JSON)
-    public String getPersonCount()
-    {
+    public String getPersonCount() {
         long count = FACADE.getPersonCount();
         //System.out.println("--------------->"+count);
         return "{\"count\":" + count + "}";  //Done manually so no need for a DTO
@@ -70,15 +67,11 @@ public class PersonResource
     @GET
     @Path("/all")
     @Produces(MediaType.APPLICATION_JSON)
-    public String getAllPersons()
-    {
+    public String getAllPersons() {
         List<PersonDTO> pDTOList = FACADE.getAllPersons();
-        if (pDTOList != null)
-        {
+        if (pDTOList != null) {
             return GSON.toJson(pDTOList);
-        }
-        else
-        {
+        } else {
             return "{\"msg\":\"Operation getAllPersons failed\"}";
         }
     }
@@ -86,15 +79,11 @@ public class PersonResource
     @GET
     @Path("/{id}")
     @Produces(MediaType.APPLICATION_JSON)
-    public String getPersonById(@PathParam("id") int id)
-    {
-        try
-        {
+    public String getPersonById(@PathParam("id") int id) {
+        try {
             PersonDTO pDTO = FACADE.getPersonDTOById(id);
             return GSON.toJson(pDTO);
-        }
-        catch (NoObjectException ex)
-        {
+        } catch (NoObjectException ex) {
             return ex.getMessage();
         }
     }
@@ -102,8 +91,7 @@ public class PersonResource
     @POST
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
-    public String persistPerson(String personDTO)
-    {
+    public String persistPerson(String personDTO) {
         PersonDTO pDTO = GSON.fromJson(personDTO, PersonDTO.class); //Converts the request from a JSON string to a DTO
         Person pManaged = FACADE.persistPerson( //Persists the object to the database
                 new Person(pDTO.getFirstName(), pDTO.getLastName(), pDTO.getEmail()));
@@ -113,8 +101,7 @@ public class PersonResource
     @DELETE
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
-    public String deletePerson(String personDTO)
-    {
+    public String deletePerson(String personDTO) {
         PersonDTO hDTO = GSON.fromJson(personDTO, PersonDTO.class);
         Person deletedHobby = FACADE.deletePerson(hDTO);
         int deletedId = deletedHobby.getId();
@@ -124,8 +111,7 @@ public class PersonResource
     @DELETE
     @Path("/{id}")
     @Produces(MediaType.APPLICATION_JSON)
-    public String deletePersonById(@PathParam("id") int id)
-    {
+    public String deletePersonById(@PathParam("id") int id) {
         FACADE.deletePersonById(id);
         return "{\"msg\":\"Person with id " + id + " has been deleted\"}";
     }
@@ -134,8 +120,7 @@ public class PersonResource
     @Path("/{id}")
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
-    public String editPersonById(@PathParam("id") int id, String person)
-    {
+    public String editPersonById(@PathParam("id") int id, String person) {
         Person p = GSON.fromJson(person, Person.class);
         Person editedPerson = FACADE.editPerson(id, p);
         return GSON.toJson(new PersonDTO(editedPerson));
@@ -144,68 +129,48 @@ public class PersonResource
     @POST
     @Path("/populate/{numberOfEntries}")
     @Produces(MediaType.APPLICATION_JSON)
-    public String populate(@PathParam("numberOfEntries") int numberOfEntries)
-    {
+    public String populate(@PathParam("numberOfEntries") int numberOfEntries) {
         List<PersonDTO> pDTOList = new ArrayList();
         List<Person> pList = FACADE.populateDatabaseWithPersons(numberOfEntries);
-        for (Person person : pList)
-        {
+        for (Person person : pList) {
             pDTOList.add(new PersonDTO(person));
         }
 
         return GSON.toJson(pDTOList);
 //        return "{\"msg\":\"Database has been populated with " + numberOfEntries + " Persons!\"}";
     }
-}
 
-//    @GET
-//    @Path("{id}")
-//    @Produces(MediaType.APPLICATION_JSON)
-//    public String getPerson(@PathParam("id") int id){
-//    
-//    return GSON.toJson(new PersonDTO(1,"Bob", "Lyngbyvej 34", "Lyngby", "2800", "333,456", "Beer, Programning"));
-//    }
-// 
-//    @POST
-//    @Consumes(MediaType.APPLICATION_JSON)
-//    @Produces(MediaType.APPLICATION_JSON)
-//    public String addPerson(String p){
-//        PersonDTO newPerson = GSON.fromJson(p, PersonDTO.class);
-//        if 
-//                (
-//                // in gruppe agree on requried 
-//                newPerson.getFirstName() == null || 
-//                newPerson.getStreet() == null ||
-//                newPerson.getCity() == null ||
-//                newPerson.getZip() == null ||
-//                newPerson.getPhones() == null ||
-//                newPerson.getHobbies() == null)
-//                {
-//                    //throw lackOfDataException // 
-//                } else{
-//        //next line just for first scrum meeting => no dataBase data og facade
-//        newPerson.setId(123);
-//        return GSON.toJson(newPerson);    
-//        }
-//        // removed next two lines when exceptions hads been initiated
-//           newPerson.setId(123);
-//        return GSON.toJson(newPerson);    
-//    }
-//    @PUT
-//    @Path("delete/{id}")
-//    @Consumes(MediaType.APPLICATION_JSON)
-//    @Produces(MediaType.APPLICATION_JSON)
-//    public String deletePerson(PathParam("id") int i){
-//    PersonDTO toDelete =  FACADE.getPerson(i);
-//    FACADE.deltePerson(toDelete);
-//    return GSON.toJson("The following user has been deleted: " + toDelete);
-//}
-//   cheklist:
-//           - delete person
-//           - Add tests
-//           - add more API
-//           - Change addPerson and getPersonById from scrum one stat
-/**
- *
- * @author Christian
- */
+    @GET
+    @Path("/personswithhobby")
+    @Consumes(MediaType.APPLICATION_JSON)
+    @Produces(MediaType.APPLICATION_JSON)
+    public String personsWithHobbys(String hobbyDTO) {
+        HobbyDTO hDTO = GSON.fromJson(hobbyDTO, HobbyDTO.class);
+        Hobby h = new Hobby(hDTO.getName(), hDTO.getDescription());
+        List<PersonDTO> persons = FACADE.getAllPersonByHobby(h);
+        if (persons != null){
+        return GSON.toJson(persons);    
+        } else {
+            return "Operation failed";
+        }
+    }
+
+    @GET
+    @Path("/amountofpersonswithhobby")
+    @Consumes(MediaType.APPLICATION_JSON)
+    @Produces(MediaType.APPLICATION_JSON)
+    public String AmountOfPersonsWithHobbys(String hobbyDTO) {
+        HobbyDTO hDTO = GSON.fromJson(hobbyDTO, HobbyDTO.class);
+        Hobby hobby = new Hobby(hDTO.getName(), hDTO.getDescription());
+        List<PersonDTO> persons = FACADE.getAllPersonByHobby(hobby);
+        long amount = (long) persons.size();
+        // alternativ (not supported yet)
+//       long amount = FACADE.getPersonCountByHobby(hobby);
+        if (String.valueOf(amount) != null) {
+            return GSON.toJson(String.valueOf(amount));
+        } else {
+            return "Operation failed";
+        }
+    }
+
+}
