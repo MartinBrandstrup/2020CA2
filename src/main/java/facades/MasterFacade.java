@@ -78,9 +78,9 @@ public class MasterFacade
         try
         {
             em.getTransaction().begin();
-//            em.createNamedQuery("Address.deleteAllRows").executeUpdate();
-//            em.createNamedQuery("Hobby.deleteAllRows").executeUpdate();
-//            em.createNamedQuery("Person.deleteAllRows").executeUpdate();
+            em.createNamedQuery("Address.deleteAllRows").executeUpdate();
+            em.createNamedQuery("Hobby.deleteAllRows").executeUpdate();
+            em.createNamedQuery("Person.deleteAllRows").executeUpdate();
 
             personFacade.persistPerson(martin);
             personFacade.persistPerson(flemming);
@@ -213,7 +213,7 @@ public class MasterFacade
         PersonDTO pDTO = null;
         Hobby h = hobbyFacade.getHobbyById(hobbyId);
         
-        if(h.getPersons() == null || h.getPersons().isEmpty())
+        if(h.getPersons().isEmpty())
         {
             throw new ORMException("The provided Hobby does not contain any Person relations.");
         }
