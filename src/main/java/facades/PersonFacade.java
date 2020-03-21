@@ -385,7 +385,7 @@ public class PersonFacade implements IPersonFacade {
             TypedQuery<Person> query = em.createQuery("SELECT p FROM Person p JOIN p.hobby h WHERE h.hobby = :hobby", Person.class).setParameter("hobby", hobby);
             List<PersonDTO> ListOfPersonDTO = new ArrayList<>();
             for (Person person : query.getResultList()) {
-                ListOfPersonDTO.add(new PersonDTO(person));
+                ListOfPersonDTO.add(new PersonDTO(person)); 
             }
             return ListOfPersonDTO;
         } finally {
