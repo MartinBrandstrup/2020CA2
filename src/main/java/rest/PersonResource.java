@@ -145,7 +145,7 @@ public class PersonResource {
     }
 
     @GET
-    @Path("/PersonsWithHobby/{hId}")
+    @Path("/personsWithHobby/{hId}")
     @Produces(MediaType.APPLICATION_JSON)
     public String personsWithHobby(@PathParam("hId") int id)
     {

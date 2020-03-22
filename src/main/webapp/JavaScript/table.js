@@ -8,55 +8,56 @@
 var URLTest = "http://localhost:8080/2020CA2/api/person/all"
 var URL = "/2020CA2/api/person"
 var URLAll = "/2020CA2/api/person/all"
-var URLpvh = "/2020CA/api/person/PersonsWithHobby/"
-var URLpvhc =  "/2020CA/api/person/countPersonsWithHobby/" 
+var URLpvh = "/2020CA2/api/person/PersonsWithHobby/"
+var URLpvhc = "/2020CA2/api/person/countPersonsWithHobby/"
 const fillBtn = document.getElementById("loadPersons");
 const chosenHobby = document.getElementById("txt")
 
 
-fillBtn.addEventListener("click", fillTable, false )
-chosenHobby.addEventListener("change", eventHandler, false )
+fillBtn.addEventListener("click", fillTable, false)
+chosenHobby.addEventListener("change", eventHandler, false)
 
-function fillTable(){
-fetch(URLAll)
-        .then(res => res.json())
-        .then(data =>{
-        let list = data.map(function(person){
-                // table with values
-                return "<tr><td>" + person.id + "</td>" +
-                        "<td>" + person.firstName + "</td>" +
-                        "<td>" + person.lastName + "</td>" +
-                        "<td>" + person.email + "</td>" +
-                        "</tr>";
-            }).join("");
-            document.getElementById("indexTabelBody").innerHTML = list;
-});
+function fillTable() {
+    fetch(URLAll)
+            .then(res => res.json())
+            .then(data => {
+                let list = data.map(function (person) {
+                    // table with values
+                    return "<tr><td>" + person.id + "</td>" +
+                            "<td>" + person.firstName + "</td>" +
+                            "<td>" + person.lastName + "</td>" +
+                            "<td>" + person.email + "</td>" +
+                            "</tr>";
+                }).join("");
+                document.getElementById("indexTabelBody").innerHTML = list;
+            });
 }
 
-function fillTableWithHobbies(id){
-    fetch(URLpvh + id).then(res => res.json())
-        .then(data =>{
-        let list = data.map(function(person){
-                // table with values
-                return "<tr><td>" + person.id + "</td>" +
-                        "<td>" + person.firstName + "</td>" +
-                        "<td>" + person.lastName + "</td>" +
-                        "<td>" + person.email + "</td>" +
-                        "</tr>";
-            }).join("");
-            document.getElementById("indexTabelBody").innerHTML = list;
-});
+function fillTableWithHobbies(id) {
+    fetch(URLpvh + id)
+            .then(res => res.json())
+            .then(data => {
+                let list = data.map(function (person) {
+                    // table with values
+                    return "<tr><td>" + person.id + "</td>" +
+                            "<td>" + person.firstName + "</td>" +
+                            "<td>" + person.lastName + "</td>" +
+                            "<td>" + person.email + "</td>" +
+                            "</tr>";
+                }).join("");
+                document.getElementById("indexTabelBody").innerHTML = list;
+            });
 }
 
 function eventHandler(e) {
 // tag id givet fra event 
-  var hobbyId = e.target.value;
-  console.log(hobbyId);
-  
+    var hobbyId = e.target.value;
+    console.log(hobbyId);
+
     fillTableWithHobbies(hobbyId);
-  }
- // getCountry henter daten og retuner det til returnPoints 
- 
+}
+// getCountry henter daten og retuner det til returnPoints 
+
 
 //function fillTable(e){
 //    console.log(id)  
