@@ -31,7 +31,7 @@ import javax.persistence.TypedQuery;
 public class MasterFacade
 {
 
-    Person martin = new Person("Martin", "Brandstrup", "martin.l.brandstrup@gmail.com");
+    Person martin = new Person("Martin", "Brandstrup", "dethererikkeminmail@gmail.com");
     Person flemming = new Person("Flemming", "Hansen", "flemming.hansen@gmail.com");
     Person hjemløs = new Person("Hjemløs", "Hjemløsen", ""); //Tester ø og tom email og null address
     Hobby java = new Hobby("Java", "Software development 101");
