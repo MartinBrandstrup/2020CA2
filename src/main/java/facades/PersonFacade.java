@@ -75,6 +75,13 @@ public class PersonFacade implements IPersonFacade
         long count = getAllPersonsByHobby(id).size();
         return count;
     }
+    
+    @Override
+    public long countPeopleWithHobbyName(String name)
+    {
+        long count = getAllPersonsByHobbyName(name).size();
+        return count;
+    }
 
     /**
      * Retrieves all Persons from the database as PersonDTOs objects.

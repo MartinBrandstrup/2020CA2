@@ -178,7 +178,7 @@ public class PersonResource
     }
 
     @GET
-    @Path("/personsWithHobby/{hName}")
+    @Path("/personsWithHobbyName/{hName}")
     @Produces(MediaType.APPLICATION_JSON)
     public String personsWithHobbyName(@PathParam("hName") String name)
     {
@@ -199,6 +199,23 @@ public class PersonResource
     public String countPersonsWithHobby(@PathParam("hId") int id)
     {
         long amount = FACADE.countPeopleWithHobby(id);
+        if (String.valueOf(amount) != null)
+        {
+            return GSON.toJson(
+                    //                    "The amount of people with the hobby matching id: " + id + " is equal to: " + 
+                    String.valueOf(amount));
+        }
+        else
+        {
+            return "Operation countPersonsWithHobby failed.";
+        }
+    }
+    @GET
+    @Path("/countPersonsWithHobbyName/{hName}")
+    @Produces(MediaType.APPLICATION_JSON)
+    public String countPersonsWithHobbyName(@PathParam("hName") String name)
+    {
+        long amount = FACADE.countPeopleWithHobbyName(name);
         if (String.valueOf(amount) != null)
         {
             return GSON.toJson(

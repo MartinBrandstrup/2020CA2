@@ -23,6 +23,8 @@ public interface IPersonFacade
     public long getPersonCount();
 
     public long countPeopleWithHobby(int id);
+    
+    public long countPeopleWithHobbyName(String name);
 
     public List<PersonDTO> getAllPersons();
 
