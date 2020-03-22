@@ -22,17 +22,21 @@ public interface IPersonFacade
 
     public long getPersonCount();
 
-    public long getPersonCountByHobby(Hobby hobby);
+    public long countPeopleWithHobby(int id);
 
     public List<PersonDTO> getAllPersons();
 
-    public List<PersonDTO> getAllPersonsByHobby(Hobby hobby);
+    public List<PersonDTO> getAllPersonsByHobby(int id);
+    
+    public List<PersonDTO> getAllPersonsByHobbyName(String name);
 
-    public List<PersonDTO> getAllPersonsByCity(CityInfo cityInfo);
+    public List<PersonDTO> getAllPersonsByCityName(String name);
 
     public Person getPersonById(int id) throws NoObjectException;
 
     public PersonDTO getPersonDTOById(int id) throws NoObjectException;
+    
+    public Person getPersonByName(String name);
 
     public PersonDTO getPersonDTOByPhone(Phone phone);
 

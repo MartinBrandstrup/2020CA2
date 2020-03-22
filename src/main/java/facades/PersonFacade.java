@@ -70,9 +70,10 @@ public class PersonFacade implements IPersonFacade
     }
 
     @Override
-    public long getPersonCountByHobby(Hobby hobby)
+    public long countPeopleWithHobby(int id)
     {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        long count = getAllPersonsByHobby(id).size();
+        return count;
     }
 
     /**
@@ -104,13 +105,57 @@ public class PersonFacade implements IPersonFacade
     }
 
     @Override
-    public List<PersonDTO> getAllPersonsByHobby(Hobby hobby)
+    public List<PersonDTO> getAllPersonsByHobby(int id)
     {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        EntityManager em = emf.createEntityManager();
+        try
+        {
+            List<PersonDTO> ListOfPersonDTO = new ArrayList<>();
+
+            TypedQuery<Person> query = em.createQuery("SELECT p FROM Person p "
+                    + "JOIN p.hobbies h WHERE h.id = :hobbyId", Person.class)
+                    .setParameter("hobbyId", id);
+
+            for (Person person : query.getResultList())
+            {
+                ListOfPersonDTO.add(new PersonDTO(person));
+            }
+
+            return ListOfPersonDTO;
+        }
+        finally
+        {
+            em.close();
+        }
     }
 
     @Override
-    public List<PersonDTO> getAllPersonsByCity(CityInfo cityInfo)
+    public List<PersonDTO> getAllPersonsByHobbyName(String name)
+    {
+        EntityManager em = emf.createEntityManager();
+        try
+        {
+            List<PersonDTO> ListOfPersonDTO = new ArrayList<>();
+
+            TypedQuery<Person> query = em.createQuery("SELECT p FROM Person p "
+                    + "JOIN p.hobbies h WHERE h.name = :hobbyName", Person.class)
+                    .setParameter("hobbyName", name);
+
+            for (Person person : query.getResultList())
+            {
+                ListOfPersonDTO.add(new PersonDTO(person));
+            }
+
+            return ListOfPersonDTO;
+        }
+        finally
+        {
+            em.close();
+        }
+    }
+
+    @Override
+    public List<PersonDTO> getAllPersonsByCityName(String name)
     {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
@@ -191,6 +236,7 @@ public class PersonFacade implements IPersonFacade
      * @param name The provided first name to search the database for.
      * @return a Person object containing all information.
      */
+    @Override
     public Person getPersonByName(String name)
     {
         EntityManager em = getEntityManager();
@@ -443,34 +489,8 @@ public class PersonFacade implements IPersonFacade
         }
     }
 
-    public List<PersonDTO> getAllPersonByHobby(int id)
-    {
-        EntityManager em = emf.createEntityManager();
-        try
-        {
-            List<PersonDTO> ListOfPersonDTO = new ArrayList<>();
-
-            TypedQuery<Person> query = em.createQuery("SELECT p FROM Person p "
-                    + "JOIN p.hobbies h WHERE h.id = :hobbyId", Person.class)
-                    .setParameter("hobbyId", id);
-
-            for (Person person : query.getResultList())
-            {
-                ListOfPersonDTO.add(new PersonDTO(person));
-            }
-
-            return ListOfPersonDTO;
-        }
-        finally
-        {
-            em.close();
-        }
-    }
-
-    public long countPeopleWithHobby(int id)
-    {
-        long count = getAllPersonByHobby(id).size();
-        return count;
-    }
+    
+    
+    
 
 }
