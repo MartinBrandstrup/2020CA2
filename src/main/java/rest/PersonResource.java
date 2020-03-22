@@ -35,7 +35,8 @@ import javax.ws.rs.core.MediaType;
  * @author Christian & Brandstrup
  */
 @Path("person")
-public class PersonResource {
+public class PersonResource
+{
 
     private static final EntityManagerFactory EMF = EMF_Creator.createEntityManagerFactory(
             "pu",
@@ -55,14 +56,16 @@ public class PersonResource {
             {
                 MediaType.APPLICATION_JSON
             })
-    public String demo() {
+    public String demo()
+    {
         return "{\"msg\":\"Hello World\"}";
     }
 
     @GET
     @Path("/count")
     @Produces(MediaType.APPLICATION_JSON)
-    public String getPersonCount() {
+    public String getPersonCount()
+    {
         long count = FACADE.getPersonCount();
         //System.out.println("--------------->"+count);
         return "{\"count\":" + count + "}";  //Done manually so no need for a DTO
@@ -71,11 +74,15 @@ public class PersonResource {
     @GET
     @Path("/all")
     @Produces(MediaType.APPLICATION_JSON)
-    public String getAllPersons() {
+    public String getAllPersons()
+    {
         List<PersonDTO> pDTOList = FACADE.getAllPersons();
-        if (pDTOList != null) {
+        if (pDTOList != null)
+        {
             return GSON.toJson(pDTOList);
-        } else {
+        }
+        else
+        {
             return "{\"msg\":\"Operation getAllPersons failed\"}";
         }
     }
@@ -83,11 +90,15 @@ public class PersonResource {
     @GET
     @Path("/{id}")
     @Produces(MediaType.APPLICATION_JSON)
-    public String getPersonById(@PathParam("id") int id) {
-        try {
+    public String getPersonById(@PathParam("id") int id)
+    {
+        try
+        {
             PersonDTO pDTO = FACADE.getPersonDTOById(id);
             return GSON.toJson(pDTO);
-        } catch (NoObjectException ex) {
+        }
+        catch (NoObjectException ex)
+        {
             return ex.getMessage();
         }
     }
@@ -95,7 +106,8 @@ public class PersonResource {
     @POST
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
-    public String persistPerson(String personDTO) {
+    public String persistPerson(String personDTO)
+    {
         PersonDTO pDTO = GSON.fromJson(personDTO, PersonDTO.class); //Converts the request from a JSON string to a DTO
         Person pManaged = FACADE.persistPerson( //Persists the object to the database
                 new Person(pDTO.getFirstName(), pDTO.getLastName(), pDTO.getEmail()));
@@ -105,7 +117,8 @@ public class PersonResource {
     @DELETE
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
-    public String deletePerson(String personDTO) {
+    public String deletePerson(String personDTO)
+    {
         PersonDTO hDTO = GSON.fromJson(personDTO, PersonDTO.class);
         Person deletedHobby = FACADE.deletePerson(hDTO);
         int deletedId = deletedHobby.getId();
@@ -115,7 +128,8 @@ public class PersonResource {
     @DELETE
     @Path("/{id}")
     @Produces(MediaType.APPLICATION_JSON)
-    public String deletePersonById(@PathParam("id") int id) {
+    public String deletePersonById(@PathParam("id") int id)
+    {
         FACADE.deletePersonById(id);
         return "{\"msg\":\"Person with id " + id + " has been deleted\"}";
     }
@@ -124,7 +138,8 @@ public class PersonResource {
     @Path("/{id}")
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
-    public String editPersonById(@PathParam("id") int id, String person) {
+    public String editPersonById(@PathParam("id") int id, String person)
+    {
         Person p = GSON.fromJson(person, Person.class);
         Person editedPerson = FACADE.editPerson(id, p);
         return GSON.toJson(new PersonDTO(editedPerson));
@@ -133,10 +148,12 @@ public class PersonResource {
     @POST
     @Path("/populate/{numberOfEntries}")
     @Produces(MediaType.APPLICATION_JSON)
-    public String populate(@PathParam("numberOfEntries") int numberOfEntries) {
+    public String populate(@PathParam("numberOfEntries") int numberOfEntries)
+    {
         List<PersonDTO> pDTOList = new ArrayList();
         List<Person> pList = FACADE.populateDatabaseWithPersons(numberOfEntries);
-        for (Person person : pList) {
+        for (Person person : pList)
+        {
             pDTOList.add(new PersonDTO(person));
         }
 
@@ -145,11 +162,11 @@ public class PersonResource {
     }
 
     @GET
-    @Path("/PersonsWithHobby/{hId}")
+    @Path("/personsWithHobby/{hId}")
     @Produces(MediaType.APPLICATION_JSON)
     public String personsWithHobby(@PathParam("hId") int id)
     {
-        List<PersonDTO> persons = FACADE.getAllPersonByHobby(id);
+        List<PersonDTO> persons = FACADE.getAllPersonsByHobby(id);
         if (persons != null)
         {
             return GSON.toJson(persons);
@@ -159,20 +176,22 @@ public class PersonResource {
             return "Operation personsWithHobby failed.";
         }
     }
-//    @GET
-//    @Path("/personswithhobby")
-//    @Consumes(MediaType.APPLICATION_JSON)
-//    @Produces(MediaType.APPLICATION_JSON)
-//    public String personsWithHobbys(String hobbyDTO) {
-//        HobbyDTO hDTO = GSON.fromJson(hobbyDTO, HobbyDTO.class);
-//        Hobby h = new Hobby(hDTO.getName(), hDTO.getDescription());
-//        List<PersonDTO> persons = FACADE.getAllPersonByHobby(h);
-//        if (persons != null){
-//        return GSON.toJson(persons);
-//        } else {
-//            return "Operation failed";
-//        }
-//    }
+
+    @GET
+    @Path("/personsWithHobbyName/{hName}")
+    @Produces(MediaType.APPLICATION_JSON)
+    public String personsWithHobbyName(@PathParam("hName") String name)
+    {
+        List<PersonDTO> persons = FACADE.getAllPersonsByHobbyName(name);
+        if (persons != null)
+        {
+            return GSON.toJson(persons);
+        }
+        else
+        {
+            return "Operation personsWithHobbyName failed.";
+        }
+    }
 
     @GET
     @Path("/countPersonsWithHobby/{hId}")
@@ -183,7 +202,24 @@ public class PersonResource {
         if (String.valueOf(amount) != null)
         {
             return GSON.toJson(
-//                    "The amount of people with the hobby matching id: " + id + " is equal to: " + 
+                    //                    "The amount of people with the hobby matching id: " + id + " is equal to: " + 
+                    String.valueOf(amount));
+        }
+        else
+        {
+            return "Operation countPersonsWithHobby failed.";
+        }
+    }
+    @GET
+    @Path("/countPersonsWithHobbyName/{hName}")
+    @Produces(MediaType.APPLICATION_JSON)
+    public String countPersonsWithHobbyName(@PathParam("hName") String name)
+    {
+        long amount = FACADE.countPeopleWithHobbyName(name);
+        if (String.valueOf(amount) != null)
+        {
+            return GSON.toJson(
+                    //                    "The amount of people with the hobby matching id: " + id + " is equal to: " + 
                     String.valueOf(amount));
         }
         else

@@ -100,8 +100,8 @@ public class PersonFacadeTest {
         assertEquals(2, facade.getPersonCount(), "Expects two rows in the database");
     }
 //    @Test
-//    public void getAllPersonByHobby(){
-//          assertEquals(1, facade.getAllPersonByHobby(hb1), "Expects 1 rows in the database");
+//    public void getAllPersonsByHobby(){
+//          assertEquals(1, facade.getAllPersonsByHobby(hb1), "Expects 1 rows in the database");
 //    }
 //    @Test
 //    public void countPeopleWithHobby(){
