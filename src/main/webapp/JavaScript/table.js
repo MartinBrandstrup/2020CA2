@@ -8,16 +8,14 @@
 var URLTest = "http://localhost:8080/2020CA2/api/person/all"
 var URL = "/2020CA2/api/person"
 var URLAll = "/2020CA2/api/person/all"
-var URLpvh = "/2020CA/api/person//personswithhobby"
-var URLpvhc =  "/2020CA/api/person/amountofpersonswithhobby"
-const eventClick = document.getElementById("loadPersons");
-const chosenHobby = document.getElementById("Hobby");
+var URLpvh = "/2020CA/api/person/PersonsWithHobby/"
+var URLpvhc =  "/2020CA/api/person/countPersonsWithHobby/" 
+const fillBtn = document.getElementById("loadPersons");
+const chosenHobby = document.getElementById("txt")
 
-//const table = document.getElementById("IndexTable");
-//const Reload = document.getElementById("reloadNewMembers");
 
-//eventClick.addEventListener("click", eventHandler, false )
-eventClick.addEventListener("click", fillTable(), false );
+fillBtn.addEventListener("click", fillTable, false )
+chosenHobby.addEventListener("change", eventHandler, false )
 
 function fillTable(){
 fetch(URLAll)
@@ -35,8 +33,8 @@ fetch(URLAll)
 });
 }
 
-function fillTableWithHobbies(){
-    fetch().then(res => res.json())
+function fillTableWithHobbies(id){
+    fetch(URLpvh + id).then(res => res.json())
         .then(data =>{
         let list = data.map(function(person){
                 // table with values
@@ -52,9 +50,10 @@ function fillTableWithHobbies(){
 
 function eventHandler(e) {
 // tag id givet fra event 
-  var id = e.target.id;
-  console.log(id);
-//    fillTable(e)(id);
+  var hobbyId = e.target.value;
+  console.log(hobbyId);
+  
+    fillTableWithHobbies(hobbyId);
   }
  // getCountry henter daten og retuner det til returnPoints 
  
