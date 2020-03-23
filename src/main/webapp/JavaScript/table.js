@@ -10,12 +10,13 @@ var URLpopulate = "/2020CA2/api/master/populate"
 var URLAll = "/2020CA2/api/person/all"
 var URLpvh = "/2020CA2/api/person/personsWithHobbyName/"
 var URLpvhc = "/2020CA2/api/person/countPersonsWithHobbyName/"
-var URLpostperson = "/2020CA2/api/person"
+var URLPerson = "/2020CA2/api/person/"
 const fillBtn = document.getElementById("loadPersons")
 const populateBtn = document.getElementById("populate")
 const apidocBtn = document.getElementById("APIDOC")
 const chosenHobby = document.getElementById("txt")
 const POSTTest = document.getElementById("newPerson")
+const PUTTest = document.getElementById("editPerson")
 
 
 //events
@@ -24,6 +25,7 @@ fillBtn.addEventListener("click", fillTable, false)
 chosenHobby.addEventListener("blur", eventHandler, false)
 apidocBtn.addEventListener("click", ShowApi, false)
 POSTTest.addEventListener("click", newPerson, false)
+PUTTest.addEventListener("click", editPerson, false)
 
 function  ShowApi() {
     document.getElementById("Documentation").style.display = "block"
@@ -63,7 +65,7 @@ function Person(first, last, email) {
 }
 
 function newPerson() {
-    fetch(URLpostperson, {
+    fetch(URLPerson, {
         method: 'POST',
         headers: {'Content-Type': 'application/json'},
         body: JSON.stringify(new Person("JustAdded", "AsATest", "ThisNeedsToExist"))
@@ -71,6 +73,23 @@ function newPerson() {
             .then(data => {
                  console.log(data);
             })
+}
+
+function editPerson() {
+    let per = new Person("JustEdited", "AlsoATest", "HopefullyThisWorks")
+    console.log("Per" + per);
+    console.log("Per og Jason" + JSON.stringify(per));
+    console.log("URL1" + URLPerson + 1);
+    fetch(URLPerson + 1, {
+//            document.getElementById("txt").target.value, {
+        method: 'PUT',
+        headers: {'Content-Type': 'application/json'},
+        body: JSON.stringify(per)
+    }).then(res => res.json())
+            .then(data => {
+                console.log(data);
+                console.log("URL2" + URLPerson + 1);
+    })
 }
 
 
