@@ -20,8 +20,8 @@ public class PersonDTO
 
     private int id;
     private String firstName, lastName, email, street, city, zip;
-    private List<String> phones = new ArrayList<>();
-    private List<String> hobbies = new ArrayList<>();
+//    private List<PhoneNoPersonRelationsDTO> phones = new ArrayList<>();
+    private List<HobbyNoPersonRelationsDTO> hobbies = new ArrayList<>();
 
     public PersonDTO(Person p)
     {
@@ -43,17 +43,17 @@ public class PersonDTO
         {
             for (Hobby hobby : p.getHobbies())
             {
-                this.hobbies.add(hobby.getName());
+                this.hobbies.add(new HobbyNoPersonRelationsDTO(hobby));
             }
         }
 
-        if (!(p.getPhones() == null && p.getPhones().isEmpty()))
-        {
-            for (Phone phone : p.getPhones())
-            {
-                this.phones.add(phone.toString());
-            }
-        }
+//        if (!(p.getPhones() == null && p.getPhones().isEmpty()))
+//        {
+//            for (Phone phone : p.getPhones())
+//            {
+//                this.phones.add(new PhoneNoPersonRelationsDTO(phone));
+//            }
+//        }
     }
 
     /*
@@ -147,12 +147,12 @@ public class PersonDTO
         this.zip = zip;
     }
 
-    public List<String> getPhones()
-    {
-        return phones;
-    }
+//    public List<PhoneNoPersonRelationsDTO> getPhones()
+//    {
+//        return phones;
+//    }
 
-    public List<String> getHobbies()
+    public List<HobbyNoPersonRelationsDTO> getHobbies()
     {
         return hobbies;
     }
@@ -160,9 +160,12 @@ public class PersonDTO
     @Override
     public String toString()
     {
-        return "PersonDTO{" + "id=" + id + ", name=" + firstName + ", street="
-                + street + ", city=" + city + ", zip=" + zip + ", phones="
-                + phones + ", hobbies=" + hobbies + '}';
+        return "PersonDTO{" + "id=" + id + ", firstName=" + firstName 
+                + ", lastName=" + lastName + ", email=" + email + ", street=" 
+                + street + ", city=" + city + ", zip=" + zip 
+//                + ", phones=" + phones 
+                + ", hobbies=" + hobbies + '}';
     }
+
 
 }
