@@ -136,6 +136,35 @@ public class AddressFacade {
             em.close();
         }
     }
+    
+    /**
+     * Attempts to retrieve a Address object from the database corresponding to
+     * the provided street name. Used mainly for back-end work, since not all information
+     * of the Address object should be displayed on the front-end.
+     *
+     * @param name The provided first name to search the database for.
+     * @return a Address object containing all information.
+     * @author Brandstrup
+     */
+    public Address getAddressByName(String name)
+    {
+        EntityManager em = getEntityManager();
+        try
+        {
+            Address a;
+
+            TypedQuery<Address> query = em.createQuery("SELECT a FROM Address a "
+                    + "WHERE a.street = :addressStreet", Address.class)
+                    .setParameter("addressStreet", name);
+            a = query.getSingleResult();
+            
+            return a;
+        }
+        finally
+        {
+            em.close();
+        }
+    }
 
     /**
      *
@@ -220,6 +249,14 @@ public class AddressFacade {
 //    }
 
 
+    /**
+     * 
+     * @param addressId
+     * @param person
+     * @return
+     * @throws ORMException 
+     * @author Brandstrup
+     */
     public AddressDTO addPersonToAddress(int addressId, Person person) throws ORMException
     {
         EntityManager em = getEntityManager();
@@ -250,6 +287,13 @@ public class AddressFacade {
         }
     }
 
+    /**
+     * 
+     * @param addressId
+     * @param person
+     * @return 
+     * @author Brandstrup
+     */
     public AddressDTO removePersonFromAddress(int addressId, Person person)
     {
         EntityManager em = getEntityManager();
