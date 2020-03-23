@@ -21,6 +21,8 @@ const PUTTest = document.getElementById("editPerson")
 
 //events
 populateBtn.addEventListener("click", populateTable, false)
+populateBtn.addEventListener("click", () => {console.log(data);
+    document.getElementById("count").innerHTML = "Database populated successfully";}, false)
 fillBtn.addEventListener("click", fillTable, false)
 chosenHobby.addEventListener("blur", eventHandler, false)
 apidocBtn.addEventListener("click", ShowApi, false)
@@ -45,31 +47,30 @@ HideApi();
 function populateTable() {
     fetch(URLpopulate, {
         method: 'POST',
-        headers: {
-            'Content-Type': 'application/json'
-        }
+        body: '',
+        headers: {'Content-Type': 'application/json'}
     })
             .then(res => res.json())
             .then(data => {
-                 console.log(data);
-         document.getElementById("count").innerHTML = "Database populated successfully";
             })
 }
 
 function Person(first, last, email) {
-  this.firstName = first;
-  this.lastName = last;
-  this.email = email;
+    this.firstName = first;
+    this.lastName = last;
+    this.email = email;
 }
 
-function newPerson() {
+let person = new Person("JustAdded", "AsATest", "ThisNeedsToExist")
+
+function newPerson(person) {
     fetch(URLPerson, {
         method: 'POST',
         headers: {'Content-Type': 'application/json'},
-        body: JSON.stringify(new Person("JustAdded", "AsATest", "ThisNeedsToExist"))
+        body: JSON.stringify(person)
     }).then(res => res.json())
             .then(data => {
-                 console.log(data);
+                console.log(data);
             })
 }
 
@@ -87,7 +88,7 @@ function editPerson() {
             .then(data => {
                 console.log(data);
                 console.log("URL2" + URLPerson + 1);
-    })
+            })
 }
 
 
