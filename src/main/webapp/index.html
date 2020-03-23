@@ -99,7 +99,7 @@
 
                 <tr>
                     <td>GET</td>
-                    <td> /api/person/personsWithHobby/{hName} <br> <br> {hName}: name of the hobby to use as criteria </td>
+                    <td> /api/person/personsWithHobbyName/{hName} <br> <br> {hName}: name of the hobby to use as criteria </td>
                     <td> </td>
                     <td> [Person, Person, ...] (1) </td>
                     <td> (e1) </td>
@@ -108,7 +108,7 @@
 
                 <tr>
                     <td>GET</td>
-                    <td> /api/person/countPersonsWithHobby/{hId} <br> <br> {hId}: id of the hobby to use as criteria </td>
+                    <td> /api/person/countPersonsWithHobbyName/{hName} <br> <br> {hName}: id of the hobby to use as criteria </td>
                     <td>  </td>
                     <td> number </td>
                     <td> (e2) </td>
@@ -151,14 +151,15 @@
                     <td>DELETE</td>
                     <td> /api/Hobby </td>
                     <td> Hobby (2) </td>
-                    <td> "Hobby with id {id} has been deleted”</td>
+                    <td> Hobby with id {id} has been deleted</td>
                     <td>  </td>
                 </tr>
+                
                 <tr>
                     <td>DELETE</td>
                     <td> /api/Hobby/{id} </td>
                     <td>  </td>
-                    <td> "Hobby with id {id} has been deleted”</td>
+                    <td> Hobby with id {id} has been deleted</td>
                     <td> (e1) </td>
                 </tr>
 
@@ -170,12 +171,14 @@
                     <td> </td>
 
                 </tr>
+                
                 <tr>
                     <td></td>
                     <td></td>
                     <td></td>
                     <td> </td>
                 </tr>
+                
                 <tr>
                     <td>PUT</td>
                     <td> /api/master//personToAddress/{pId}/{aId}     <br>
@@ -184,7 +187,6 @@
                     <td> </td>
                     <td> Address (3) </td>
                     <td> (e1) </td>
-
                 </tr>
 
                 <tr>
@@ -198,37 +200,36 @@
                 <tr>
                     <td>PUT</td>
                     <td> /api/master/hobbiesToPerson/{pId} <br> <br>{pId}: id of the person to add the hobbies    </td>
-                    <td> [hId1, hId2…](3) </td>
+                    <td> [hId1, hId2...](3) </td>
                     <td> Person (1)</td>
                     <td> (e1) </td>
                 </tr>
 
                 <tr>
                     <td>PUT</td>
-                    <td> /api/master/hobbyFromPerson/{hId}/{pId}  <br>
+                    <td> /api/master/hobbyFromPerson/{hId}/{pId}<br>
                         {hId}: id of the hobby to remove from the person <br>
                         {pId}: id of the person to remove a hobby from
                     </td>
                     <td> </td>
-                    <td>person(1) </td>
+                    <td>Person (1) </td>
                     <td> </td>
-
                 </tr>
+                
                 <tr>
                     <td>POST</td>
                     <td> /api/master/populate  <br> Populates database with a couple of entries for Address, Hobby and Person</td>
                     <td> </td>
                     <td>msg:success/fail </td>
                     <td> </td>
-
                 </tr>
 
             </table>
 
 
             <h2>Request Body and Response Formats <br></h2>
-            <h3>    Person <br>
-                (1) User format (dont provide ID, for POST <br>
+            <h3>Person <br>
+                (1) User format (don't provide ID, for POST <br>
                 {<br>
                 "id": Number,<br>
                 "firstName": String,<br>
@@ -236,9 +237,9 @@
                 "Email": String,<br>
                 "street": String,<br>
                 "city": String,<br>
-                "zip": String;<br>
+                "zip": String<br>
                 } <br>
-
+                <br>
                 Hobby  <br> 
                 (2) User format (dont provide ID, for POST <br>
                 {<br>
@@ -251,9 +252,8 @@
                 [14,16,66]<br>
                 <br>
                 Address <br>
-                (4) User format (dont provide ID, for POST <br>
+                (4) User format (don't provide ID, for POST <br>
                 {<br>
-
                 "id": Number,<br>
                 "street": String,<br>
                 "additionalInfo": String,<br>
