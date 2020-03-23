@@ -47,14 +47,12 @@ function populateTable() {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json'
-        }//,
-//    body:{
-//        
-//    }
+        }
     })
             .then(res => res.json())
             .then(data => {
-                // console.log(data);
+                 console.log(data);
+         document.getElementById("count").innerHTML = "Database populated successfully";
             })
 }
 
@@ -145,7 +143,7 @@ function personsWithHobbies(name) {
 function countPersonWithHobbies(name) {
     fetch(URLpvhc + name).then(res => res.json())
             .then(data => {
-                document.getElementById("count").innerHTML = "Number of persons with hobby is: " + data;
+                document.getElementById("count").innerHTML = "Number of persons with hobby: \"" + name + "\" is: " + data;
             });
 }
 /*
