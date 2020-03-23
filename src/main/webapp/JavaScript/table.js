@@ -10,20 +10,24 @@ var URLpopulate = "/2020CA2/api/master/populate"
 var URLAll = "/2020CA2/api/person/all"
 var URLpvh = "/2020CA2/api/person/personsWithHobbyName/"
 var URLpvhc = "/2020CA2/api/person/countPersonsWithHobbyName/"
-var URLpostperson = "/2020CA2/api/person"
+var URLPerson = "/2020CA2/api/person/"
 const fillBtn = document.getElementById("loadPersons")
 const populateBtn = document.getElementById("populate")
 const apidocBtn = document.getElementById("APIDOC")
 const chosenHobby = document.getElementById("txt")
 const POSTTest = document.getElementById("newPerson")
+const PUTTest = document.getElementById("editPerson")
 
 
 //events
 populateBtn.addEventListener("click", populateTable, false)
+populateBtn.addEventListener("click", () => {console.log(data);
+    document.getElementById("count").innerHTML = "Database populated successfully";}, false)
 fillBtn.addEventListener("click", fillTable, false)
 chosenHobby.addEventListener("blur", eventHandler, false)
 apidocBtn.addEventListener("click", ShowApi, false)
 POSTTest.addEventListener("click", newPerson, false)
+PUTTest.addEventListener("click", editPerson, false)
 
 function  ShowApi() {
     document.getElementById("Documentation").style.display = "block"
@@ -43,33 +47,47 @@ HideApi();
 function populateTable() {
     fetch(URLpopulate, {
         method: 'POST',
-        headers: {
-            'Content-Type': 'application/json'
-        }//,
-//    body:{
-//        
-//    }
+        body: '',
+        headers: {'Content-Type': 'application/json'}
     })
             .then(res => res.json())
             .then(data => {
-                // console.log(data);
             })
 }
 
 function Person(first, last, email) {
-  this.firstName = first;
-  this.lastName = last;
-  this.email = email;
+    this.firstName = first;
+    this.lastName = last;
+    this.email = email;
 }
 
-function newPerson() {
-    fetch(URLpostperson, {
+let person = new Person("JustAdded", "AsATest", "ThisNeedsToExist")
+
+function newPerson(person) {
+    fetch(URLPerson, {
         method: 'POST',
         headers: {'Content-Type': 'application/json'},
-        body: JSON.stringify(new Person("JustAdded", "AsATest", "ThisNeedsToExist"))
+        body: JSON.stringify(person)
     }).then(res => res.json())
             .then(data => {
-                 console.log(data);
+                console.log(data);
+            })
+}
+
+function editPerson() {
+    let per = new Person("JustEdited", "AlsoATest", "HopefullyThisWorks")
+    console.log("Per" + per);
+    console.log("Per og Jason" + JSON.stringify(per));
+    console.log("URL1" + URLPerson + 1);
+    fetch(URLPerson + 1, {
+//            document.getElementById("txt").target.value, {
+        method: 'PUT',
+        headers: {'Content-Type': 'application/json'},
+        body: JSON.stringify(per)
+    }).then(res => res.json())
+            .then(data => {
+                console.log(data);
+                console.log("URL2" + URLPerson + 1);
             })
 }
 
@@ -126,7 +144,7 @@ function personsWithHobbies(name) {
 function countPersonWithHobbies(name) {
     fetch(URLpvhc + name).then(res => res.json())
             .then(data => {
-                document.getElementById("count").innerHTML = "Number of persons with hobby is: " + data;
+                document.getElementById("count").innerHTML = "Number of persons with hobby: \"" + name + "\" is: " + data;
             });
 }
 /*

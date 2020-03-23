@@ -79,9 +79,9 @@ public class MasterFacade
         try
         {
             em.getTransaction().begin();
-//            em.createNamedQuery("Address.deleteAllRows").executeUpdate();
 //            em.createNamedQuery("Hobby.deleteAllRows").executeUpdate();
 //            em.createNamedQuery("Person.deleteAllRows").executeUpdate();
+//            em.createNamedQuery("Address.deleteAllRows").executeUpdate();
 
             personFacade.persistPerson(martin);
             personFacade.persistPerson(flemming);
