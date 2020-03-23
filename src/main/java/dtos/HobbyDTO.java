@@ -19,7 +19,7 @@ public class HobbyDTO
 
     private int id;
     private String name, description;
-    private List<String> persons = new ArrayList<>();
+    private List<PersonNoHobbyRelationsDTO> persons = new ArrayList<>();
 
     public HobbyDTO(Hobby hobby)
     {
@@ -31,7 +31,7 @@ public class HobbyDTO
         {
             for (Person person : hobby.getPersons())
             {
-                this.persons.add(person.toString());
+                this.persons.add(new PersonNoHobbyRelationsDTO(person));
             }
         }
     }
@@ -61,7 +61,7 @@ public class HobbyDTO
         this.description = description;
     }
 
-    public List<String> getPersons()
+    public List<PersonNoHobbyRelationsDTO> getPersons()
     {
         return persons;
     }
