@@ -31,8 +31,9 @@ import javax.persistence.TypedQuery;
 public class MasterFacade
 {
 
-    Person martin = new Person("Martin", "Brandstrup", "martin.l.brandstrup@gmail.com");
+    Person martin = new Person("Martin", "Brandstrup", "dethererikkeminmail@gmail.com");
     Person flemming = new Person("Flemming", "Hansen", "flemming.hansen@gmail.com");
+    Person hjemløs = new Person("Hjemløs", "Hjemløsen", ""); //Tester ø og tom email og null address
     Hobby java = new Hobby("Java", "Software development 101");
     Hobby js = new Hobby("JavaScript", "Software development 102");
     Address vang21 = new Address("Vangegade 21", "Den eksisterer kun i min fantasi");
@@ -71,7 +72,7 @@ public class MasterFacade
         return emf.createEntityManager();
     }
 
-    public String populateDatabaseWithTestData()
+    public String populateDatabaseWithTestData() throws CouplingException
     {
         EntityManager em = emf.createEntityManager();
 
@@ -84,12 +85,27 @@ public class MasterFacade
 
             personFacade.persistPerson(martin);
             personFacade.persistPerson(flemming);
+            personFacade.persistPerson(hjemløs);
             hobbyFacade.persistHobby(java);
             hobbyFacade.persistHobby(js);
             addressFacade.persistAddress(vang21);
             addressFacade.persistAddress(vang25);
 
             em.getTransaction().commit();
+            
+            int martinId = personFacade.getPersonByName("Martin").getId();
+            int flemmingId = personFacade.getPersonByName("Flemming").getId();
+            int hjemløsId = personFacade.getPersonByName("Hjemløs").getId();
+            int javaId = hobbyFacade.getHobbyByName("Java").getId();
+            int jsId = hobbyFacade.getHobbyByName("JavaScript").getId();
+            int vang21Id = addressFacade.getAddressByName("Vangegade 21").getId();
+            int vang25Id = addressFacade.getAddressByName("Vangegade 25").getId();
+            
+            coupleHobbiesToPerson(new int[]{javaId, jsId}, martinId);
+            coupleHobbiesToPerson(new int[]{javaId}, hjemløsId);
+            couplePersonsToAddress(new int[]{martinId}, vang21Id);
+            couplePersonsToAddress(new int[]{flemmingId}, vang25Id);
+            
             return "Operation populateDatabaseWithTestData successful.";
         }
         catch (IllegalStateException ex)
@@ -101,9 +117,7 @@ public class MasterFacade
         }
         catch (Exception ex)
         {
-            System.out.println("Operation populateDatabaseWithTestData failed.");
-            ex.printStackTrace();
-            return null;
+            throw new CouplingException("Operation populateDatabaseWithTestData failed.");
         }
         finally
         {
@@ -120,7 +134,7 @@ public class MasterFacade
     {
         Person p = personFacade.getPersonById(personId);
         AddressDTO aDTO;
-
+        
         if (p.getAddress() != null)
         {
             addressFacade.removePersonFromAddress(addressId, p);
@@ -213,7 +227,7 @@ public class MasterFacade
         PersonDTO pDTO = null;
         Hobby h = hobbyFacade.getHobbyById(hobbyId);
         
-        if(h.getPersons() == null || h.getPersons().isEmpty())
+        if(h.getPersons().isEmpty())
         {
             throw new ORMException("The provided Hobby does not contain any Person relations.");
         }
